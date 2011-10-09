@@ -3,4 +3,5 @@ Rails.application.routes.draw do
     resources :bookmarks
   end
   resources :bookmarks
+  resources :tags
 end
