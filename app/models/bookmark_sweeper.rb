@@ -3,7 +3,7 @@ class BookmarkSweeper < ActionController::Caching::Sweeper
   observe Bookmark, Tag
 
   def after_save(record)
-    case record
+    case
     when record.is_a?(Bookmark)
       expire_editable_fragment(record.manifestation, ['show_list', 'detail'])
       expire_tag_cloud(record)
