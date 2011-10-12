@@ -10,6 +10,7 @@ class CreateBookmarkStats < ActiveRecord::Migration
 
       t.timestamps
     end
+    add_index :bookmark_stats, :state
   end
 
   def self.down
