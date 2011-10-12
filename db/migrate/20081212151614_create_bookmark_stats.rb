@@ -5,6 +5,8 @@ class CreateBookmarkStats < ActiveRecord::Migration
       t.datetime :end_date
       t.text :note
       t.string :state
+      t.datetime :started_at
+      t.datetime :completed_at
 
       t.timestamps
     end
