@@ -128,8 +128,10 @@ class Bookmark < ActiveRecord::Base
     if url.try(:my_host?)
       unless url.try(:bookmarkable_id)
         errors[:base] << I18n.t('bookmark.not_our_holding')
+        return false
       end
     end
+    true
   end
 
   def get_manifestation
@@ -145,6 +147,7 @@ class Bookmark < ActiveRecord::Base
   end
 
   def create_manifestation
+    return nil unless bookmarkable_url?
     manifestation = get_manifestation
     unless manifestation
       manifestation = Manifestation.new(:access_address => url)
