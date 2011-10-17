@@ -6,7 +6,7 @@ class Bookmark < ActiveRecord::Base
   belongs_to :manifestation
   belongs_to :user #, :counter_cache => true, :validate => true
 
-  validates_presence_of :user, :title
+  validates_presence_of :user, :title, :manifestation_id
   validates_associated :user, :manifestation
   validates_uniqueness_of :manifestation_id, :scope => :user_id
   validates :url, :url => true, :presence => true, :length => {:maximum => 255}
@@ -164,6 +164,7 @@ class Bookmark < ActiveRecord::Base
     else
       manifestation.original_title = self.get_title
     end
+    manifestation.save!
     self.manifestation = manifestation
   end
 
