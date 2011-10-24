@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :users do
-    resources :bookmarks
+    resources :bookmarks, :only => :index
   end
   resources :bookmarks
   resources :tags

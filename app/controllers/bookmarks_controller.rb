@@ -44,10 +44,6 @@ class BookmarksController < ApplicationController
 
   # GET /bookmarks/new
   def new
-    unless current_user == @user
-      access_denied
-      return
-    end
     @bookmark = Bookmark.new(params[:bookmark])
     unless @bookmark.url.try(:bookmarkable?)
         flash[:notice] = t('bookmark.invalid_url')
@@ -103,10 +99,10 @@ class BookmarksController < ApplicationController
         @bookmark.manifestation.index!
         if params[:mode] == 'tag_edit'
           format.html { redirect_to(@bookmark.manifestation) }
-          format.xml  { render :xml => @bookmark, :status => :created, :location => user_bookmark_url(@bookmark.user, @bookmark) }
+          format.xml  { render :xml => @bookmark, :status => :created, :location => bookmark_url(@bookmark) }
         else
-          format.html { redirect_to user_bookmark_url(@bookmark.user, @bookmark) }
-          format.xml  { render :xml => @bookmark, :status => :created, :location => user_bookmark_url(@bookmark.user, @bookmark) }
+          format.html { redirect_to(@bookmark) }
+          format.xml  { render :xml => @bookmark, :status => :created, :location => bookmark_url(@bookmark) }
         end
       else
         @user = current_user
@@ -143,7 +139,7 @@ class BookmarksController < ApplicationController
           format.html { redirect_to(@bookmark.manifestation) }
           format.xml  { head :ok }
         else
-          format.html { redirect_to user_bookmark_url(@bookmark.user, @bookmark) }
+          format.html { redirect_to bookmark_url(@bookmark) }
           format.xml  { head :ok }
         end
       else
