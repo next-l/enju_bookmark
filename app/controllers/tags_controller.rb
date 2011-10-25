@@ -58,7 +58,7 @@ class TagsController < ApplicationController
         format.json { head :ok }
       else
         format.html { render :action => "edit" }
-        format.json { render :json => @tag.errors.to_json }
+        format.json { render :json => @tag.errors, :status => :unprocessable_entity }
       end
     end
   end
