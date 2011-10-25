@@ -8,7 +8,7 @@ class BookmarksController < ApplicationController
   cache_sweeper :bookmark_sweeper, :only => [:create, :update, :destroy]
 
   # GET /bookmarks
-  # GET /bookmarks.xml
+  # GET /bookmarks.json
   def index
     search = Bookmark.search(:include => [:manifestation])
     query = params[:query].to_s.strip
@@ -28,16 +28,16 @@ class BookmarksController < ApplicationController
 
     respond_to do |format|
       format.html # index.rhtml
-      format.xml  { render :xml => @bookmarks }
+      format.json { render :json => @bookmarks }
     end
   end
 
   # GET /bookmarks/1
-  # GET /bookmarks/1.xml
+  # GET /bookmarks/1.json
   def show
     respond_to do |format|
       format.html # show.rhtml
-      format.xml  { render :xml => @bookmark }
+      format.json { render :json => @bookmark }
     end
   end
 
@@ -67,7 +67,7 @@ class BookmarksController < ApplicationController
   end
 
   # POST /bookmarks
-  # POST /bookmarks.xml
+  # POST /bookmarks.json
   def create
     @bookmark = current_user.bookmarks.new(params[:bookmark])
     if @bookmark.url
@@ -86,7 +86,7 @@ class BookmarksController < ApplicationController
         @bookmark.manifestation.index!
         if params[:mode] == 'tag_edit'
           format.html { redirect_to(@bookmark.manifestation) }
-          format.xml  { render :xml => @bookmark, :status => :created, :location => bookmark_url(@bookmark) }
+          format.json { render :json => @bookmark, :status => :created, :location => bookmark_url(@bookmark) }
         else
           if @bookmark.manifestation.try(:bookmarked?, current_user)
             flash[:notice] = t('bookmark.already_bookmarked')
@@ -94,13 +94,13 @@ class BookmarksController < ApplicationController
             return
           else
             format.html { redirect_to(@bookmark) }
-            format.xml  { render :xml => @bookmark, :status => :created, :location => bookmark_url(@bookmark) }
+            format.json { render :json => @bookmark, :status => :created, :location => bookmark_url(@bookmark) }
           end
         end
       else
         @user = current_user
         format.html { render :action => "new" }
-        format.xml  { render :xml => @bookmark.errors, :status => :unprocessable_entity }
+        format.json { render :json => @bookmark.errors, :status => :unprocessable_entity }
       end
     end
 
@@ -108,7 +108,7 @@ class BookmarksController < ApplicationController
   end
 
   # PUT /bookmarks/1
-  # PUT /bookmarks/1.xml
+  # PUT /bookmarks/1.json
   def update
     unless @bookmark.url.try(:bookmarkable?)
       access_denied; return
@@ -124,20 +124,20 @@ class BookmarksController < ApplicationController
         case params[:mode]
         when 'tag_edit'
           format.html { redirect_to(@bookmark.manifestation) }
-          format.xml  { head :ok }
+          format.json { head :ok }
         else
           format.html { redirect_to bookmark_url(@bookmark) }
-          format.xml  { head :ok }
+          format.json { head :ok }
         end
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @bookmark.errors, :status => :unprocessable_entity }
+        format.json { render :json => @bookmark.errors, :status => :unprocessable_entity }
       end
     end
   end
 
   # DELETE /bookmarks/1
-  # DELETE /bookmarks/1.xml
+  # DELETE /bookmarks/1.json
   def destroy
     @bookmark.destroy
     flash[:notice] = t('controller.successfully_deleted', :model => t('activerecord.models.bookmark'))
@@ -146,12 +146,12 @@ class BookmarksController < ApplicationController
     if @user
       respond_to do |format|
         format.html { redirect_to user_bookmarks_url(@user) }
-        format.xml  { head :ok }
+        format.json { head :ok }
       end
     else
       respond_to do |format|
         format.html { redirect_to user_bookmarks_url(@bookmark.user) }
-        format.xml  { head :ok }
+        format.json { head :ok }
       end
     end
   end
