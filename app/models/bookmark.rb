@@ -10,11 +10,9 @@ class Bookmark < ActiveRecord::Base
   validates_associated :user, :manifestation
   validates_uniqueness_of :manifestation_id, :scope => :user_id
   validates :url, :url => true, :presence => true, :length => {:maximum => 255}
-  #validate :get_manifestation
   before_validation :create_manifestation, :on => :create
   validate :bookmarkable_url?
   before_save :replace_space_in_tags
-  after_create :create_frbr_object
   after_save :save_manifestation
   after_destroy :reindex_manifestation
   attr_protected :user
@@ -128,10 +126,12 @@ class Bookmark < ActiveRecord::Base
     if url.try(:my_host?)
       unless url.try(:bookmarkable_id)
         errors[:base] << I18n.t('bookmark.not_our_holding')
-        return false
       end
     end
-    true
+
+    if manifestation.bookmarked?(user)
+      errors[:base] << 'already_bookmarked'
+    end
   end
 
   def get_manifestation
@@ -139,54 +139,43 @@ class Bookmark < ActiveRecord::Base
     if url.try(:my_host?)
       manifestation = self.my_host_resource
     else
-      if LibraryGroup.site_config.allow_bookmark_external_url
-        manifestation = Manifestation.where(:access_address => self.url).first if self.url.present?
-      end
+      manifestation = Manifestation.where(:access_address => self.url).first if self.url.present?
     end
-    manifestation
   end
 
   def create_manifestation
-    return nil unless bookmarkable_url?
-    manifestation = get_manifestation
-    unless manifestation
-      manifestation = Manifestation.new(:access_address => url)
-      manifestation.carrier_type = CarrierType.where(:name => 'file').first
-    end
-    # OTC start
-    # get_manifestationで自館のmanifestation以外ならば例外とし登録させないよう修正した。
-    # よって、unless文の処理は不要になるはず。
-    # manifestation = get_manifestationを実行するのみ。nilの場合は上で処理するので処理不要。
-#    manifestation = get_manifestation
-    # OTC end
-    if manifestation.bookmarked?(user)
-      errors[:base] << 'already_bookmarked'
-    end
+    manifestation = Manifestation.new(:access_address => url)
+    manifestation.carrier_type = CarrierType.where(:name => 'file').first
     if self.title.present?
       manifestation.original_title = self.title
     else
       manifestation.original_title = self.get_title
     end
-    manifestation.save!
-    self.manifestation = manifestation
+    Manifestation.transaction do
+      manifestation.save
+      self.manifestation = manifestation
+      create_frbr_object
+    end
   end
 
   def create_frbr_object
     unless url.my_host?
-      Bookmark.transaction do
-        create_bookmark_item
-      end
+      create_bookmark_item
     end
   end
 
   def create_bookmark_item
-    circulation_status = CirculationStatus.where(:name => 'Not Available').first
     if manifestation
       item = Item.new(
         :shelf => Shelf.web,
-        :circulation_status => circulation_status,
+        :manifestation_id => manifestation.id
       )
-      manifestation.items << item
+      if defined?(EnjuCirculation)
+        item.circulation_status = CirculationStatus.where(:name => 'Not Available').first
+        item.use_restriction = UseRestriction.where(:name => 'Not For Loan').first
+      end
+      item.manifestation = manifestation
+      item.save!
     end
   end
 

@@ -86,7 +86,7 @@ class BookmarksController < ApplicationController
     end
 
     respond_to do |format|
-      if @bookmark.save
+      if @bookmark.save!
         flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.bookmark'))
         @bookmark.create_tag_index
         @bookmark.manifestation.reload
