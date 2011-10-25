@@ -2,8 +2,7 @@
 class BookmarksController < ApplicationController
   before_filter :store_location
   load_and_authorize_resource
-  before_filter :get_user, :only => :new
-  before_filter :get_user_if_nil, :except => :new
+  before_filter :get_user_if_nil, :only => :new
   before_filter :check_user, :only => :index
   after_filter :solr_commit, :only => [:create, :update, :destroy]
   cache_sweeper :bookmark_sweeper, :only => [:create, :update, :destroy]
@@ -44,7 +43,7 @@ class BookmarksController < ApplicationController
 
   # GET /bookmarks/new
   def new
-    @bookmark = Bookmark.new(params[:bookmark])
+    @bookmark = current_user.bookmarks.new(params[:bookmark])
     unless @bookmark.url.try(:bookmarkable?)
         flash[:notice] = t('bookmark.invalid_url')
       redirect_to user_bookmarks_url(current_user)
@@ -65,11 +64,6 @@ class BookmarksController < ApplicationController
 
   # GET /bookmarks/1;edit
   def edit
-    if @user
-      @bookmark = @user.bookmarks.find(params[:id])
-    else
-      @bookmark = Bookmark.find(params[:id])
-    end
   end
 
   # POST /bookmarks
@@ -117,12 +111,6 @@ class BookmarksController < ApplicationController
   # PUT /bookmarks/1
   # PUT /bookmarks/1.xml
   def update
-    if @user
-      params[:bookmark][:user_id] = @user.id
-      @bookmark = @user.bookmarks.find(params[:id])
-    else
-      @bookmark = Bookmark.find(params[:id])
-    end
     unless @bookmark.url.try(:bookmarkable?)
       access_denied; return
     end
