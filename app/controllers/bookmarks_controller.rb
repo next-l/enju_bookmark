@@ -78,25 +78,24 @@ class BookmarksController < ApplicationController
     if @bookmark.user != current_user
       access_denied; return
     end
-    manifestation = @bookmark.get_manifestation
-    if manifestation.try(:bookmarked?, current_user)
-      flash[:notice] = t('bookmark.already_bookmarked')
-      redirect_to manifestation
-      return
-    end
 
     respond_to do |format|
-      if @bookmark.save!
+      if @bookmark.save
         flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.bookmark'))
         @bookmark.create_tag_index
-        @bookmark.manifestation.reload
         @bookmark.manifestation.index!
         if params[:mode] == 'tag_edit'
           format.html { redirect_to(@bookmark.manifestation) }
           format.xml  { render :xml => @bookmark, :status => :created, :location => bookmark_url(@bookmark) }
         else
-          format.html { redirect_to(@bookmark) }
-          format.xml  { render :xml => @bookmark, :status => :created, :location => bookmark_url(@bookmark) }
+          if @bookmark.manifestation.try(:bookmarked?, current_user)
+            flash[:notice] = t('bookmark.already_bookmarked')
+            redirect_to @bookmark.manifestation
+            return
+          else
+            format.html { redirect_to(@bookmark) }
+            format.xml  { render :xml => @bookmark, :status => :created, :location => bookmark_url(@bookmark) }
+          end
         end
       else
         @user = current_user

@@ -6,14 +6,16 @@ class Bookmark < ActiveRecord::Base
   belongs_to :manifestation
   belongs_to :user #, :counter_cache => true, :validate => true
 
-  validates_presence_of :user, :title, :manifestation_id
+  validates_presence_of :user, :title
+  validates_presence_of :url, :on => :create
+  validates_presence_of :manifestation_id, :on => :update
   validates_associated :user, :manifestation
   validates_uniqueness_of :manifestation_id, :scope => :user_id
   validates :url, :url => true, :presence => true, :length => {:maximum => 255}
-  before_validation :create_manifestation, :on => :create
+  before_save :create_manifestation, :if => :url_changed?
   validate :bookmarkable_url?
+  validate :already_bookmarked?, :if => :url_changed?
   before_save :replace_space_in_tags
-  after_save :save_manifestation
   after_destroy :reindex_manifestation
   attr_protected :user
 
@@ -24,9 +26,7 @@ class Bookmark < ActiveRecord::Base
     text :title do
       manifestation.title
     end
-    string :url do
-      manifestation.access_address
-    end
+    string :url
     string :tag, :multiple => true do
       tags.collect(&:name)
     end
@@ -44,10 +44,6 @@ class Bookmark < ActiveRecord::Base
   def replace_space_in_tags
     # タグに含まれている全角スペースを除去する
     self.tag_list = self.tag_list.map{|tag| tag.gsub('　', ' ').gsub(' ', ', ')}
-  end
-
-  def save_manifestation
-    self.manifestation.try(:save)
   end
 
   def reindex_manifestation
@@ -127,10 +123,9 @@ class Bookmark < ActiveRecord::Base
       unless url.try(:bookmarkable_id)
         errors[:base] << I18n.t('bookmark.not_our_holding')
       end
-    end
-
-    if manifestation.bookmarked?(user)
-      errors[:base] << 'already_bookmarked'
+      unless my_host_resource
+        errors[:base] << I18n.t('bookmark.not_our_holding')
+      end
     end
   end
 
@@ -143,7 +138,20 @@ class Bookmark < ActiveRecord::Base
     end
   end
 
+  def already_bookmarked?
+    if manifestation
+      if manifestation.bookmarked?(user)
+        errors[:base] << 'already_bookmarked'
+      end
+    end
+  end
+
   def create_manifestation
+    manifestation = get_manifestation
+    if manifestation
+      self.manifestation_id = manifestation.id
+      return
+    end
     manifestation = Manifestation.new(:access_address => url)
     manifestation.carrier_type = CarrierType.where(:name => 'file').first
     if self.title.present?
@@ -154,18 +162,6 @@ class Bookmark < ActiveRecord::Base
     Manifestation.transaction do
       manifestation.save
       self.manifestation = manifestation
-      create_frbr_object
-    end
-  end
-
-  def create_frbr_object
-    unless url.my_host?
-      create_bookmark_item
-    end
-  end
-
-  def create_bookmark_item
-    if manifestation
       item = Item.new(
         :shelf => Shelf.web,
         :manifestation_id => manifestation.id
