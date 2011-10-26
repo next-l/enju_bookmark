@@ -1,8 +1,8 @@
 # -*- encoding: utf-8 -*-
 class BookmarksController < ApplicationController
   before_filter :store_location
-  load_and_authorize_resource
-  before_filter :get_user, :only => :new
+  load_and_authorize_resource :except => :index
+  authorize_resource :only => :index
   before_filter :get_user_if_nil, :except => :new
   before_filter :check_user, :only => :index
   after_filter :solr_commit, :only => [:create, :update, :destroy]
@@ -20,7 +20,11 @@ class BookmarksController < ApplicationController
     search.build do
       fulltext query
       order_by(:created_at, :desc)
-      with(:user_id).equal_to user.id if user
+      if user
+        with(:user_id).equal_to user.id
+      else
+        with(:user_id).equal_to current_user.id
+      end
     end
     page = params[:page] || 1
     flash[:page] = page if page >= 1
@@ -45,11 +49,11 @@ class BookmarksController < ApplicationController
   # GET /bookmarks/new
   def new
     @bookmark = Bookmark.new(params[:bookmark])
-    unless @bookmark.url.try(:bookmarkable?)
-        flash[:notice] = t('bookmark.invalid_url')
-      redirect_to user_bookmarks_url(current_user)
-      return
-    end
+    #unless @bookmark.url.try(:bookmarkable?)
+    #    flash[:notice] = t('bookmark.invalid_url')
+    #  redirect_to user_bookmarks_url(current_user)
+    #  return
+    #end
     manifestation = @bookmark.get_manifestation
     if manifestation
       if manifestation.bookmarked?(current_user)
@@ -181,9 +185,6 @@ class BookmarksController < ApplicationController
           unless current_user == @user
             access_denied; return
           end
-        else
-          redirect_to user_bookmarks_path(current_user)
-          return
         end
       end
     end
