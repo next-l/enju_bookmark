@@ -3,6 +3,7 @@ class BookmarksController < ApplicationController
   before_filter :store_location
   load_and_authorize_resource :except => :index
   authorize_resource :only => :index
+  before_filter :get_user_if_nil, :only => :index
   after_filter :solr_commit, :only => [:create, :update, :destroy]
   cache_sweeper :bookmark_sweeper, :only => [:create, :update, :destroy]
 
@@ -14,7 +15,12 @@ class BookmarksController < ApplicationController
     unless query.blank?
       @query = query.dup
     end
-    user = @user if current_user.try(:has_role?, 'Librarian')
+    user = @user
+    if user and user != current_user
+      if !current_user.try(:has_role?, 'Librarian') and !user.share_bookmarks
+        access_denied; return
+      end
+    end
     search.build do
       fulltext query
       order_by(:created_at, :desc)
@@ -47,11 +53,6 @@ class BookmarksController < ApplicationController
   # GET /bookmarks/new
   def new
     @bookmark = current_user.bookmarks.new(params[:bookmark])
-    unless @bookmark.url.try(:bookmarkable?)
-        flash[:notice] = t('bookmark.invalid_url')
-      redirect_to user_bookmarks_url(current_user)
-      return
-    end
     manifestation = @bookmark.get_manifestation
     if manifestation
       if manifestation.bookmarked?(current_user)
@@ -73,14 +74,6 @@ class BookmarksController < ApplicationController
   # POST /bookmarks.json
   def create
     @bookmark = current_user.bookmarks.new(params[:bookmark])
-    if @bookmark.url
-      unless @bookmark.url.try(:bookmarkable?)
-        access_denied; return
-      end
-    end
-    if @bookmark.user != current_user
-      access_denied; return
-    end
 
     respond_to do |format|
       if @bookmark.save
@@ -91,14 +84,8 @@ class BookmarksController < ApplicationController
           format.html { redirect_to(@bookmark.manifestation) }
           format.json { render :json => @bookmark, :status => :created, :location => bookmark_url(@bookmark) }
         else
-          if @bookmark.manifestation.try(:bookmarked?, current_user)
-            flash[:notice] = t('bookmark.already_bookmarked')
-            redirect_to @bookmark.manifestation
-            return
-          else
-            format.html { redirect_to(@bookmark) }
-            format.json { render :json => @bookmark, :status => :created, :location => bookmark_url(@bookmark) }
-          end
+          format.html { redirect_to(@bookmark) }
+          format.json { render :json => @bookmark, :status => :created, :location => bookmark_url(@bookmark) }
         end
       else
         @user = current_user

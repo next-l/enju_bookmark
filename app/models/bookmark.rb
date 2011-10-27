@@ -17,7 +17,7 @@ class Bookmark < ActiveRecord::Base
   validate :already_bookmarked?, :if => :url_changed?
   before_save :replace_space_in_tags
   after_destroy :reindex_manifestation
-  attr_protected :user
+  attr_protected :user_id
 
   acts_as_taggable_on :tags
   normalize_attributes :url
