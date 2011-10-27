@@ -1,9 +1,8 @@
 # -*- encoding: utf-8 -*-
 class BookmarksController < ApplicationController
   before_filter :store_location
-  load_and_authorize_resource
-  before_filter :get_user_if_nil, :only => :new
-  before_filter :check_user, :only => :index
+  load_and_authorize_resource :except => :index
+  authorize_resource :only => :index
   after_filter :solr_commit, :only => [:create, :update, :destroy]
   cache_sweeper :bookmark_sweeper, :only => [:create, :update, :destroy]
 
@@ -15,7 +14,7 @@ class BookmarksController < ApplicationController
     unless query.blank?
       @query = query.dup
     end
-    user = @user
+    user = @user if current_user.try(:has_role?, 'Librarian')
     search.build do
       fulltext query
       order_by(:created_at, :desc)
@@ -152,26 +151,6 @@ class BookmarksController < ApplicationController
       respond_to do |format|
         format.html { redirect_to user_bookmarks_url(@bookmark.user) }
         format.json { head :ok }
-      end
-    end
-  end
-
-  private
-  def check_user
-    if user_signed_in?
-      begin
-        if !current_user.has_role?('Librarian')
-          raise unless @user.share_bookmarks?
-        end
-      rescue
-        if @user
-          unless current_user == @user
-            access_denied; return
-          end
-        else
-          redirect_to user_bookmarks_path(current_user)
-          return
-        end
       end
     end
   end
