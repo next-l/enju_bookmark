@@ -18,7 +18,11 @@ class BookmarksController < ApplicationController
     search.build do
       fulltext query
       order_by(:created_at, :desc)
-      with(:user_id).equal_to user.id if user
+      if user
+        with(:user_id).equal_to user.id
+      else
+        with(:user_id).equal_to current_user.id
+      end
     end
     page = params[:page] || 1
     flash[:page] = page if page >= 1
