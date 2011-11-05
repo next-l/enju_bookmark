@@ -16,11 +16,16 @@ class BookmarksController < ApplicationController
       @query = query.dup
     end
     user = @user
-    if user and user != current_user
-      if !current_user.try(:has_role?, 'Librarian') and !user.share_bookmarks
+    unless current_user.has_role?('Librarian')
+      if user and user != current_user and !user.try(:share_bookmarks)
         access_denied; return
       end
+      if current_user == @user
+        redirect_to bookmarks_url
+        return
+      end
     end
+
     search.build do
       fulltext query
       order_by(:created_at, :desc)
