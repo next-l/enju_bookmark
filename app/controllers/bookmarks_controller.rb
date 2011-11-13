@@ -35,8 +35,8 @@ class BookmarksController < ApplicationController
         with(:user_id).equal_to current_user.id
       end
     end
-    page = params[:page] || 1
-    flash[:page] = page if page >= 1
+    page = params[:page] || "1"
+    flash[:page] = page if page.to_i >= 1
     search.query.paginate(page.to_i, Bookmark.per_page)
     @bookmarks = search.execute!.results
 
