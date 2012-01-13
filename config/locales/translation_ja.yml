@@ -37,6 +37,11 @@ ja:
     user_bookmark: "%{login_name} さんのブックマーク"
     only_manifestation_should_be_bookmarked: "サイト内のブックマークは資料に対してのみ行えます。"
     not_our_holding: "当館の所蔵資料ではありません。"
+  tag:
+    popular_tag: "人気のあるタグ"
+    my_tag: "自分のつけたタグ"
+    user_tag: "%{login_name} さんのタグ"
+    use_space_as_delimiter: "半角スペースで区切ってください。"
   manifestation:
     user_who_bookmark_this_resource: "この資料をブックマークしている利用者"
 
