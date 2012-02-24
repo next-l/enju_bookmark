@@ -27,6 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency "sunspot_rails"
   s.add_dependency "sunspot_solr"
   s.add_dependency "addressable"
+  s.add_dependency "acts_as_list", "~> 0.1.5"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails"
