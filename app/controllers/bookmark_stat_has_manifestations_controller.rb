@@ -43,8 +43,7 @@ class BookmarkStatHasManifestationsController < ApplicationController
 
     respond_to do |format|
       if @bookmark_stat_has_manifestation.save
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.bookmark_stat_has_manifestation'))
-        format.html { redirect_to(@bookmark_stat_has_manifestation) }
+        format.html { redirect_to @bookmark_stat_has_manifestation, :notice => t('controller.successfully_created', :model => t('activerecord.models.bookmark_stat_has_manifestation')) }
         format.json { render :json => @bookmark_stat_has_manifestation, :status => :created, :location => @bookmark_stat_has_manifestation }
       else
         format.html { render :action => "new" }
@@ -58,9 +57,8 @@ class BookmarkStatHasManifestationsController < ApplicationController
   def update
     respond_to do |format|
       if @bookmark_stat_has_manifestation.update_attributes(params[:bookmark_stat_has_manifestation])
-        flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.bookmark_stat_has_manifestation'))
-        format.html { redirect_to(@bookmark_stat_has_manifestation) }
-        format.json { head :ok }
+        format.html { redirect_to @bookmark_stat_has_manifestation, :notice => t('controller.successfully_updated', :model => t('activerecord.models.bookmark_stat_has_manifestation')) }
+      format.json { head :no_content }
       else
         format.html { render :action => "edit" }
         format.json { render :json => @bookmark_stat_has_manifestation.errors, :status => :unprocessable_entity }
@@ -74,8 +72,8 @@ class BookmarkStatHasManifestationsController < ApplicationController
     @bookmark_stat_has_manifestation.destroy
 
     respond_to do |format|
-      format.html { redirect_to(bookmark_stat_has_manifestations_url) }
-      format.json { head :ok }
+      format.html { redirect_to bookmark_stat_has_manifestations_url }
+      format.json { head :no_content }
     end
   end
 end

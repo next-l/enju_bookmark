@@ -1,6 +1,6 @@
 class TagsController < ApplicationController
   load_and_authorize_resource
-  before_filter :get_user_if_nil
+  before_filter :get_user
   after_filter :solr_commit, :only => [:create, :update, :destroy]
   cache_sweeper :bookmark_sweeper, :only => [:create, :update, :destroy]
 
@@ -35,9 +35,6 @@ class TagsController < ApplicationController
   end
 
   def show
-    #@tag = Tag.find(params[:id])
-    raise ActiveRecord::RecordNotFound if @tag.blank?
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render :json => @tag }
@@ -53,9 +50,8 @@ class TagsController < ApplicationController
 
     respond_to do |format|
       if @tag.update_attributes(params[:tag])
-        flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.tag'))
-        format.html { redirect_to tag_url(@tag.name) }
-        format.json { head :ok }
+        format.html { redirect_to @tag, :notice => t('controller.successfully_updated', :model => t('activerecord.models.tag')) }
+        format.json { head :no_content }
       else
         format.html { render :action => "edit" }
         format.json { render :json => @tag.errors, :status => :unprocessable_entity }
@@ -70,8 +66,8 @@ class TagsController < ApplicationController
     @tag.destroy
 
     respond_to do |format|
-      format.html { redirect_to(tags_url) }
-      format.json { head :ok }
+      format.html { redirect_to tags_url }
+      format.json { head :no_content }
     end
   end
 end

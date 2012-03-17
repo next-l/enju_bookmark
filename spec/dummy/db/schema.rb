@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.integer  "bookmark_stat_id", :null => false
     t.integer  "manifestation_id", :null => false
     t.integer  "bookmarks_count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   add_index "bookmark_stat_has_manifestations", ["bookmark_stat_id"], :name => "index_bookmark_stat_has_manifestations_on_bookmark_stat_id"
@@ -27,15 +27,13 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
   create_table "bookmark_stats", :force => true do |t|
     t.datetime "start_date"
     t.datetime "end_date"
-    t.text     "note"
-    t.string   "state"
     t.datetime "started_at"
     t.datetime "completed_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.text     "note"
+    t.string   "state"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
-
-  add_index "bookmark_stats", ["state"], :name => "index_bookmark_stats_on_state"
 
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id",          :null => false
@@ -44,8 +42,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.string   "url"
     t.text     "note"
     t.boolean  "shared"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   add_index "bookmarks", ["manifestation_id"], :name => "index_bookmarks_on_manifestation_id"
@@ -57,8 +55,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "checkout_types", :force => true do |t|
@@ -66,8 +64,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   add_index "checkout_types", ["name"], :name => "index_checkout_types_on_name"
@@ -77,8 +75,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "content_types", :force => true do |t|
@@ -86,8 +84,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "exemplifies", :force => true do |t|
@@ -95,8 +93,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.integer  "item_id",          :null => false
     t.string   "type"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   add_index "exemplifies", ["item_id"], :name => "index_exemplifies_on_item_id", :unique => true
@@ -106,8 +104,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
   create_table "item_has_use_restrictions", :force => true do |t|
     t.integer  "item_id",            :null => false
     t.integer  "use_restriction_id", :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   add_index "item_has_use_restrictions", ["item_id"], :name => "index_item_has_use_restrictions_on_item_id"
@@ -118,8 +116,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.string   "item_identifier"
     t.integer  "circulation_status_id",       :default => 5,     :null => false
     t.integer  "checkout_type_id",            :default => 1,     :null => false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                     :null => false
+    t.datetime "updated_at",                                     :null => false
     t.datetime "deleted_at"
     t.integer  "shelf_id",                    :default => 1,     :null => false
     t.integer  "basket_id"
@@ -178,8 +176,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.integer  "users_count",           :default => 0,   :null => false
     t.integer  "position"
     t.integer  "country_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.datetime "deleted_at"
   end
 
@@ -198,8 +196,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.integer  "valid_period_for_new_user",   :default => 365,                      :null => false
     t.boolean  "post_to_union_catalog",       :default => false,                    :null => false
     t.integer  "country_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                                        :null => false
+    t.datetime "updated_at",                                                        :null => false
     t.text     "admin_networks"
     t.boolean  "allow_bookmark_external_url", :default => false,                    :null => false
     t.integer  "position"
@@ -216,8 +214,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.string   "manifestation_identifier"
     t.datetime "date_of_publication"
     t.datetime "copyright_date"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
     t.datetime "deleted_at"
     t.string   "access_address"
     t.integer  "language_id",              :default => 1,     :null => false
@@ -254,10 +252,10 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.integer  "frequency_id",             :default => 1,     :null => false
     t.boolean  "subscription_master",      :default => false, :null => false
     t.string   "pub_date"
+    t.string   "edition_string"
     t.integer  "volume_number"
     t.integer  "issue_number"
     t.integer  "serial_number"
-    t.string   "edition_string"
   end
 
   add_index "manifestations", ["access_address"], :name => "index_manifestations_on_access_address"
@@ -277,8 +275,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "patrons", :force => true do |t|
@@ -294,8 +292,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.string   "full_name"
     t.text     "full_name_transcription"
     t.text     "full_name_alternative"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                  :null => false
+    t.datetime "updated_at",                                  :null => false
     t.datetime "deleted_at"
     t.string   "zip_code_1"
     t.string   "zip_code_2"
@@ -342,16 +340,16 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "series_has_manifestations", :force => true do |t|
     t.integer  "series_statement_id"
     t.integer  "manifestation_id"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
   end
 
   add_index "series_has_manifestations", ["manifestation_id"], :name => "index_series_has_manifestations_on_manifestation_id"
@@ -365,8 +363,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.integer  "position"
     t.text     "title_transcription"
     t.text     "title_alternative"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
     t.string   "series_statement_identifier"
     t.string   "issn"
     t.boolean  "periodical"
@@ -384,8 +382,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.integer  "library_id",   :default => 1, :null => false
     t.integer  "items_count",  :default => 0, :null => false
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
     t.datetime "deleted_at"
   end
 
@@ -407,8 +405,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
   create_table "tags", :force => true do |t|
     t.string   "name"
     t.string   "name_transcription"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
   end
 
   create_table "use_restrictions", :force => true do |t|
@@ -416,8 +414,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "user_groups", :force => true do |t|
@@ -425,15 +423,15 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
   end
 
   create_table "user_has_roles", :force => true do |t|
     t.integer  "user_id"
     t.integer  "role_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|
@@ -442,8 +440,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.string   "username"
     t.text     "note"
     t.string   "locale"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                            :null => false
+    t.datetime "updated_at",                                            :null => false
     t.string   "email",                                 :default => "", :null => false
     t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
     t.string   "reset_password_token"

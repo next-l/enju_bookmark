@@ -48,8 +48,7 @@ class BookmarkStatsController < ApplicationController
 
     respond_to do |format|
       if @bookmark_stat.save
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.bookmark_stat'))
-        format.html { redirect_to(@bookmark_stat) }
+        format.html { redirect_to @bookmark_stat, :notice => t('controller.successfully_created', :model => t('activerecord.models.bookmark_stat')) }
         format.json { render :json => @bookmark_stat, :status => :created, :location => @bookmark_stat }
       else
         format.html { render :action => "new" }
@@ -63,9 +62,8 @@ class BookmarkStatsController < ApplicationController
   def update
     respond_to do |format|
       if @bookmark_stat.update_attributes(params[:bookmark_stat])
-        flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.bookmark_stat'))
-        format.html { redirect_to(@bookmark_stat) }
-        format.json { head :ok }
+        format.html { redirect_to @bookmark_stat, :notice => t('controller.successfully_updated', :model => t('activerecord.models.bookmark_stat')) }
+        format.json { head :no_content }
       else
         format.html { render :action => "edit" }
         format.json { render :json => @bookmark_stat.errors, :status => :unprocessable_entity }
@@ -79,8 +77,8 @@ class BookmarkStatsController < ApplicationController
     @bookmark_stat.destroy
 
     respond_to do |format|
-      format.html { redirect_to(bookmark_stats_url) }
-      format.json { head :ok }
+      format.html { redirect_to bookmark_stats_url }
+      format.json { head :no_content }
     end
   end
 end

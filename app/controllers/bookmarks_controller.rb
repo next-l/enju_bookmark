@@ -3,7 +3,7 @@ class BookmarksController < ApplicationController
   before_filter :store_location
   load_and_authorize_resource :except => :index
   authorize_resource :only => :index
-  before_filter :get_user_if_nil, :only => :index
+  before_filter :get_user, :only => :index
   after_filter :solr_commit, :only => [:create, :update, :destroy]
   cache_sweeper :bookmark_sweeper, :only => [:create, :update, :destroy]
 

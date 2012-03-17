@@ -6,6 +6,8 @@ one:
   display_name: text
   note: MyText
   position: 1
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
 
 two:
   id: 2
@@ -13,6 +15,8 @@ two:
   display_name: Cartographic Dataset
   note: MyText
   position: 2
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
 
 three:
   id: 3
@@ -20,6 +24,8 @@ three:
   display_name: Cartographic Image
   note: MyText
   position: 3
+  created_at: <%= Time.zone.now %>
+  updated_at: <%= Time.zone.now %>
 
 # == Schema Information
 #
