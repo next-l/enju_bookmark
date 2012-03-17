@@ -71,7 +71,7 @@ class BookmarksController < ApplicationController
     end
   end
 
-  # GET /bookmarks/1;edit
+  # GET /bookmarks/1/edit
   def edit
   end
 
@@ -87,10 +87,10 @@ class BookmarksController < ApplicationController
         @bookmark.manifestation.index!
         if params[:mode] == 'tag_edit'
           format.html { redirect_to(@bookmark.manifestation) }
-          format.json { render :json => @bookmark, :status => :created, :location => bookmark_url(@bookmark) }
+          format.json { render :json => @bookmark, :status => :created, :location => @bookmark }
         else
           format.html { redirect_to(@bookmark) }
-          format.json { render :json => @bookmark, :status => :created, :location => bookmark_url(@bookmark) }
+          format.json { render :json => @bookmark, :status => :created, :location => @bookmark }
         end
       else
         @user = current_user
@@ -118,11 +118,11 @@ class BookmarksController < ApplicationController
         @bookmark.create_tag_index
         case params[:mode]
         when 'tag_edit'
-          format.html { redirect_to(@bookmark.manifestation) }
-          format.json { head :ok }
+          format.html { redirect_to @bookmark.manifestation }
+          format.json { head :no_content }
         else
-          format.html { redirect_to bookmark_url(@bookmark) }
-          format.json { head :ok }
+          format.html { redirect_to @bookmark }
+          format.json { head :no_content }
         end
       else
         format.html { render :action => "edit" }
@@ -141,12 +141,12 @@ class BookmarksController < ApplicationController
     if @user
       respond_to do |format|
         format.html { redirect_to user_bookmarks_url(@user) }
-        format.json { head :ok }
+        format.json { head :no_content }
       end
     else
       respond_to do |format|
         format.html { redirect_to user_bookmarks_url(@bookmark.user) }
-        format.json { head :ok }
+        format.json { head :no_content }
       end
     end
   end
