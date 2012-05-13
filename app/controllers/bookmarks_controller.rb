@@ -41,7 +41,7 @@ class BookmarksController < ApplicationController
     @bookmarks = search.execute!.results
 
     respond_to do |format|
-      format.html # index.rhtml
+      format.html # index.html.erb
       format.json { render :json => @bookmarks }
     end
   end
@@ -50,7 +50,7 @@ class BookmarksController < ApplicationController
   # GET /bookmarks/1.json
   def show
     respond_to do |format|
-      format.html # show.rhtml
+      format.html # show.html.erb
       format.json { render :json => @bookmark }
     end
   end
