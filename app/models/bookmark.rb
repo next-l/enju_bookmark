@@ -162,7 +162,7 @@ class Bookmark < ActiveRecord::Base
     Manifestation.transaction do
       manifestation.save
       self.manifestation = manifestation
-      item = Item.new(
+      item = Item.create(
         :shelf => Shelf.web,
         :manifestation_id => manifestation.id
       )
