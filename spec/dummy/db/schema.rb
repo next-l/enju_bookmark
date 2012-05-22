@@ -35,6 +35,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.datetime "updated_at",   :null => false
   end
 
+  add_index "bookmark_stats", ["state"], :name => "index_bookmark_stats_on_state"
+
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id",          :null => false
     t.integer  "manifestation_id"
@@ -440,18 +442,28 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.string   "username"
     t.text     "note"
     t.string   "locale"
-    t.datetime "created_at",                                            :null => false
-    t.datetime "updated_at",                                            :null => false
-    t.string   "email",                                 :default => "", :null => false
-    t.string   "encrypted_password",     :limit => 128, :default => "", :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+    t.string   "email",                  :default => "", :null => false
+    t.string   "encrypted_password",     :default => "", :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",                         :default => 0
+    t.integer  "sign_in_count",          :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
+    t.string   "password_salt"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string   "unconfirmed_email"
+    t.integer  "failed_attempts",        :default => 0
+    t.string   "unlock_token"
+    t.datetime "locked_at"
+    t.string   "authentication_token"
+    t.datetime "deleted_at"
     t.boolean  "share_bookmarks"
   end
 
