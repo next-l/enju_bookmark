@@ -13,6 +13,7 @@ ja:
       tag:
         name: 名前
         synonym: 同義語
+        taggings_count: タグ付けされた回数
       user:
         share_bookmarks: ブックマークを他の人物・団体と共有する
       library_group:
