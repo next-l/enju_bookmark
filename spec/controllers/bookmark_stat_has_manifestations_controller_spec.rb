@@ -309,12 +309,7 @@ describe BookmarkStatHasManifestationsController do
       describe "with invalid params" do
         it "assigns the requested bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
           put :update, :id => @bookmark_stat_has_manifestation.id, :bookmark_stat_has_manifestation => @invalid_attrs
-        end
-
-        it "should ignore params" do
-          put :update, :id => @bookmark_stat_has_manifestation.id, :bookmark_stat_has_manifestation => @invalid_attrs
-          response.should redirect_to(assigns(:bookmark_stat_has_manifestation))
-          assigns(:bookmark_stat_has_manifestation).bookmark_stat.should be_true
+          response.should render_template("edit")
         end
       end
     end

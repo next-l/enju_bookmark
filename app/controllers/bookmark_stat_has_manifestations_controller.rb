@@ -56,8 +56,9 @@ class BookmarkStatHasManifestationsController < ApplicationController
   # PUT /bookmark_stat_has_manifestations/1
   # PUT /bookmark_stat_has_manifestations/1.json
   def update
+    @bookmark_stat_has_manifestation.assign_attributes(params[:bookmark_stat_has_manifestation], :as => :admin)
     respond_to do |format|
-      if @bookmark_stat_has_manifestation.update_attributes(params[:bookmark_stat_has_manifestation])
+      if @bookmark_stat_has_manifestation.save
         format.html { redirect_to @bookmark_stat_has_manifestation, :notice => t('controller.successfully_updated', :model => t('activerecord.models.bookmark_stat_has_manifestation')) }
       format.json { head :no_content }
       else
