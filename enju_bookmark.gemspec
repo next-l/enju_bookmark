@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"]
 
   s.add_dependency "rails", "~> 3.2"
-  s.add_dependency "acts-as-taggable-on", "~> 2.2"
+  s.add_dependency "acts-as-taggable-on", "~> 2.3"
   s.add_dependency "will_paginate", "~> 3.0"
   s.add_dependency "devise"
   s.add_dependency "cancan"
