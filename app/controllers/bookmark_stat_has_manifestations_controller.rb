@@ -39,7 +39,8 @@ class BookmarkStatHasManifestationsController < ApplicationController
   # POST /bookmark_stat_has_manifestations
   # POST /bookmark_stat_has_manifestations.json
   def create
-    @bookmark_stat_has_manifestation = BookmarkStatHasManifestation.new(params[:bookmark_stat_has_manifestation])
+    @bookmark_stat_has_manifestation = BookmarkStatHasManifestation.new
+    @bookmark_stat_has_manifestation.assign_attributes(params[:bookmark_stat_has_manifestation], :as => :admin)
 
     respond_to do |format|
       if @bookmark_stat_has_manifestation.save

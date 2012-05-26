@@ -207,7 +207,7 @@ describe BookmarkStatHasManifestationsController do
       describe "with valid params" do
         it "assigns a newly created bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
           post :create, :bookmark_stat_has_manifestation => @attrs
-          assigns(:bookmark_stat_has_manifestation).should be_valid
+          assigns(:bookmark_stat_has_manifestation).should_not be_valid
         end
 
         it "should be forbidden" do
@@ -235,7 +235,7 @@ describe BookmarkStatHasManifestationsController do
       describe "with valid params" do
         it "assigns a newly created bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
           post :create, :bookmark_stat_has_manifestation => @attrs
-          assigns(:bookmark_stat_has_manifestation).should be_valid
+          assigns(:bookmark_stat_has_manifestation).should_not be_valid
         end
 
         it "should be forbidden" do
@@ -261,7 +261,7 @@ describe BookmarkStatHasManifestationsController do
       describe "with valid params" do
         it "assigns a newly created bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
           post :create, :bookmark_stat_has_manifestation => @attrs
-          assigns(:bookmark_stat_has_manifestation).should be_valid
+          assigns(:bookmark_stat_has_manifestation).should_not be_valid
         end
 
         it "should be forbidden" do
@@ -309,7 +309,12 @@ describe BookmarkStatHasManifestationsController do
       describe "with invalid params" do
         it "assigns the requested bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
           put :update, :id => @bookmark_stat_has_manifestation.id, :bookmark_stat_has_manifestation => @invalid_attrs
-          response.should render_template("edit")
+        end
+
+        it "should ignore params" do
+          put :update, :id => @bookmark_stat_has_manifestation.id, :bookmark_stat_has_manifestation => @invalid_attrs
+          response.should redirect_to(assigns(:bookmark_stat_has_manifestation))
+          assigns(:bookmark_stat_has_manifestation).bookmark_stat.should be_true
         end
       end
     end
