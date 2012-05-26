@@ -11,6 +11,6 @@ require 'nkf'
 require 'acts_as_list'
 
 module EnjuBookmark
-  class Engine < Rails::Engine
+  class Engine < ::Rails::Engine
   end
 end

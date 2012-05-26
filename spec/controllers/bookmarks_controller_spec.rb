@@ -423,10 +423,11 @@ describe BookmarksController do
         response.should be_missing
       end
 
-      it "should not update bookmark without manifestation_id" do
+      it "should update bookmark without manifestation_id" do
         put :update, :id => 3, :bookmark => {:manifestation_id => nil}
-        assigns(:bookmark).should_not be_valid
-        response.should be_success
+        assigns(:bookmark).should be_valid
+        response.should redirect_to bookmark_url(assigns(:bookmark))
+        assigns(:bookmark).manifestation.should_not be_nil
       end
     end
 
