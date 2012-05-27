@@ -162,16 +162,19 @@ class Bookmark < ActiveRecord::Base
     Manifestation.transaction do
       manifestation.save
       self.manifestation = manifestation
-      item = Item.create(
-        :shelf => Shelf.web,
+      item = Item.new(
         :manifestation_id => manifestation.id
       )
+      item.shelf = Shelf.web
+      item.manifestation = manifestation
       if defined?(EnjuCirculation)
         item.circulation_status = CirculationStatus.where(:name => 'Not Available').first
+      end
+
+      item.save!
+      if defined?(EnjuCirculation)
         item.use_restriction = UseRestriction.where(:name => 'Not For Loan').first
       end
-      item.manifestation = manifestation
-      item.save!
     end
   end
 
