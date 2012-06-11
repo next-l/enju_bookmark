@@ -11,14 +11,35 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111231145823) do
+ActiveRecord::Schema.define(:version => 20120424103932) do
+
+  create_table "accepts", :force => true do |t|
+    t.integer  "basket_id"
+    t.integer  "item_id"
+    t.integer  "librarian_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "accepts", ["basket_id"], :name => "index_accepts_on_basket_id"
+  add_index "accepts", ["item_id"], :name => "index_accepts_on_item_id"
+
+  create_table "baskets", :force => true do |t|
+    t.integer  "user_id"
+    t.text     "note"
+    t.integer  "lock_version", :default => 0, :null => false
+    t.datetime "created_at",                  :null => false
+    t.datetime "updated_at",                  :null => false
+  end
+
+  add_index "baskets", ["user_id"], :name => "index_baskets_on_user_id"
 
   create_table "bookmark_stat_has_manifestations", :force => true do |t|
     t.integer  "bookmark_stat_id", :null => false
     t.integer  "manifestation_id", :null => false
     t.integer  "bookmarks_count"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "bookmark_stat_has_manifestations", ["bookmark_stat_id"], :name => "index_bookmark_stat_has_manifestations_on_bookmark_stat_id"
@@ -27,12 +48,12 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
   create_table "bookmark_stats", :force => true do |t|
     t.datetime "start_date"
     t.datetime "end_date"
-    t.datetime "started_at"
-    t.datetime "completed_at"
     t.text     "note"
     t.string   "state"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "started_at"
+    t.datetime "completed_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "bookmark_stats", ["state"], :name => "index_bookmark_stats_on_state"
@@ -44,41 +65,119 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.string   "url"
     t.text     "note"
     t.boolean  "shared"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "bookmarks", ["manifestation_id"], :name => "index_bookmarks_on_manifestation_id"
   add_index "bookmarks", ["url"], :name => "index_bookmarks_on_url"
   add_index "bookmarks", ["user_id"], :name => "index_bookmarks_on_user_id"
 
+  create_table "carrier_type_has_checkout_types", :force => true do |t|
+    t.integer  "carrier_type_id",  :null => false
+    t.integer  "checkout_type_id", :null => false
+    t.text     "note"
+    t.integer  "position"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+  end
+
+  add_index "carrier_type_has_checkout_types", ["carrier_type_id"], :name => "index_carrier_type_has_checkout_types_on_m_form_id"
+  add_index "carrier_type_has_checkout_types", ["checkout_type_id"], :name => "index_carrier_type_has_checkout_types_on_checkout_type_id"
+
   create_table "carrier_types", :force => true do |t|
     t.string   "name",         :null => false
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "checked_items", :force => true do |t|
+    t.integer  "item_id",      :null => false
+    t.integer  "basket_id",    :null => false
+    t.datetime "due_date",     :null => false
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.integer  "librarian_id"
+  end
+
+  add_index "checked_items", ["basket_id"], :name => "index_checked_items_on_basket_id"
+  add_index "checked_items", ["item_id"], :name => "index_checked_items_on_item_id"
+
+  create_table "checkins", :force => true do |t|
+    t.integer  "item_id",      :null => false
+    t.integer  "librarian_id"
+    t.integer  "basket_id"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
+
+  add_index "checkins", ["basket_id"], :name => "index_checkins_on_basket_id"
+  add_index "checkins", ["item_id"], :name => "index_checkins_on_item_id"
+  add_index "checkins", ["librarian_id"], :name => "index_checkins_on_librarian_id"
+
+  create_table "checkout_stat_has_manifestations", :force => true do |t|
+    t.integer  "manifestation_checkout_stat_id", :null => false
+    t.integer  "manifestation_id",               :null => false
+    t.integer  "checkouts_count"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+  end
+
+  add_index "checkout_stat_has_manifestations", ["manifestation_checkout_stat_id"], :name => "index_checkout_stat_has_manifestations_on_checkout_stat_id"
+  add_index "checkout_stat_has_manifestations", ["manifestation_id"], :name => "index_checkout_stat_has_manifestations_on_manifestation_id"
+
+  create_table "checkout_stat_has_users", :force => true do |t|
+    t.integer  "user_checkout_stat_id",                :null => false
+    t.integer  "user_id",                              :null => false
+    t.integer  "checkouts_count",       :default => 0, :null => false
+    t.datetime "created_at",                           :null => false
+    t.datetime "updated_at",                           :null => false
+  end
+
+  add_index "checkout_stat_has_users", ["user_checkout_stat_id"], :name => "index_checkout_stat_has_users_on_user_checkout_stat_id"
+  add_index "checkout_stat_has_users", ["user_id"], :name => "index_checkout_stat_has_users_on_user_id"
 
   create_table "checkout_types", :force => true do |t|
     t.string   "name",         :null => false
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "checkout_types", ["name"], :name => "index_checkout_types_on_name"
+
+  create_table "checkouts", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "item_id",                               :null => false
+    t.integer  "checkin_id"
+    t.integer  "librarian_id"
+    t.integer  "basket_id"
+    t.datetime "due_date"
+    t.integer  "checkout_renewal_count", :default => 0, :null => false
+    t.integer  "lock_version",           :default => 0, :null => false
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+  end
+
+  add_index "checkouts", ["basket_id"], :name => "index_checkouts_on_basket_id"
+  add_index "checkouts", ["checkin_id"], :name => "index_checkouts_on_checkin_id"
+  add_index "checkouts", ["item_id", "basket_id"], :name => "index_checkouts_on_item_id_and_basket_id", :unique => true
+  add_index "checkouts", ["item_id"], :name => "index_checkouts_on_item_id"
+  add_index "checkouts", ["librarian_id"], :name => "index_checkouts_on_librarian_id"
+  add_index "checkouts", ["user_id"], :name => "index_checkouts_on_user_id"
 
   create_table "circulation_statuses", :force => true do |t|
     t.string   "name",         :null => false
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "content_types", :force => true do |t|
@@ -86,8 +185,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "exemplifies", :force => true do |t|
@@ -95,8 +194,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.integer  "item_id",          :null => false
     t.string   "type"
     t.integer  "position"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "exemplifies", ["item_id"], :name => "index_exemplifies_on_item_id", :unique => true
@@ -106,8 +205,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
   create_table "item_has_use_restrictions", :force => true do |t|
     t.integer  "item_id",            :null => false
     t.integer  "use_restriction_id", :null => false
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "item_has_use_restrictions", ["item_id"], :name => "index_item_has_use_restrictions_on_item_id"
@@ -118,8 +217,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.string   "item_identifier"
     t.integer  "circulation_status_id",       :default => 5,     :null => false
     t.integer  "checkout_type_id",            :default => 1,     :null => false
-    t.datetime "created_at",                                     :null => false
-    t.datetime "updated_at",                                     :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "deleted_at"
     t.integer  "shelf_id",                    :default => 1,     :null => false
     t.integer  "basket_id"
@@ -158,6 +257,21 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
   add_index "languages", ["iso_639_3"], :name => "index_languages_on_iso_639_3"
   add_index "languages", ["name"], :name => "index_languages_on_name", :unique => true
 
+  create_table "lending_policies", :force => true do |t|
+    t.integer  "item_id",                         :null => false
+    t.integer  "user_group_id",                   :null => false
+    t.integer  "loan_period",    :default => 0,   :null => false
+    t.datetime "fixed_due_date"
+    t.integer  "renewal",        :default => 0,   :null => false
+    t.decimal  "fine",           :default => 0.0, :null => false
+    t.text     "note"
+    t.integer  "position"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
+  end
+
+  add_index "lending_policies", ["item_id", "user_group_id"], :name => "index_lending_policies_on_item_id_and_user_group_id", :unique => true
+
   create_table "libraries", :force => true do |t|
     t.integer  "patron_id"
     t.string   "patron_type"
@@ -178,8 +292,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.integer  "users_count",           :default => 0,   :null => false
     t.integer  "position"
     t.integer  "country_id"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "deleted_at"
   end
 
@@ -195,11 +309,10 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.text     "my_networks"
     t.text     "login_banner"
     t.text     "note"
-    t.integer  "valid_period_for_new_user",   :default => 365,                      :null => false
     t.boolean  "post_to_union_catalog",       :default => false,                    :null => false
     t.integer  "country_id"
-    t.datetime "created_at",                                                        :null => false
-    t.datetime "updated_at",                                                        :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.text     "admin_networks"
     t.boolean  "allow_bookmark_external_url", :default => false,                    :null => false
     t.integer  "position"
@@ -207,6 +320,32 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
   end
 
   add_index "library_groups", ["short_name"], :name => "index_library_groups_on_short_name"
+
+  create_table "manifestation_checkout_stats", :force => true do |t|
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.text     "note"
+    t.string   "state"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.datetime "started_at"
+    t.datetime "completed_at"
+  end
+
+  add_index "manifestation_checkout_stats", ["state"], :name => "index_manifestation_checkout_stats_on_state"
+
+  create_table "manifestation_reserve_stats", :force => true do |t|
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.text     "note"
+    t.string   "state"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.datetime "started_at"
+    t.datetime "completed_at"
+  end
+
+  add_index "manifestation_reserve_stats", ["state"], :name => "index_manifestation_reserve_stats_on_state"
 
   create_table "manifestations", :force => true do |t|
     t.text     "original_title",                              :null => false
@@ -216,8 +355,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.string   "manifestation_identifier"
     t.datetime "date_of_publication"
     t.datetime "copyright_date"
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "deleted_at"
     t.string   "access_address"
     t.integer  "language_id",              :default => 1,     :null => false
@@ -254,10 +393,10 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.integer  "frequency_id",             :default => 1,     :null => false
     t.boolean  "subscription_master",      :default => false, :null => false
     t.string   "pub_date"
-    t.string   "edition_string"
     t.integer  "volume_number"
     t.integer  "issue_number"
     t.integer  "serial_number"
+    t.string   "edition_string"
   end
 
   add_index "manifestations", ["access_address"], :name => "index_manifestations_on_access_address"
@@ -277,8 +416,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "patrons", :force => true do |t|
@@ -294,8 +433,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.string   "full_name"
     t.text     "full_name_transcription"
     t.text     "full_name_alternative"
-    t.datetime "created_at",                                  :null => false
-    t.datetime "updated_at",                                  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "deleted_at"
     t.string   "zip_code_1"
     t.string   "zip_code_2"
@@ -337,21 +476,64 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
   add_index "patrons", ["required_role_id"], :name => "index_patrons_on_required_role_id"
   add_index "patrons", ["user_id"], :name => "index_patrons_on_user_id", :unique => true
 
+  create_table "reserve_stat_has_manifestations", :force => true do |t|
+    t.integer  "manifestation_reserve_stat_id", :null => false
+    t.integer  "manifestation_id",              :null => false
+    t.integer  "reserves_count"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
+  add_index "reserve_stat_has_manifestations", ["manifestation_id"], :name => "index_reserve_stat_has_manifestations_on_manifestation_id"
+  add_index "reserve_stat_has_manifestations", ["manifestation_reserve_stat_id"], :name => "index_reserve_stat_has_manifestations_on_m_reserve_stat_id"
+
+  create_table "reserve_stat_has_users", :force => true do |t|
+    t.integer  "user_reserve_stat_id", :null => false
+    t.integer  "user_id",              :null => false
+    t.integer  "reserves_count"
+    t.datetime "created_at",           :null => false
+    t.datetime "updated_at",           :null => false
+  end
+
+  add_index "reserve_stat_has_users", ["user_id"], :name => "index_reserve_stat_has_users_on_user_id"
+  add_index "reserve_stat_has_users", ["user_reserve_stat_id"], :name => "index_reserve_stat_has_users_on_user_reserve_stat_id"
+
+  create_table "reserves", :force => true do |t|
+    t.integer  "user_id",                                         :null => false
+    t.integer  "manifestation_id",                                :null => false
+    t.integer  "item_id"
+    t.integer  "request_status_type_id",                          :null => false
+    t.datetime "checked_out_at"
+    t.datetime "created_at",                                      :null => false
+    t.datetime "updated_at",                                      :null => false
+    t.datetime "canceled_at"
+    t.datetime "expired_at"
+    t.datetime "deleted_at"
+    t.string   "state"
+    t.boolean  "expiration_notice_to_patron",  :default => false
+    t.boolean  "expiration_notice_to_library", :default => false
+  end
+
+  add_index "reserves", ["item_id"], :name => "index_reserves_on_item_id"
+  add_index "reserves", ["manifestation_id"], :name => "index_reserves_on_manifestation_id"
+  add_index "reserves", ["request_status_type_id"], :name => "index_reserves_on_request_status_type_id"
+  add_index "reserves", ["user_id"], :name => "index_reserves_on_user_id"
+
   create_table "roles", :force => true do |t|
     t.string   "name"
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "series_has_manifestations", :force => true do |t|
     t.integer  "series_statement_id"
     t.integer  "manifestation_id"
     t.integer  "position"
-    t.datetime "created_at",          :null => false
-    t.datetime "updated_at",          :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "series_has_manifestations", ["manifestation_id"], :name => "index_series_has_manifestations_on_manifestation_id"
@@ -365,8 +547,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.integer  "position"
     t.text     "title_transcription"
     t.text     "title_alternative"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string   "series_statement_identifier"
     t.string   "issn"
     t.boolean  "periodical"
@@ -384,8 +566,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.integer  "library_id",   :default => 1, :null => false
     t.integer  "items_count",  :default => 0, :null => false
     t.integer  "position"
-    t.datetime "created_at",                  :null => false
-    t.datetime "updated_at",                  :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.datetime "deleted_at"
   end
 
@@ -407,8 +589,8 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
   create_table "tags", :force => true do |t|
     t.string   "name"
     t.string   "name_transcription"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "use_restrictions", :force => true do |t|
@@ -416,25 +598,76 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "user_checkout_stats", :force => true do |t|
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.text     "note"
+    t.string   "state"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
+    t.datetime "started_at"
+    t.datetime "completed_at"
   end
+
+  add_index "user_checkout_stats", ["state"], :name => "index_user_checkout_stats_on_state"
+
+  create_table "user_group_has_checkout_types", :force => true do |t|
+    t.integer  "user_group_id",                                      :null => false
+    t.integer  "checkout_type_id",                                   :null => false
+    t.integer  "checkout_limit",                  :default => 0,     :null => false
+    t.integer  "checkout_period",                 :default => 0,     :null => false
+    t.integer  "checkout_renewal_limit",          :default => 0,     :null => false
+    t.integer  "reservation_limit",               :default => 0,     :null => false
+    t.integer  "reservation_expired_period",      :default => 7,     :null => false
+    t.boolean  "set_due_date_before_closing_day", :default => false, :null => false
+    t.datetime "fixed_due_date"
+    t.text     "note"
+    t.integer  "position"
+    t.datetime "created_at",                                         :null => false
+    t.datetime "updated_at",                                         :null => false
+    t.integer  "current_checkout_count"
+  end
+
+  add_index "user_group_has_checkout_types", ["checkout_type_id"], :name => "index_user_group_has_checkout_types_on_checkout_type_id"
+  add_index "user_group_has_checkout_types", ["user_group_id"], :name => "index_user_group_has_checkout_types_on_user_group_id"
 
   create_table "user_groups", :force => true do |t|
     t.string   "name"
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "valid_period_for_new_user",        :default => 0, :null => false
+    t.datetime "expired_at"
+    t.integer  "number_of_day_to_notify_overdue",  :default => 1, :null => false
+    t.integer  "number_of_day_to_notify_due_date", :default => 7, :null => false
+    t.integer  "number_of_time_to_notify_overdue", :default => 3, :null => false
   end
 
   create_table "user_has_roles", :force => true do |t|
     t.integer  "user_id"
     t.integer  "role_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
+
+  create_table "user_reserve_stats", :force => true do |t|
+    t.datetime "start_date"
+    t.datetime "end_date"
+    t.text     "note"
+    t.string   "state"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+    t.datetime "started_at"
+    t.datetime "completed_at"
+  end
+
+  add_index "user_reserve_stats", ["state"], :name => "index_user_reserve_stats_on_state"
 
   create_table "users", :force => true do |t|
     t.integer  "user_group_id"
@@ -442,31 +675,24 @@ ActiveRecord::Schema.define(:version => 20111231145823) do
     t.string   "username"
     t.text     "note"
     t.string   "locale"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
-    t.string   "email",                  :default => "", :null => false
-    t.string   "encrypted_password",     :default => "", :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "email",                                   :default => "",    :null => false
+    t.string   "encrypted_password",       :limit => 128, :default => "",    :null => false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          :default => 0
+    t.integer  "sign_in_count",                           :default => 0
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.string   "password_salt"
-    t.string   "confirmation_token"
-    t.datetime "confirmed_at"
-    t.datetime "confirmation_sent_at"
-    t.string   "unconfirmed_email"
-    t.integer  "failed_attempts",        :default => 0
-    t.string   "unlock_token"
-    t.datetime "locked_at"
-    t.string   "authentication_token"
-    t.datetime "deleted_at"
     t.boolean  "share_bookmarks"
+    t.boolean  "save_checkout_history",                   :default => false, :null => false
+    t.string   "checkout_icalendar_token"
   end
 
+  add_index "users", ["checkout_icalendar_token"], :name => "index_users_on_checkout_icalendar_token", :unique => true
   add_index "users", ["email"], :name => "index_users_on_email"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
