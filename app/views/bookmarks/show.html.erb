@@ -46,7 +46,7 @@
 <div id="submenu" class="ui-corner-all">
   <ul>
     <li><%= link_to t('page.edit'),edit_bookmark_path(@bookmark) -%></li>
-    <li><%= link_to t('page.destroy'), @bookmark, :confirm => t('page.are_you_sure'), :method => :delete -%></li>
+    <li><%= link_to t('page.destroy'), @bookmark, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%></li>
     <li><%= link_to t('page.back_to', :model => t('activerecord.models.manifestation')), @bookmark.manifestation -%></li>
     <li><%= link_to t('page.back'), bookmarks_url -%></li>
   </ul>
