@@ -1,5 +1,6 @@
 class BookmarkSweeper < ActionController::Caching::Sweeper
   include ExpireEditableFragment
+  include ExpireTagCloud
   observe Bookmark, Tag
 
   def after_save(record)

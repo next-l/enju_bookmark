@@ -18,16 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 3.2"
   s.add_dependency "acts-as-taggable-on", "~> 2.3"
-  s.add_dependency "will_paginate", "~> 3.0"
-  s.add_dependency "devise"
-  s.add_dependency "cancan"
   s.add_dependency "state_machine"
-  s.add_dependency "friendly_id", "~> 4.0"
-  s.add_dependency "attribute_normalizer", "~> 1.1"
-  s.add_dependency "sunspot_rails"
-  s.add_dependency "sunspot_solr"
-  s.add_dependency "addressable"
-  s.add_dependency "acts_as_list", "~> 0.1.6"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails"
@@ -36,4 +27,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "enju_circulation"
   s.add_development_dependency "enju_library"
   s.add_development_dependency "enju_manifestation_viewer"
+  s.add_development_dependency "sunspot_solr"
 end
