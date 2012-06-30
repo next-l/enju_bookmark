@@ -10,16 +10,8 @@ class User < ActiveRecord::Base
   has_one :user_has_role
   has_one :role, :through => :user_has_role
   belongs_to :required_role, :class_name => 'Role', :foreign_key => 'required_role_id'
-  has_many :bookmarks, :dependent => :destroy
 
-  def owned_tags_by_solr
-    bookmark_ids = bookmarks.collect(&:id)
-    if bookmark_ids.empty?
-      []
-    else
-      Tag.bookmarked(bookmark_ids)
-    end
-  end
+  enju_bookmark_user
 
   def has_role?(role_in_question)
     return false unless role
