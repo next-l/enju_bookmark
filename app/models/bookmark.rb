@@ -28,7 +28,7 @@ class Bookmark < ActiveRecord::Base
     end
     string :url
     string :tag, :multiple => true do
-      tags.collect(&:name)
+      tags.pluck(:name)
     end
     integer :user_id
     integer :manifestation_id
