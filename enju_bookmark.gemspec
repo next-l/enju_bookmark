@@ -27,5 +27,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "enju_circulation"
   s.add_development_dependency "enju_library"
   s.add_development_dependency "enju_manifestation_viewer"
-  s.add_development_dependency "sunspot_solr"
+  s.add_development_dependency "sunspot_solr", "~> 2.0.0.pre.120417"
 end
