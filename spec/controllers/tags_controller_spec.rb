@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe TagsController do
+  fixtures :all
 
   describe "GET index", :solr => true do
     before do
