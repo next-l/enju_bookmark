@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "factory_girl_rails"
-  s.add_development_dependency "enju_biblio"
+  s.add_development_dependency "enju_biblio", "~> 0.0.7"
   s.add_development_dependency "enju_circulation"
   s.add_development_dependency "enju_library"
   s.add_development_dependency "enju_manifestation_viewer"
