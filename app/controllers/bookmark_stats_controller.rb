@@ -19,9 +19,9 @@ class BookmarkStatsController < ApplicationController
     if params[:format] == 'csv'
       per_page = 65534
     else
-      per_page = BookmarkStatHasManifestation.per_page
+      per_page = BookmarkStatHasManifestation.default_per_page
     end
-    @stats = @bookmark_stat.bookmark_stat_has_manifestations.order('bookmarks_count DESC, manifestation_id').page(params[:page]).per_page(per_page)
+    @stats = @bookmark_stat.bookmark_stat_has_manifestations.order('bookmarks_count DESC, manifestation_id').page(params[:page]).per(per_page)
 
     respond_to do |format|
       format.html # show.html.erb

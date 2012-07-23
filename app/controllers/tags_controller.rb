@@ -22,7 +22,7 @@ class TagsController < ApplicationController
 
     @tags = Tag.search do
       fulltext query if query.present?
-      paginate :page => page.to_i, :per_page => Tag.per_page
+      paginate :page => page.to_i, :per_page => Tag.default_per_page
       order_by sort[:sort_by], sort[:order]
     end.results
 

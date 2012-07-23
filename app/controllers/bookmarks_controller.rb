@@ -37,7 +37,7 @@ class BookmarksController < ApplicationController
     end
     page = params[:page] || "1"
     flash[:page] = page if page.to_i >= 1
-    search.query.paginate(page.to_i, Bookmark.per_page)
+    search.query.paginate(page.to_i, Bookmark.default_per_page)
     @bookmarks = search.execute!.results
 
     respond_to do |format|
