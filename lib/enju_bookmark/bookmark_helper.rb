@@ -5,7 +5,6 @@ module EnjuBookmark
     end
 
     def render_tag_cloud(tags, options = {})
-      return nil if tags.nil?
       # TODO: add options to specify different limits and sorts
       #tags = Tag.all(:limit => 100, :order => 'taggings_count DESC').sort_by(&:name)
 
@@ -25,9 +24,9 @@ module EnjuBookmark
 
       content_tag :div, :class => "hTagcloud" do
         content_tag :ul, :class => "popularity" do
-          tags.each do |tag|
-            content_tag :li do
-              link_to(tag.name, manifestations_path(:tag => tag.name), :class => classes[(tag.taggings.size - min).div(divisor)])
+          content_tag :li do
+            tags.collect do |tag|
+              concat(content_tag :li, link_to(tag.name, manifestations_path(:tag => tag.name), :class => classes[(tag.taggings.size - min).div(divisor)]))
             end
           end
         end
