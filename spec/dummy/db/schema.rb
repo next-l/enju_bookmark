@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120602141129) do
+ActiveRecord::Schema.define(:version => 20120728204337) do
 
   create_table "accepts", :force => true do |t|
     t.integer  "basket_id"
@@ -687,11 +687,13 @@ ActiveRecord::Schema.define(:version => 20120602141129) do
     t.text     "full_name_alternative_transcription"
     t.string   "birth_date"
     t.string   "death_date"
+    t.string   "patron_identifier"
   end
 
   add_index "patrons", ["country_id"], :name => "index_patrons_on_country_id"
   add_index "patrons", ["full_name"], :name => "index_patrons_on_full_name"
   add_index "patrons", ["language_id"], :name => "index_patrons_on_language_id"
+  add_index "patrons", ["patron_identifier"], :name => "index_patrons_on_patron_identifier"
   add_index "patrons", ["required_role_id"], :name => "index_patrons_on_required_role_id"
   add_index "patrons", ["user_id"], :name => "index_patrons_on_user_id", :unique => true
 
@@ -902,6 +904,14 @@ ActiveRecord::Schema.define(:version => 20120602141129) do
 
   add_index "series_statement_merges", ["series_statement_id"], :name => "index_series_statement_merges_on_series_statement_id"
   add_index "series_statement_merges", ["series_statement_merge_list_id"], :name => "index_series_statement_merges_on_series_statement_merge_list_id"
+
+  create_table "series_statement_relationships", :force => true do |t|
+    t.integer  "parent_id"
+    t.integer  "child_id"
+    t.integer  "position"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "series_statements", :force => true do |t|
     t.text     "original_title"
