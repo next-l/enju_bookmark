@@ -13,7 +13,7 @@
     <%= javascript_tag("$('#bookmark_tag_list').focus()") -%>
   <%- else -%>
     <!-- bookmarked_by_other_patron_or_not_bookmarked -->
-    <%= form_for(:bookmark, :url => user_bookmarks_path(current_user, :mode => 'tag_edit'), :html => { :method => :post }) do |f| -%>
+    <%= form_for(:bookmark, :url => bookmarks_path(:mode => 'tag_edit'), :html => { :method => :post }) do |f| -%>
       <div>
         <%= f.text_field :tag_list, :class => 'editable_text_field' -%>
         <%= f.hidden_field :title, :value => manifestation.original_title -%>
