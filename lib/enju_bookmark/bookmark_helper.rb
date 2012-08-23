@@ -24,10 +24,8 @@ module EnjuBookmark
 
       content_tag :div, :class => "hTagcloud" do
         content_tag :ul, :class => "popularity" do
-          content_tag :li do
-            tags.collect do |tag|
-              concat(content_tag :li, link_to(tag.name, manifestations_path(:tag => tag.name), :class => classes[(tag.taggings.size - min).div(divisor)]))
-            end
+          tags.collect do |tag|
+            concat(content_tag :li, link_to(tag.name, manifestations_path(:tag => tag.name), :class => classes[(tag.taggings.size - min).div(divisor)]))
           end
         end
       end
