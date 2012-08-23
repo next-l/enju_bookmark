@@ -14,7 +14,7 @@ class Tag < ActiveRecord::Base
     time :created_at
     time :updated_at
     integer :bookmark_ids, :multiple => true do
-      tagged(Bookmark).collect(&:id)
+      tagged(Bookmark).compact.collect(&:id)
     end
     integer :taggings_count do
       taggings.size
