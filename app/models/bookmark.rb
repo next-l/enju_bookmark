@@ -82,7 +82,7 @@ class Bookmark < ActiveRecord::Base
     end
     unless manifestation
       normalized_url = Addressable::URI.parse(url).normalize.to_s
-      doc = Nokogiri::HTML(open(normalized_url))
+      doc = Nokogiri::HTML(open(normalized_url).read)
       # TODO: 日本語以外
       #charsets = ['iso-2022-jp', 'euc-jp', 'shift_jis', 'iso-8859-1']
       #if charsets.include?(page.charset.downcase)
@@ -196,14 +196,14 @@ end
 #
 # Table name: bookmarks
 #
-#  id               :integer         not null, primary key
-#  user_id          :integer         not null
+#  id               :integer          not null, primary key
+#  user_id          :integer          not null
 #  manifestation_id :integer
 #  title            :text
 #  url              :string(255)
 #  note             :text
-#  created_at       :datetime
-#  updated_at       :datetime
 #  shared           :boolean
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 

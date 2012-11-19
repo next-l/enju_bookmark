@@ -44,14 +44,14 @@ end
 #
 # Table name: bookmarks
 #
-#  id               :integer         not null, primary key
-#  user_id          :integer         not null
+#  id               :integer          not null, primary key
+#  user_id          :integer          not null
 #  manifestation_id :integer
 #  title            :text
 #  url              :string(255)
 #  note             :text
-#  created_at       :datetime
-#  updated_at       :datetime
 #  shared           :boolean
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 
