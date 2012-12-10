@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120728204337) do
+ActiveRecord::Schema.define(:version => 20121119153944) do
 
   create_table "accepts", :force => true do |t|
     t.integer  "basket_id"
@@ -339,6 +339,7 @@ ActiveRecord::Schema.define(:version => 20120728204337) do
     t.datetime "acquired_at"
     t.integer  "bookstore_id"
     t.integer  "budget_type_id"
+    t.integer  "manifestation_id"
   end
 
   add_index "items", ["bookstore_id"], :name => "index_items_on_bookstore_id"
@@ -544,6 +545,7 @@ ActiveRecord::Schema.define(:version => 20120728204337) do
     t.integer  "year_of_publication"
     t.text     "attachment_meta"
     t.integer  "month_of_publication"
+    t.string   "online_isbn"
   end
 
   add_index "manifestations", ["access_address"], :name => "index_manifestations_on_access_address"
