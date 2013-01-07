@@ -23,7 +23,7 @@ use_restriction_00003:
   note: ""
   created_at: <%= Time.zone.now %>
   updated_at: <%= Time.zone.now %>
-use_restriction_00003: 
+use_restriction_00004: 
   name: Limited Circulation, Normal Loan Period  
   display_name: Limited Circulation, Normal Loan Period
   id: 4
