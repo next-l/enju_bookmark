@@ -10,7 +10,7 @@
         <%= t('tag.use_space_as_delimiter') -%>
       </div>
     <%- end -%>
-    <%= javascript_tag("$('#bookmark_tag_list').focus()") -%>
+    <%= javascript_tag("$(function(){$('#bookmark_tag_list').focus()})") %>
   <%- else -%>
     <!-- bookmarked_by_other_patron_or_not_bookmarked -->
     <%= form_for(:bookmark, :url => bookmarks_path(:mode => 'tag_edit'), :html => { :method => :post }) do |f| -%>
@@ -24,6 +24,6 @@
         <%= t('tag.use_space_as_delimiter') -%>
       </div>
     <%- end -%>
-    <%= javascript_tag("$('#bookmark_tag_list').focus()") -%>
+    <%= javascript_tag("$(function(){$('#bookmark_tag_list').focus()})") %>
   <%- end -%>
 <%- end -%>

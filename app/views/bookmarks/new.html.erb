@@ -38,7 +38,7 @@
   <div class="actions">
     <%= f.submit %>
   </div>
-  <%= javascript_tag("$('#bookmark_tag_list').focus()") -%>
+  <%= javascript_tag("$(function(){$('#bookmark_tag_list').focus()})") %>
 <%- end -%>
 </div>
 </div>
