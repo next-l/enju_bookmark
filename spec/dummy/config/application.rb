@@ -43,7 +43,6 @@ module Dummy
   end
 end
 
-require 'enju_circulation'
 require 'enju_biblio'
 require 'enju_library'
 require 'mobylette'
