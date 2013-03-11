@@ -11,3 +11,4 @@ module EnjuBookmark
 end
 
 ActiveRecord::Base.send :include, EnjuBookmark::BookmarkUser
+ActiveRecord::Base.send :include, EnjuBookmark::BookmarkManifestation
