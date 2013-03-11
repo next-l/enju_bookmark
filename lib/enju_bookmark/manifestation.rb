@@ -5,7 +5,7 @@ module EnjuBookmark
     end
 
     module ClassMethods
-      def enju_bookmark_manifestation
+      def enju_bookmark_manifestation_model
         include InstanceMethods
       end
     end
