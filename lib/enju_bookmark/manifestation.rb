@@ -7,14 +7,13 @@ module EnjuBookmark
     module ClassMethods
       def enju_bookmark_manifestation_model
         include InstanceMethods
+        has_many :bookmarks, :include => :tags, :dependent => :destroy, :foreign_key => :manifestation_id
+        has_many :users, :through => :bookmarks
       end
     end
 
     module InstanceMethods
       def owned_tags_by_solr
-        has_many :bookmarks, :include => :tags, :dependent => :destroy, :foreign_key => :manifestation_id
-        has_many :users, :through => :bookmarks
-
         searchable do
           string :tag, :multiple => true do
             tags.collect(&:name)
