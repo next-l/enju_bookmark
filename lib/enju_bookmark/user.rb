@@ -5,7 +5,7 @@ module EnjuBookmark
     end
 
     module ClassMethods
-      def enju_bookmark_user
+      def enju_bookmark_user_model
         include InstanceMethods
         has_many :bookmarks, :dependent => :destroy
         acts_as_tagger

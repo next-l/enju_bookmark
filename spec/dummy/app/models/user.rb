@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_one :role, :through => :user_has_role
   belongs_to :required_role, :class_name => 'Role', :foreign_key => 'required_role_id'
 
-  enju_bookmark_user
+  enju_bookmark_user_model
 
   def has_role?(role_in_question)
     return false unless role
