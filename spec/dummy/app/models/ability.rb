@@ -29,7 +29,7 @@
             false
           end
         end
-        can [:update, :destroy], Bookmark do |bookmark|
+        can [:update, :destroy, :delete], Bookmark do |bookmark|
           bookmark.user == user
         end
         can :read, BookmarkStat

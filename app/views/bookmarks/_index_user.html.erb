@@ -30,7 +30,7 @@
     </td>
     <td><%= l(bookmark.created_at) -%></td>
     <td>
-      <%- if can? :destroy, bookmark -%>
+      <%- if can? :delete, bookmark -%>
         <%= link_to t('page.destroy'), bookmark, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%>
       <%- end -%>
     </td>
