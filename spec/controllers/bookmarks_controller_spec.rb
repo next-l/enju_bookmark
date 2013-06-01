@@ -423,8 +423,10 @@ describe BookmarksController do
       end
 
       it "should not update missing bookmark" do
-        put :update, :id => 'missing', :bookmark => { }
-        response.should be_missing
+        lambda{
+          put :update, :id => 'missing', :bookmark => { }
+        }.should raise_error(ActiveRecord::RecordNotFound)
+        #response.should be_missing
       end
 
       it "should update bookmark without manifestation_id" do
