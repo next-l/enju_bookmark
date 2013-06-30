@@ -44,3 +44,4 @@ module Dummy
 end
 
 require 'enju_leaf'
+require 'enju_bookmark'
