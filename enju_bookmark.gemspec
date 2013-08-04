@@ -16,15 +16,17 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/log/*"] - Dir["spec/dummy/solr/{data,pids}/*"]
 
-  s.add_dependency "rails", "~> 3.2"
+  s.add_dependency "rails", "~> 4.0"
   s.add_dependency "acts-as-taggable-on", "~> 2.4"
   s.add_dependency "state_machine"
+  s.add_dependency "protected_attributes"
+  s.add_dependency "rails-observers"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "rspec-rails"
   s.add_development_dependency "factory_girl_rails"
-  s.add_development_dependency "enju_leaf", "~> 1.1.0.rc3"
-  s.add_development_dependency "sunspot_solr", "~> 2.0.0"
+  #s.add_development_dependency "enju_leaf", "~> 1.1.0.rc5"
+  #s.add_development_dependency "sunspot_solr", "~> 2.0.0"
   s.add_development_dependency "mobylette"
   s.add_development_dependency "sunspot-rails-tester"
 end
