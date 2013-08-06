@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 class BookmarksController < ApplicationController
-  before_filter :store_location
+  before_action :store_location
   load_and_authorize_resource :except => :index
   authorize_resource :only => :index
-  before_filter :get_user, :only => :index
-  after_filter :solr_commit, :only => [:create, :update, :destroy]
+  before_action :get_user, :only => :index
+  after_action :solr_commit, :only => [:create, :update, :destroy]
   cache_sweeper :bookmark_sweeper, :only => [:create, :update, :destroy]
 
   # GET /bookmarks

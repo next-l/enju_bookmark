@@ -1,6 +1,6 @@
 class BookmarkStatsController < ApplicationController
   load_and_authorize_resource
-  after_filter :convert_charset, :only => :show
+  after_action :convert_charset, :only => :show
 
   # GET /bookmark_stats
   # GET /bookmark_stats.json
