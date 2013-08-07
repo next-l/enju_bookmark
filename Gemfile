@@ -20,7 +20,6 @@ gem "enju_leaf", github: "nabeta/enju_leaf", branch: "rails4"
 gem "paper_trail", github: "airblade/paper_trail", branch: "rails4"
 gem "sunspot_solr", github: "sunspot/sunspot"
 gem "sunspot_rails", github: "sunspot/sunspot"
-gem "acts_as_list", github: "swanandp/acts_as_list"
 
 # To use debugger
 # gem 'ruby-debug19', :require => 'ruby-debug'
