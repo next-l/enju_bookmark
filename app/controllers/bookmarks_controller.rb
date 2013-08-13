@@ -5,7 +5,6 @@ class BookmarksController < ApplicationController
   authorize_resource :only => :index
   before_action :get_user, :only => :index
   after_action :solr_commit, :only => [:create, :update, :destroy]
-  cache_sweeper :bookmark_sweeper, :only => [:create, :update, :destroy]
 
   # GET /bookmarks
   # GET /bookmarks.json
