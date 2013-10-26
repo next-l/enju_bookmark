@@ -15,7 +15,7 @@ class BookmarksController < ApplicationController
       @query = query.dup
     end
     user = @user
-    unless current_user.has_role?('Librarian')
+    unless current_user.try(:has_role?, 'Librarian')
       if user and user != current_user and !user.try(:share_bookmarks)
         access_denied; return
       end
