@@ -45,7 +45,7 @@ class Bookmark < ActiveRecord::Base
   end
 
   def reindex_manifestation
-    self.manifestation.try(:index!)
+    manifestation.try(:index!)
   end
 
   def save_tagger
@@ -57,7 +57,7 @@ class Bookmark < ActiveRecord::Base
   end
 
   def shelved?
-    true if self.manifestation.items.on_web.first
+    true if manifestation.items.on_web.first
   end
 
   def self.get_title(string)
