@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.name        = "enju_bookmark"
   s.version     = EnjuBookmark::VERSION
   s.authors     = ["Kosuke Tanabe"]
-  s.email       = ["tanabe@mwr.mediacom.keio.ac.jp"]
+  s.email       = ["kosuke@e23.jp"]
   s.homepage    = "https://github.com/next-l/enju_bookmark"
   s.summary     = "enju_bookmark plugin"
   s.description = "Purchase request management for Next-L Enju"
