@@ -1,5 +1,5 @@
 class Tag < ActiveRecord::Base
-  attr_accessible :name, :name_transcription
+  #attr_accessible :name, :name_transcription
   has_many :taggings, :dependent => :destroy, :class_name => 'ActsAsTaggableOn::Tagging'
   validates :name, :presence => true
   after_save :save_taggings
