@@ -1,7 +1,6 @@
 class TagsController < ApplicationController
   before_action :set_tag, only: [:show, :edit, :update, :destroy]
-  load_and_authorize_resource :except => [:show, :edit, :update, :destroy]
-  authorize_resource :only => [:show, :edit, :update, :destroy]
+  authorize_resource
   before_action :get_user
   after_action :solr_commit, :only => [:create, :update, :destroy]
 
@@ -47,7 +46,7 @@ class TagsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @tag.update_attributes(params[:tag])
+      if @tag.update_attributes(tag_params)
         format.html { redirect_to @tag, :notice => t('controller.successfully_updated', :model => t('activerecord.models.tag')) }
         format.json { head :no_content }
       else
@@ -72,5 +71,11 @@ class TagsController < ApplicationController
 
   def set_tag
     @tag = Tag.friendly.find(params[:id])
+  end
+
+  def tag_params
+    params.require(:tag).permit(
+      :name, :name_transcription
+    )
   end
 end
