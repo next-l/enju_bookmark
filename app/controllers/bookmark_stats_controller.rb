@@ -1,6 +1,5 @@
 class BookmarkStatsController < ApplicationController
-  load_and_authorize_resource :except => [:index, :create]
-  authorize_resource :only => [:index, :create]
+  after_action :verify_authorized
   after_action :convert_charset, :only => :show
 
   # GET /bookmark_stats

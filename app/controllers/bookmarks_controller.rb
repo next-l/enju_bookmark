@@ -1,9 +1,9 @@
 # -*- encoding: utf-8 -*-
 class BookmarksController < ApplicationController
+  before_action :set_bookmark, only: [:show, :edit, :update, :destroy]
   before_action :store_location
-  load_and_authorize_resource :except => [:index, :create, :new]
-  authorize_resource :only => [:index, :create, :new]
   before_action :get_user, :only => :index
+  after_action :verify_authorized
   after_action :solr_commit, :only => [:create, :update, :destroy]
 
   # GET /bookmarks
@@ -151,6 +151,11 @@ class BookmarksController < ApplicationController
   end
 
   private
+  def set_bookmark
+    @bookmark = Bookmark.find(params[:id])
+    authorize @bookmark
+  end
+
   def bookmark_params
     params.require(:bookmark).permit(
       :title, :url, :note, :shared, :tag_list

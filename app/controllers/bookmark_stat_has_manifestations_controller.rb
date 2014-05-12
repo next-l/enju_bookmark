@@ -1,6 +1,5 @@
 class BookmarkStatHasManifestationsController < ApplicationController
-  load_and_authorize_resource :except => [:index, :create]
-  authorize_resource :only => [:index, :create]
+  after_action :verify_authorized
 
   # GET /bookmark_stat_has_manifestations
   # GET /bookmark_stat_has_manifestations.json
