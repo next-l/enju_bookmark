@@ -1,8 +1,8 @@
 class TagsController < ApplicationController
-  load_and_authorize_resource
-  before_filter :get_user
-  after_filter :solr_commit, :only => [:create, :update, :destroy]
-  cache_sweeper :bookmark_sweeper, :only => [:create, :update, :destroy]
+  before_action :set_tag, only: [:show, :edit, :update, :destroy]
+  before_action :get_user
+  after_action :verify_authorized
+  after_action :solr_commit, :only => [:create, :update, :destroy]
 
   def index
     session[:params] ={} unless session[:params]
@@ -42,14 +42,11 @@ class TagsController < ApplicationController
   end
 
   def edit
-    #@tag = Tag.find(params[:id])
   end
 
   def update
-    #@tag = Tag.find(params[:id])
-
     respond_to do |format|
-      if @tag.update_attributes(params[:tag])
+      if @tag.update_attributes(tag_params)
         format.html { redirect_to @tag, :notice => t('controller.successfully_updated', :model => t('activerecord.models.tag')) }
         format.json { head :no_content }
       else
@@ -62,12 +59,23 @@ class TagsController < ApplicationController
   # DELETE /tags/1
   # DELETE /tags/1.json
   def destroy
-    #@tag = Tag.find(params[:id])
     @tag.destroy
 
     respond_to do |format|
       format.html { redirect_to tags_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+
+  def set_tag
+    @tag = Tag.friendly.find(params[:id])
+  end
+
+  def tag_params
+    params.require(:tag).permit(
+      :name, :name_transcription
+    )
   end
 end

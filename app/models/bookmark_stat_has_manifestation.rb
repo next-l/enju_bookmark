@@ -1,6 +1,4 @@
 class BookmarkStatHasManifestation < ActiveRecord::Base
-  attr_accessible
-  attr_accessible :bookmark_stat_id, :manifestation_id, :as => :admin
   belongs_to :bookmark_stat
   belongs_to :manifestation
 

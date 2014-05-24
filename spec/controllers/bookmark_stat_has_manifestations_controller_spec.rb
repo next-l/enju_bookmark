@@ -15,7 +15,7 @@ describe BookmarkStatHasManifestationsController do
 
       it "assigns all bookmark_stat_has_manifestations as @bookmark_stat_has_manifestations" do
         get :index
-        assigns(:bookmark_stat_has_manifestations).should eq(BookmarkStatHasManifestation.all)
+        assigns(:bookmark_stat_has_manifestations).should eq(BookmarkStatHasManifestation.page(1))
       end
     end
 
@@ -24,7 +24,7 @@ describe BookmarkStatHasManifestationsController do
 
       it "assigns all bookmark_stat_has_manifestations as @bookmark_stat_has_manifestations" do
         get :index
-        assigns(:bookmark_stat_has_manifestations).should eq(BookmarkStatHasManifestation.all)
+        assigns(:bookmark_stat_has_manifestations).should eq(BookmarkStatHasManifestation.page(1))
       end
     end
 

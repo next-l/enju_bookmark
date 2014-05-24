@@ -1,11 +1,10 @@
 # -*- encoding: utf-8 -*-
 class BookmarksController < ApplicationController
-  before_filter :store_location
-  load_and_authorize_resource :except => :index
-  authorize_resource :only => :index
-  before_filter :get_user, :only => :index
-  after_filter :solr_commit, :only => [:create, :update, :destroy]
-  cache_sweeper :bookmark_sweeper, :only => [:create, :update, :destroy]
+  before_action :set_bookmark, only: [:show, :edit, :update, :destroy]
+  before_action :store_location
+  before_action :get_user, :only => :index
+  after_action :verify_authorized
+  after_action :solr_commit, :only => [:create, :update, :destroy]
 
   # GET /bookmarks
   # GET /bookmarks.json
@@ -16,7 +15,7 @@ class BookmarksController < ApplicationController
       @query = query.dup
     end
     user = @user
-    unless current_user.has_role?('Librarian')
+    unless current_user.try(:has_role?, 'Librarian')
       if user and user != current_user and !user.try(:share_bookmarks)
         access_denied; return
       end
@@ -57,7 +56,7 @@ class BookmarksController < ApplicationController
 
   # GET /bookmarks/new
   def new
-    @bookmark = current_user.bookmarks.new(params[:bookmark])
+    @bookmark = current_user.bookmarks.new(bookmark_params)
     manifestation = @bookmark.get_manifestation
     if manifestation
       if manifestation.bookmarked?(current_user)
@@ -78,7 +77,7 @@ class BookmarksController < ApplicationController
   # POST /bookmarks
   # POST /bookmarks.json
   def create
-    @bookmark = current_user.bookmarks.new(params[:bookmark])
+    @bookmark = current_user.bookmarks.new(bookmark_params)
 
     respond_to do |format|
       if @bookmark.save
@@ -112,7 +111,7 @@ class BookmarksController < ApplicationController
     @bookmark.taggings.where(:tagger_id => @bookmark.user.id).map{|t| t.destroy}
 
     respond_to do |format|
-      if @bookmark.update_attributes(params[:bookmark])
+      if @bookmark.update_attributes(bookmark_params)
         flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.bookmark'))
         @bookmark.manifestation.index!
         @bookmark.create_tag_index
@@ -149,5 +148,17 @@ class BookmarksController < ApplicationController
         format.json { head :no_content }
       end
     end
+  end
+
+  private
+  def set_bookmark
+    @bookmark = Bookmark.find(params[:id])
+    authorize @bookmark
+  end
+
+  def bookmark_params
+    params.require(:bookmark).permit(
+      :title, :url, :note, :shared, :tag_list
+    )
   end
 end

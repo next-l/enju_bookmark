@@ -1,8 +1,7 @@
 class BookmarkStat < ActiveRecord::Base
-  attr_accessible :start_date, :end_date, :note
   include CalculateStat
-  default_scope :order => 'id DESC'
-  scope :not_calculated, where(:state => 'pending')
+  default_scope {order('id DESC')}
+  scope :not_calculated, -> {where(:state => 'pending')}
   has_many :bookmark_stat_has_manifestations
   has_many :manifestations, :through => :bookmark_stat_has_manifestations
 
@@ -23,7 +22,7 @@ class BookmarkStat < ActiveRecord::Base
       if daily_count > 0
         self.manifestations << manifestation
         sql = ['UPDATE bookmark_stat_has_manifestations SET bookmarks_count = ? WHERE bookmark_stat_id = ? AND manifestation_id = ?', daily_count, self.id, manifestation.id]
-        ActiveRecord::Base.connection.execute(
+        BookmarkStat.connection.execute(
           self.class.send(:sanitize_sql_array, sql)
         )
       end

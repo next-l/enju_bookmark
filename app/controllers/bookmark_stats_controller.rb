@@ -1,6 +1,6 @@
 class BookmarkStatsController < ApplicationController
-  load_and_authorize_resource
-  after_filter :convert_charset, :only => :show
+  after_action :verify_authorized
+  after_action :convert_charset, :only => :show
 
   # GET /bookmark_stats
   # GET /bookmark_stats.json
@@ -48,7 +48,7 @@ class BookmarkStatsController < ApplicationController
   # POST /bookmark_stats
   # POST /bookmark_stats.json
   def create
-    @bookmark_stat = BookmarkStat.new(params[:bookmark_stat])
+    @bookmark_stat = BookmarkStat.new(bookmark_stat_params)
 
     respond_to do |format|
       if @bookmark_stat.save
@@ -65,7 +65,7 @@ class BookmarkStatsController < ApplicationController
   # PUT /bookmark_stats/1.json
   def update
     respond_to do |format|
-      if @bookmark_stat.update_attributes(params[:bookmark_stat])
+      if @bookmark_stat.update_attributes(bookmark_stat_params)
         format.html { redirect_to @bookmark_stat, :notice => t('controller.successfully_updated', :model => t('activerecord.models.bookmark_stat')) }
         format.json { head :no_content }
       else
@@ -84,5 +84,12 @@ class BookmarkStatsController < ApplicationController
       format.html { redirect_to bookmark_stats_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def bookmark_stat_params
+    params.require(:bookmark_stat).permit(
+      :start_date, :end_date, :note
+    )
   end
 end

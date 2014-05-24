@@ -5,6 +5,7 @@ exemplify_00001:
   manifestation_id: 1
   id: 1
   created_at: 2008-01-11 23:28:19.277110 +09:00
+  position: 1
 exemplify_00002: 
   updated_at: 2008-01-11 23:28:57.068191 +09:00
   item_id: 2
@@ -23,6 +24,7 @@ exemplify_00004:
   manifestation_id: 1
   id: 4
   created_at: 2008-01-11 02:34:20.183962 +09:00
+  position: 2
 exemplify_00005: 
   updated_at: 2008-01-11 02:34:32.352223 +09:00
   item_id: 5
@@ -41,6 +43,7 @@ exemplify_00007:
   manifestation_id: 1
   id: 7
   created_at: 2008-01-11 02:40:24.038276 +09:00
+  position: 3
 exemplify_00008: 
   updated_at: 2008-01-11 02:40:40.316742 +09:00
   item_id: 8
@@ -59,12 +62,14 @@ exemplify_00010:
   manifestation_id: 1
   id: 10
   created_at: 2008-01-11 02:44:37.135721 +09:00
+  position: 4
 exemplify_00011: 
   updated_at: 2008-01-11 02:44:37.135721 +09:00
   item_id: 11
   manifestation_id: 1
   id: 11
   created_at: 2008-01-11 02:44:37.135721 +09:00
+  position: 5
 exemplify_00012: 
   updated_at: 2008-01-11 02:44:37.135721 +09:00
   item_id: 12
@@ -107,35 +112,49 @@ exemplify_00018:
   manifestation_id: 1
   id: 18
   created_at: 2008-01-11 02:44:37.135721 +09:00
+  position: 6
 exemplify_00019: 
   updated_at: 2008-01-11 02:44:37.135721 +09:00
   item_id: 19
   manifestation_id: 1
   id: 19
   created_at: 2008-01-11 02:44:37.135721 +09:00
+  position: 7
 exemplify_00020: 
   updated_at: 2008-01-11 02:44:37.135721 +09:00
   item_id: 20
   manifestation_id: 1
   id: 20
   created_at: 2008-01-11 02:44:37.135721 +09:00
+  position: 8
 exemplify_00021: 
   updated_at: 2008-01-11 02:44:37.135721 +09:00
   item_id: 21
   manifestation_id: 11
   id: 21
   created_at: 2008-01-11 02:44:37.135721 +09:00
+exemplify_00022: 
+  updated_at: 2008-01-11 02:44:37.135721 +09:00
+  item_id: 22
+  manifestation_id: 11
+  id: 22
+  created_at: 2008-01-11 02:44:37.135721 +09:00
+exemplify_00023: 
+  updated_at: 2008-01-11 02:44:37.135721 +09:00
+  item_id: 23
+  manifestation_id: 11
+  id: 23
+  created_at: 2008-01-11 02:44:37.135721 +09:00
 
 # == Schema Information
 #
 # Table name: exemplifies
 #
-#  id               :integer         not null, primary key
-#  manifestation_id :integer         not null
-#  item_id          :integer         not null
-#  type             :string(255)
+#  id               :integer          not null, primary key
+#  manifestation_id :integer          not null
+#  item_id          :integer          not null
 #  position         :integer
-#  created_at       :datetime
-#  updated_at       :datetime
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 

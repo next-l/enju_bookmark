@@ -1,5 +1,5 @@
 class BookmarkStatHasManifestationsController < ApplicationController
-  load_and_authorize_resource
+  after_action :verify_authorized
 
   # GET /bookmark_stat_has_manifestations
   # GET /bookmark_stat_has_manifestations.json
@@ -39,8 +39,7 @@ class BookmarkStatHasManifestationsController < ApplicationController
   # POST /bookmark_stat_has_manifestations
   # POST /bookmark_stat_has_manifestations.json
   def create
-    @bookmark_stat_has_manifestation = BookmarkStatHasManifestation.new
-    @bookmark_stat_has_manifestation.assign_attributes(params[:bookmark_stat_has_manifestation], :as => :admin)
+    @bookmark_stat_has_manifestation = BookmarkStatHasManifestation.new(bookmark_stat_has_manifestation_params)
 
     respond_to do |format|
       if @bookmark_stat_has_manifestation.save
@@ -56,7 +55,7 @@ class BookmarkStatHasManifestationsController < ApplicationController
   # PUT /bookmark_stat_has_manifestations/1
   # PUT /bookmark_stat_has_manifestations/1.json
   def update
-    @bookmark_stat_has_manifestation.assign_attributes(params[:bookmark_stat_has_manifestation], :as => :admin)
+    @bookmark_stat_has_manifestation.assign_attributes(bookmark_stat_has_manifestation_params)
     respond_to do |format|
       if @bookmark_stat_has_manifestation.save
         format.html { redirect_to @bookmark_stat_has_manifestation, :notice => t('controller.successfully_updated', :model => t('activerecord.models.bookmark_stat_has_manifestation')) }
@@ -77,5 +76,12 @@ class BookmarkStatHasManifestationsController < ApplicationController
       format.html { redirect_to bookmark_stat_has_manifestations_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def bookmark_stat_has_manifestation_params
+    params.require(:bookmark_stat_has_manifestation).permit(
+      :bookmark_stat_id, :manifestation_id
+    )
   end
 end

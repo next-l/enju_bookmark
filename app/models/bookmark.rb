@@ -1,10 +1,9 @@
 # -*- encoding: utf-8 -*-
 class Bookmark < ActiveRecord::Base
-  attr_accessible :title, :url, :note, :shared, :tag_list
-  scope :bookmarked, lambda {|start_date, end_date| {:conditions => ['created_at >= ? AND created_at < ?', start_date, end_date]}}
+  scope :bookmarked, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
   scope :user_bookmarks, lambda {|user| where(:user_id => user.id)}
-  scope :shared, where(:shared => true)
-  belongs_to :manifestation
+  scope :shared, -> {where(:shared => true)}
+  belongs_to :manifestation, :touch => true
   belongs_to :user #, :counter_cache => true, :validate => true
 
   validates_presence_of :user, :title
@@ -45,7 +44,7 @@ class Bookmark < ActiveRecord::Base
   end
 
   def reindex_manifestation
-    self.manifestation.try(:index!)
+    manifestation.try(:index!)
   end
 
   def save_tagger
@@ -57,7 +56,7 @@ class Bookmark < ActiveRecord::Base
   end
 
   def shelved?
-    true if self.manifestation.items.on_web.first
+    true if manifestation.items.on_web.first
   end
 
   def self.get_title(string)

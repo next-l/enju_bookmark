@@ -1,4 +1,4 @@
-<div id="content_detail" class="ui-corner-all">
+<div id="content_detail" class="ui-corner-all ui-widget-content">
 <h1 class="title"><%= t('page.listing', :model => t('activerecord.models.bookmark')) -%></h1>
 <div id="content_list">
   <h2 class="resource_title">
@@ -43,7 +43,7 @@
 </div>
 </div>
 
-<div id="submenu" class="ui-corner-all">
+<div id="submenu" class="ui-corner-all ui-widget-content">
   <%- if user_signed_in? -%>
     <h4><%= t('page.bookmarklet') -%></h4>
     <ul>
