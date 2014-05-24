@@ -28,20 +28,20 @@ describe BookmarkStatHasManifestationsController do
       end
     end
 
-    describe "When logged in as Manifestation" do
+    describe "When logged in as User" do
       login_user
 
-      it "assigns all bookmark_stat_has_manifestations as @bookmark_stat_has_manifestations" do
+      it "should not assign bookmark_stat_has_manifestations as @bookmark_stat_has_manifestations" do
         get :index
-        assigns(:bookmark_stat_has_manifestations).should be_empty
+        assigns(:bookmark_stat_has_manifestations).should be_nil
         response.should be_forbidden
       end
     end
 
     describe "When not logged in" do
-      it "assigns all bookmark_stat_has_manifestations as @bookmark_stat_has_manifestations" do
+      it "should not assign bookmark_stat_has_manifestations as @bookmark_stat_has_manifestations" do
         get :index
-        assigns(:bookmark_stat_has_manifestations).should be_empty
+        assigns(:bookmark_stat_has_manifestations).should be_nil
         response.should redirect_to(new_user_session_url)
       end
     end
@@ -68,7 +68,7 @@ describe BookmarkStatHasManifestationsController do
       end
     end
 
-    describe "When logged in as Manifestation" do
+    describe "When logged in as User" do
       login_user
 
       it "assigns the requested bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
@@ -108,7 +108,7 @@ describe BookmarkStatHasManifestationsController do
       end
     end
 
-    describe "When logged in as Manifestation" do
+    describe "When logged in as User" do
       login_user
 
       it "should not assign the requested bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
@@ -148,7 +148,7 @@ describe BookmarkStatHasManifestationsController do
       end
     end
 
-    describe "When logged in as Manifestation" do
+    describe "When logged in as User" do
       login_user
 
       it "assigns the requested bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
@@ -207,7 +207,7 @@ describe BookmarkStatHasManifestationsController do
       describe "with valid params" do
         it "assigns a newly created bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
           post :create, :bookmark_stat_has_manifestation => @attrs
-          assigns(:bookmark_stat_has_manifestation).should_not be_valid
+          assigns(:bookmark_stat_has_manifestation).should be_valid
         end
 
         it "should be forbidden" do
@@ -229,13 +229,13 @@ describe BookmarkStatHasManifestationsController do
       end
     end
 
-    describe "When logged in as Manifestation" do
+    describe "When logged in as User" do
       login_user
 
       describe "with valid params" do
         it "assigns a newly created bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
           post :create, :bookmark_stat_has_manifestation => @attrs
-          assigns(:bookmark_stat_has_manifestation).should_not be_valid
+          assigns(:bookmark_stat_has_manifestation).should be_valid
         end
 
         it "should be forbidden" do
@@ -261,7 +261,7 @@ describe BookmarkStatHasManifestationsController do
       describe "with valid params" do
         it "assigns a newly created bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
           post :create, :bookmark_stat_has_manifestation => @attrs
-          assigns(:bookmark_stat_has_manifestation).should_not be_valid
+          assigns(:bookmark_stat_has_manifestation).should be_valid
         end
 
         it "should be forbidden" do
@@ -341,7 +341,7 @@ describe BookmarkStatHasManifestationsController do
       end
     end
 
-    describe "When logged in as Manifestation" do
+    describe "When logged in as User" do
       login_user
 
       describe "with valid params" do
@@ -416,7 +416,7 @@ describe BookmarkStatHasManifestationsController do
       end
     end
 
-    describe "When logged in as Manifestation" do
+    describe "When logged in as User" do
       login_user
 
       it "destroys the requested bookmark_stat_has_manifestation" do

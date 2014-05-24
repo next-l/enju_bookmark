@@ -1,11 +1,13 @@
 class BookmarkStatsController < ApplicationController
+  before_action :set_bookmark_stat, only: [:show, :edit, :update, :destroy]
   after_action :verify_authorized
   after_action :convert_charset, :only => :show
 
   # GET /bookmark_stats
   # GET /bookmark_stats.json
   def index
-    @bookmark_stats = BookmarkStat.page(params[:page])
+    authorize BookmarkStat
+    @bookmark_stats = BookmarkStat.order('id DESC').page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
@@ -34,11 +36,7 @@ class BookmarkStatsController < ApplicationController
   # GET /bookmark_stats/new.json
   def new
     @bookmark_stat = BookmarkStat.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render :json => @bookmark_stat }
-    end
+    authorize @bookmark_stat
   end
 
   # GET /bookmark_stats/1/edit
@@ -49,6 +47,7 @@ class BookmarkStatsController < ApplicationController
   # POST /bookmark_stats.json
   def create
     @bookmark_stat = BookmarkStat.new(bookmark_stat_params)
+    authorize @bookmark_stat
 
     respond_to do |format|
       if @bookmark_stat.save
@@ -87,6 +86,11 @@ class BookmarkStatsController < ApplicationController
   end
 
   private
+  def set_bookmark_stat
+    @bookmark_stat = BookmarkStat.find(params[:id])
+    authorize @bookmark_stat
+  end
+
   def bookmark_stat_params
     params.require(:bookmark_stat).permit(
       :start_date, :end_date, :note

@@ -1,5 +1,5 @@
 require 'acts-as-taggable-on'
-require 'state_machine'
+require 'statesman'
 require 'addressable/uri'
 require 'nkf'
 

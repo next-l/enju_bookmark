@@ -5,6 +5,7 @@ class TagsController < ApplicationController
   after_action :solr_commit, :only => [:create, :update, :destroy]
 
   def index
+    authorize Tag
     session[:params] ={} unless session[:params]
     session[:params][:tag] = params
 
@@ -71,6 +72,7 @@ class TagsController < ApplicationController
 
   def set_tag
     @tag = Tag.friendly.find(params[:id])
+    authorize @tag
   end
 
   def tag_params

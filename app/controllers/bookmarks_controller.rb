@@ -9,6 +9,7 @@ class BookmarksController < ApplicationController
   # GET /bookmarks
   # GET /bookmarks.json
   def index
+    authorize Bookmark
     search = Bookmark.search(:include => [:manifestation])
     query = params[:query].to_s.strip
     unless query.blank?
@@ -48,15 +49,13 @@ class BookmarksController < ApplicationController
   # GET /bookmarks/1
   # GET /bookmarks/1.json
   def show
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render :json => @bookmark }
-    end
   end
 
   # GET /bookmarks/new
   def new
-    @bookmark = current_user.bookmarks.new(bookmark_params)
+    @bookmark = Bookmark.new(bookmark_params)
+    @bookmark.user = current_user
+    authorize @bookmark
     manifestation = @bookmark.get_manifestation
     if manifestation
       if manifestation.bookmarked?(current_user)
@@ -77,7 +76,9 @@ class BookmarksController < ApplicationController
   # POST /bookmarks
   # POST /bookmarks.json
   def create
-    @bookmark = current_user.bookmarks.new(bookmark_params)
+    @bookmark = Bookmark.new(bookmark_params)
+    @bookmark.user = current_user
+    authorize @bookmark
 
     respond_to do |format|
       if @bookmark.save
@@ -134,7 +135,7 @@ class BookmarksController < ApplicationController
   # DELETE /bookmarks/1.json
   def destroy
     @bookmark.destroy
-    flash[:notice] = t('controller.successfully_deleted', :model => t('activerecord.models.bookmark'))
+    flash[:notice] = t('controller.successfully_destroyed', :model => t('activerecord.models.bookmark'))
     @bookmark.create_tag_index
 
     if @user

@@ -1,9 +1,11 @@
 class BookmarkStatHasManifestationsController < ApplicationController
+  before_action :set_bookmark_stat_has_manifestation, only: [:show, :edit, :update, :destroy]
   after_action :verify_authorized
 
   # GET /bookmark_stat_has_manifestations
   # GET /bookmark_stat_has_manifestations.json
   def index
+    authorize BookmarkStatHasManifestation
     @bookmark_stat_has_manifestations = BookmarkStatHasManifestation.page(params[:page])
 
     respond_to do |format|
@@ -25,11 +27,7 @@ class BookmarkStatHasManifestationsController < ApplicationController
   # GET /bookmark_stat_has_manifestations/new.json
   def new
     @bookmark_stat_has_manifestation = BookmarkStatHasManifestation.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render :json => @bookmark_stat_has_manifestation }
-    end
+    authorize @bookmark_stat_has_manifestation
   end
 
   # GET /bookmark_stat_has_manifestations/1/edit
@@ -40,6 +38,7 @@ class BookmarkStatHasManifestationsController < ApplicationController
   # POST /bookmark_stat_has_manifestations.json
   def create
     @bookmark_stat_has_manifestation = BookmarkStatHasManifestation.new(bookmark_stat_has_manifestation_params)
+    authorize @bookmark_stat_has_manifestation
 
     respond_to do |format|
       if @bookmark_stat_has_manifestation.save
@@ -79,6 +78,11 @@ class BookmarkStatHasManifestationsController < ApplicationController
   end
 
   private
+  def set_bookmark_stat_has_manifestation
+    @bookmark_stat_has_manifestation = BookmarkStatHasManifestation.find(params[:id])
+    authorize @bookmark_stat_has_manifestation
+  end
+
   def bookmark_stat_has_manifestation_params
     params.require(:bookmark_stat_has_manifestation).permit(
       :bookmark_stat_id, :manifestation_id

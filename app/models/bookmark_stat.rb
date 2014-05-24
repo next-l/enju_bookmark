@@ -1,18 +1,20 @@
 class BookmarkStat < ActiveRecord::Base
+  include Statesman::Adapters::ActiveRecordModel
   include CalculateStat
-  default_scope {order('id DESC')}
-  scope :not_calculated, -> {where(:state => 'pending')}
+  scope :not_calculated, -> {in_state(:pending)}
   has_many :bookmark_stat_has_manifestations
   has_many :manifestations, :through => :bookmark_stat_has_manifestations
 
-  state_machine :initial => :pending do
-    before_transition :pending => :completed, :do => :calculate_count
-    event :calculate do
-      transition :pending => :completed
-    end
+  paginates_per 10
+
+  has_many :resource_import_file_transitions
+
+  def state_machine
+    BookmarkStatStateMachine.new(self, transition_class: BookmarkStatTransition)
   end
 
-  paginates_per 10
+  delegate :can_transition_to?, :transition_to!, :transition_to, :current_state,
+    to: :state_machine
 
   def calculate_count
     self.started_at = Time.zone.now
@@ -28,6 +30,11 @@ class BookmarkStat < ActiveRecord::Base
       end
     end
     self.completed_at = Time.zone.now
+  end
+  
+  private
+  def self.transition_class
+    ResourceImportFileTransition
   end
 end
 

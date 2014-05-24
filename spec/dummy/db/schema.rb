@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130421093852) do
+ActiveRecord::Schema.define(version: 20140524142813) do
 
   create_table "accepts", force: true do |t|
     t.integer  "basket_id"
@@ -163,6 +163,18 @@ ActiveRecord::Schema.define(version: 20130421093852) do
 
   add_index "bookmark_stat_has_manifestations", ["bookmark_stat_id"], name: "index_bookmark_stat_has_manifestations_on_bookmark_stat_id"
   add_index "bookmark_stat_has_manifestations", ["manifestation_id"], name: "index_bookmark_stat_has_manifestations_on_manifestation_id"
+
+  create_table "bookmark_stat_transitions", force: true do |t|
+    t.string   "to_state"
+    t.text     "metadata",         default: "{}"
+    t.integer  "sort_key"
+    t.integer  "bookmark_stat_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "bookmark_stat_transitions", ["bookmark_stat_id"], name: "index_bookmark_stat_transitions_on_bookmark_stat_id"
+  add_index "bookmark_stat_transitions", ["sort_key", "bookmark_stat_id"], name: "index_bookmark_stat_transitions_on_sort_key_and_stat_id", unique: true
 
   create_table "bookmark_stats", force: true do |t|
     t.datetime "start_date"
@@ -975,6 +987,7 @@ ActiveRecord::Schema.define(version: 20130421093852) do
     t.string   "name_transcription"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "taggings_count",     default: 0
   end
 
   create_table "use_restrictions", force: true do |t|
