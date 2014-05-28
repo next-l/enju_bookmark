@@ -7,7 +7,7 @@ class BookmarkStat < ActiveRecord::Base
 
   paginates_per 10
 
-  has_many :resource_import_file_transitions
+  has_many :bookmark_stat_transitions
 
   def state_machine
     BookmarkStatStateMachine.new(self, transition_class: BookmarkStatTransition)
@@ -34,7 +34,7 @@ class BookmarkStat < ActiveRecord::Base
   
   private
   def self.transition_class
-    ResourceImportFileTransition
+    BookmarkStatTransition
   end
 end
 
