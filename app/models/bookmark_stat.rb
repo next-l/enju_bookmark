@@ -15,7 +15,7 @@ class BookmarkStat < ActiveRecord::Base
 
   paginates_per 10
 
-  def calculate_count
+  def calculate_count!
     self.started_at = Time.zone.now
     Manifestation.find_each do |manifestation|
       daily_count = Bookmark.manifestations_count(start_date, end_date, manifestation)
@@ -29,6 +29,7 @@ class BookmarkStat < ActiveRecord::Base
       end
     end
     self.completed_at = Time.zone.now
+    transition_to!(:completed)
   end
 end
 
