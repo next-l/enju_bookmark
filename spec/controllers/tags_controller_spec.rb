@@ -5,7 +5,8 @@ describe TagsController do
 
   describe "GET index", :solr => true do
     before do
-      Tag.reindex
+      Tag.__elasticsearch__.create_index!
+      Tag.import
     end
 
     describe "When logged in as Administrator" do

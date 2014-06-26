@@ -4,7 +4,6 @@ class BookmarksController < ApplicationController
   before_action :store_location
   before_action :get_user, :only => :index
   after_action :verify_authorized
-  after_action :solr_commit, :only => [:create, :update, :destroy]
 
   # GET /bookmarks
   # GET /bookmarks.json
@@ -84,7 +83,7 @@ class BookmarksController < ApplicationController
       if @bookmark.save
         flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.bookmark'))
         @bookmark.create_tag_index
-        @bookmark.manifestation.index!
+        @bookmark.manifestation.__elasticsearch__.update_document
         if params[:mode] == 'tag_edit'
           format.html { redirect_to(@bookmark.manifestation) }
           format.json { render :json => @bookmark, :status => :created, :location => @bookmark }
@@ -114,7 +113,7 @@ class BookmarksController < ApplicationController
     respond_to do |format|
       if @bookmark.update_attributes(bookmark_params)
         flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.bookmark'))
-        @bookmark.manifestation.index!
+        @bookmark.manifestation.__elasticsearch__.update_document
         @bookmark.create_tag_index
         case params[:mode]
         when 'tag_edit'

@@ -2,7 +2,6 @@ class TagsController < ApplicationController
   before_action :set_tag, only: [:show, :edit, :update, :destroy]
   before_action :get_user
   after_action :verify_authorized
-  after_action :solr_commit, :only => [:create, :update, :destroy]
 
   def index
     authorize Tag

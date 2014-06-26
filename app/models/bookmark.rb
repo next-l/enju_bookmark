@@ -1,5 +1,7 @@
 # -*- encoding: utf-8 -*-
 class Bookmark < ActiveRecord::Base
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
   scope :bookmarked, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
   scope :user_bookmarks, lambda {|user| where(:user_id => user.id)}
   scope :shared, -> {where(:shared => true)}
@@ -21,19 +23,38 @@ class Bookmark < ActiveRecord::Base
   acts_as_taggable_on :tags
   normalize_attributes :url
 
-  searchable do
-    text :title do
-      manifestation.title
+  index_name "#{name.downcase.pluralize}-#{Rails.env}"
+
+  after_commit on: :create do
+    index_document
+  end
+
+  after_commit on: :update do
+    update_document
+  end
+
+  after_commit on: :destroy do
+    delete_document
+  end
+
+  settings do
+    mappings dynamic: 'false', _routing: {required: false} do
+      indexes :title
+      indexes :url
+      indexes :tag
+      indexes :user_id, type: 'integer'
+      indexes :manifestation_id, type: 'integer'
+      indexes :created_at, type: 'date'
+      indexes :updated_at, type: 'date'
+      indexes :shared, type: 'boolean'
     end
-    string :url
-    string :tag, :multiple => true do
-      tags.pluck(:name)
-    end
-    integer :user_id
-    integer :manifestation_id
-    time :created_at
-    time :updated_at
-    boolean :shared
+  end
+
+  def as_indexed_json(options={})
+    as_json.merge(
+      title: manifestation.title,
+      tag: tags.pluck(:name)
+    )
   end
 
   paginates_per 10
@@ -44,7 +65,7 @@ class Bookmark < ActiveRecord::Base
   end
 
   def reindex_manifestation
-    manifestation.try(:index!)
+    manifestation.__elasticsearch__.update_document if manifestation
   end
 
   def save_tagger
@@ -185,7 +206,7 @@ class Bookmark < ActiveRecord::Base
 
   def create_tag_index
     taggings.each do |tagging|
-      Tag.find(tagging.tag_id).index!
+      Tag.find(tagging.tag_id).__elasticsearch__.update_document
     end
   end
 
@@ -202,7 +223,6 @@ end
 #  url              :string(255)
 #  note             :text
 #  shared           :boolean
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  created_at       :datetime
+#  updated_at       :datetime
 #
-

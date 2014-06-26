@@ -1,9 +1,7 @@
 require 'spec_helper'
-require 'sunspot/rails/spec_helper'
 
 describe BookmarkStatsController do
   fixtures :all
-  disconnect_sunspot
 
   describe "GET index" do
     before(:each) do

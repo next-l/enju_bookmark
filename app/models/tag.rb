@@ -1,4 +1,6 @@
 class Tag < ActiveRecord::Base
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
   has_many :taggings, :dependent => :destroy, :class_name => 'ActsAsTaggableOn::Tagging'
   validates :name, :presence => true
   after_save :save_taggings
@@ -7,17 +9,21 @@ class Tag < ActiveRecord::Base
   extend FriendlyId
   friendly_id :name
 
-  searchable do
-    text :name
-    string :name
-    time :created_at
-    time :updated_at
-    integer :bookmark_ids, :multiple => true do
-      tagged(Bookmark).compact.collect(&:id)
+  settings do
+    mappings dynamic: 'false', _routing: {required: false} do
+      indexes :name
+      indexes :created_at, type: 'date'
+      indexes :updated_at, type: 'date'
+      indexes :bookmark_ids, type: 'integer'
+      indexes :taggings_count, type: 'integer'
     end
-    integer :taggings_count do
-      taggings.size
-    end
+  end
+
+  def as_indexed_json(options={})
+    as_json.merge(
+      bookmark_ids: tagged(Bookmark).compact.collect(&:id),
+      taggings_count: taggings.size
+    )
   end
 
   paginates_per 10
@@ -50,7 +56,7 @@ end
 #  id                 :integer          not null, primary key
 #  name               :string(255)
 #  name_transcription :string(255)
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
+#  created_at         :datetime
+#  updated_at         :datetime
+#  taggings_count     :integer          default(0)
 #
-

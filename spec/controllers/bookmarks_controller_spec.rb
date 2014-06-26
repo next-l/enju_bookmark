@@ -6,7 +6,11 @@ describe BookmarksController do
 
   describe "GET index", :solr => true do
     before do
-      Bookmark.reindex
+      Manifestation.__elasticsearch__.create_index!
+      Manifestation.import
+      Bookmark.__elasticsearch__.create_index!
+      Bookmark.import
+      sleep 1
     end
 
     describe "When logged in as Administrator" do
