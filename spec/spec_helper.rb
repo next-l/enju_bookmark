@@ -44,6 +44,8 @@ RSpec.configure do |config|
   config.after :suite do
     Elasticsearch::Extensions::Test::Cluster.stop(port: 9200) if Elasticsearch::Extensions::Test::Cluster.running?(on: 9200)
   end
+
+  config.infer_spec_type_from_file_location!
 end
 
 FactoryGirl.definition_file_paths << "#{::Rails.root}/../../spec/factories"
