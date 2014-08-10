@@ -9,6 +9,8 @@ module EnjuBookmark
         include InstanceMethods
         has_many :bookmarks, :dependent => :destroy
         acts_as_tagger
+
+        attr_accessible :share_bookmarks
       end
     end
 
