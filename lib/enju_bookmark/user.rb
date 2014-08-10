@@ -10,7 +10,7 @@ module EnjuBookmark
         has_many :bookmarks, :dependent => :destroy
         acts_as_tagger
 
-        attr_accessible :share_bookmarks
+        attr_accessible :share_bookmarks, as: :admin
       end
     end
 
