@@ -11,7 +11,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns all bookmark_stat_has_manifestations as @bookmark_stat_has_manifestations" do
         get :index
@@ -20,7 +20,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns all bookmark_stat_has_manifestations as @bookmark_stat_has_manifestations" do
         get :index
@@ -29,7 +29,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Manifestation" do
-      login_user
+      login_fixture_user
 
       it "assigns all bookmark_stat_has_manifestations as @bookmark_stat_has_manifestations" do
         get :index
@@ -49,7 +49,7 @@ describe BookmarkStatHasManifestationsController do
 
   describe "GET show" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
         bookmark_stat_has_manifestation = FactoryGirl.create(:bookmark_stat_has_manifestation)
@@ -59,7 +59,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
         bookmark_stat_has_manifestation = FactoryGirl.create(:bookmark_stat_has_manifestation)
@@ -69,7 +69,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Manifestation" do
-      login_user
+      login_fixture_user
 
       it "assigns the requested bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
         bookmark_stat_has_manifestation = FactoryGirl.create(:bookmark_stat_has_manifestation)
@@ -89,7 +89,7 @@ describe BookmarkStatHasManifestationsController do
 
   describe "GET new" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
         get :new
@@ -99,7 +99,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "should not assign the requested bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
         get :new
@@ -109,7 +109,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Manifestation" do
-      login_user
+      login_fixture_user
 
       it "should not assign the requested bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
         get :new
@@ -129,7 +129,7 @@ describe BookmarkStatHasManifestationsController do
 
   describe "GET edit" do
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "assigns the requested bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
         bookmark_stat_has_manifestation = FactoryGirl.create(:bookmark_stat_has_manifestation)
@@ -139,7 +139,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "assigns the requested bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
         bookmark_stat_has_manifestation = FactoryGirl.create(:bookmark_stat_has_manifestation)
@@ -149,7 +149,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Manifestation" do
-      login_user
+      login_fixture_user
 
       it "assigns the requested bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
         bookmark_stat_has_manifestation = FactoryGirl.create(:bookmark_stat_has_manifestation)
@@ -174,7 +174,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       describe "with valid params" do
         it "assigns a newly created bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
@@ -202,7 +202,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       describe "with valid params" do
         it "assigns a newly created bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
@@ -230,7 +230,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Manifestation" do
-      login_user
+      login_fixture_user
 
       describe "with valid params" do
         it "assigns a newly created bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
@@ -292,7 +292,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       describe "with valid params" do
         it "updates the requested bookmark_stat_has_manifestation" do
@@ -315,7 +315,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       describe "with valid params" do
         it "assigns the requested bookmark_stat_has_manifestation as @bookmark_stat_has_manifestation" do
@@ -342,7 +342,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Manifestation" do
-      login_user
+      login_fixture_user
 
       describe "with valid params" do
         it "updates the requested bookmark_stat_has_manifestation" do
@@ -391,7 +391,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Administrator" do
-      login_admin
+      login_fixture_admin
 
       it "destroys the requested bookmark_stat_has_manifestation" do
         delete :destroy, :id => @bookmark_stat_has_manifestation.id
@@ -404,7 +404,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Librarian" do
-      login_librarian
+      login_fixture_librarian
 
       it "destroys the requested bookmark_stat_has_manifestation" do
         delete :destroy, :id => @bookmark_stat_has_manifestation.id
@@ -417,7 +417,7 @@ describe BookmarkStatHasManifestationsController do
     end
 
     describe "When logged in as Manifestation" do
-      login_user
+      login_fixture_user
 
       it "destroys the requested bookmark_stat_has_manifestation" do
         delete :destroy, :id => @bookmark_stat_has_manifestation.id

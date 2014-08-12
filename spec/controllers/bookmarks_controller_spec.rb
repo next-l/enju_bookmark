@@ -318,10 +318,7 @@ describe BookmarksController do
     end
 
     describe "When logged in as Administrator" do
-      before(:each) do
-        @user = FactoryGirl.create(:admin)
-        sign_in @user
-      end
+      login_fixture_admin
 
       describe "with valid params" do
         it "updates the requested bookmark" do
@@ -348,10 +345,7 @@ describe BookmarksController do
     end
 
     describe "When logged in as Librarian" do
-      before(:each) do
-        @user = FactoryGirl.create(:librarian)
-        sign_in @user
-      end
+      login_fixture_librarian
 
       describe "with valid params" do
         it "updates the requested bookmark" do

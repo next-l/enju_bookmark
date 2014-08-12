@@ -6,7 +6,7 @@ describe Bookmark do
   fixtures :all
 
   it "should be shelved" do
-    bookmarks(:bookmark_00001).shelved?.should be_true
+    bookmarks(:bookmark_00001).shelved?.should be_truthy
   end
 
   it "should create bookmark with url" do

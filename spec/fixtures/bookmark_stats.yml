@@ -5,14 +5,12 @@ bookmark_stat_00001:
   start_date: 2008-12-13 00:16:14
   end_date: 2008-12-14 00:16:14
   note: MyText
-  state: pending
 
 bookmark_stat_00002:
   id: 2
   start_date: 2008-12-13 00:16:14
   end_date: 2008-12-14 00:16:14
   note: MyText
-  state: pending
 
 # == Schema Information
 #
@@ -28,4 +26,3 @@ bookmark_stat_00002:
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
-

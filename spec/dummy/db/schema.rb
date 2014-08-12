@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130221154434) do
+ActiveRecord::Schema.define(:version => 20140812093836) do
 
   create_table "accepts", :force => true do |t|
     t.integer  "basket_id"
@@ -24,6 +24,18 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
   add_index "accepts", ["basket_id"], :name => "index_accepts_on_basket_id"
   add_index "accepts", ["item_id"], :name => "index_accepts_on_item_id"
 
+  create_table "agent_import_file_transitions", :force => true do |t|
+    t.string   "to_state"
+    t.text     "metadata",             :default => "{}"
+    t.integer  "sort_key"
+    t.integer  "agent_import_file_id"
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
+  end
+
+  add_index "agent_import_file_transitions", ["agent_import_file_id"], :name => "index_agent_import_file_transitions_on_agent_import_file_id"
+  add_index "agent_import_file_transitions", ["sort_key", "agent_import_file_id"], :name => "index_agent_import_file_transitions_on_sort_key_and_file_id", :unique => true
+
   create_table "agent_import_files", :force => true do |t|
     t.integer  "parent_id"
     t.string   "content_type"
@@ -31,7 +43,6 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
     t.integer  "user_id"
     t.text     "note"
     t.datetime "executed_at"
-    t.string   "state"
     t.string   "agent_import_file_name"
     t.string   "agent_import_content_type"
     t.integer  "agent_import_file_size"
@@ -41,10 +52,10 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
     t.string   "agent_import_fingerprint"
     t.text     "error_message"
     t.string   "edit_mode"
+    t.string   "user_encoding"
   end
 
   add_index "agent_import_files", ["parent_id"], :name => "index_agent_import_files_on_parent_id"
-  add_index "agent_import_files", ["state"], :name => "index_agent_import_files_on_state"
   add_index "agent_import_files", ["user_id"], :name => "index_agent_import_files_on_user_id"
 
   create_table "agent_import_results", :force => true do |t|
@@ -127,7 +138,6 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
     t.text     "note"
     t.integer  "required_role_id",                    :default => 1, :null => false
     t.integer  "required_score",                      :default => 0, :null => false
-    t.string   "state"
     t.text     "email"
     t.text     "url"
     t.text     "full_name_alternative_transcription"
@@ -163,6 +173,18 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
 
   add_index "bookmark_stat_has_manifestations", ["bookmark_stat_id"], :name => "index_bookmark_stat_has_manifestations_on_bookmark_stat_id"
   add_index "bookmark_stat_has_manifestations", ["manifestation_id"], :name => "index_bookmark_stat_has_manifestations_on_manifestation_id"
+
+  create_table "bookmark_stat_transitions", :force => true do |t|
+    t.string   "to_state"
+    t.text     "metadata",         :default => "{}"
+    t.integer  "sort_key"
+    t.integer  "bookmark_stat_id"
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+  end
+
+  add_index "bookmark_stat_transitions", ["bookmark_stat_id"], :name => "index_bookmark_stat_transitions_on_bookmark_stat_id"
+  add_index "bookmark_stat_transitions", ["sort_key", "bookmark_stat_id"], :name => "index_bookmark_stat_transitions_on_sort_key_and_stat_id", :unique => true
 
   create_table "bookmark_stats", :force => true do |t|
     t.datetime "start_date"
@@ -415,9 +437,42 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
     t.datetime "updated_at",   :null => false
   end
 
+  create_table "identifier_types", :force => true do |t|
+    t.string   "name"
+    t.text     "display_name"
+    t.text     "note"
+    t.integer  "position"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  create_table "identifiers", :force => true do |t|
+    t.string   "body",               :null => false
+    t.integer  "identifier_type_id", :null => false
+    t.integer  "manifestation_id"
+    t.boolean  "primary"
+    t.integer  "position"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
+  end
+
+  add_index "identifiers", ["body", "identifier_type_id"], :name => "index_identifiers_on_body_and_identifier_type_id"
+  add_index "identifiers", ["manifestation_id"], :name => "index_identifiers_on_manifestation_id"
+
+  create_table "import_request_transitions", :force => true do |t|
+    t.string   "to_state"
+    t.text     "metadata",          :default => "{}"
+    t.integer  "sort_key"
+    t.integer  "import_request_id"
+    t.datetime "created_at",                          :null => false
+    t.datetime "updated_at",                          :null => false
+  end
+
+  add_index "import_request_transitions", ["import_request_id"], :name => "index_import_request_transitions_on_import_request_id"
+  add_index "import_request_transitions", ["sort_key", "import_request_id"], :name => "index_import_request_transitions_on_sort_key_and_request_id", :unique => true
+
   create_table "import_requests", :force => true do |t|
     t.string   "isbn"
-    t.string   "state"
     t.integer  "manifestation_id"
     t.integer  "user_id"
     t.datetime "created_at",       :null => false
@@ -441,26 +496,30 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
   create_table "items", :force => true do |t|
     t.string   "call_number"
     t.string   "item_identifier"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
     t.datetime "deleted_at"
-    t.integer  "shelf_id",            :default => 1,     :null => false
-    t.boolean  "include_supplements", :default => false, :null => false
+    t.integer  "shelf_id",                :default => 1,     :null => false
+    t.boolean  "include_supplements",     :default => false, :null => false
     t.text     "note"
     t.string   "url"
     t.integer  "price"
-    t.integer  "lock_version",        :default => 0,     :null => false
-    t.integer  "required_role_id",    :default => 1,     :null => false
-    t.string   "state"
-    t.integer  "required_score",      :default => 0,     :null => false
+    t.integer  "lock_version",            :default => 0,     :null => false
+    t.integer  "required_role_id",        :default => 1,     :null => false
+    t.integer  "required_score",          :default => 0,     :null => false
     t.datetime "acquired_at"
     t.integer  "bookstore_id"
     t.integer  "budget_type_id"
+    t.string   "binding_item_identifier"
+    t.string   "binding_call_number"
+    t.datetime "binded_at"
     t.integer  "manifestation_id"
   end
 
+  add_index "items", ["binding_item_identifier"], :name => "index_items_on_binding_item_identifier"
   add_index "items", ["bookstore_id"], :name => "index_items_on_bookstore_id"
   add_index "items", ["item_identifier"], :name => "index_items_on_item_identifier"
+  add_index "items", ["manifestation_id"], :name => "index_items_on_manifestation_id"
   add_index "items", ["required_role_id"], :name => "index_items_on_required_role_id"
   add_index "items", ["shelf_id"], :name => "index_items_on_shelf_id"
 
@@ -530,6 +589,7 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
     t.text     "my_networks"
     t.text     "login_banner"
     t.text     "note"
+    t.integer  "valid_period_for_new_user",   :default => 365,                      :null => false
     t.integer  "country_id"
     t.datetime "created_at",                                                        :null => false
     t.datetime "updated_at",                                                        :null => false
@@ -617,13 +677,6 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
     t.integer  "height"
     t.integer  "width"
     t.integer  "depth"
-    t.string   "isbn"
-    t.string   "isbn10"
-    t.string   "wrong_isbn"
-    t.string   "nbn"
-    t.string   "lccn"
-    t.string   "oclc_number"
-    t.string   "issn"
     t.integer  "price"
     t.text     "fulltext"
     t.string   "volume_number_string"
@@ -634,7 +687,6 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
     t.boolean  "repository_content",              :default => false, :null => false
     t.integer  "lock_version",                    :default => 0,     :null => false
     t.integer  "required_role_id",                :default => 1,     :null => false
-    t.string   "state"
     t.integer  "required_score",                  :default => 0,     :null => false
     t.integer  "frequency_id",                    :default => 1,     :null => false
     t.boolean  "subscription_master",             :default => false, :null => false
@@ -660,18 +712,16 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
     t.integer  "year_of_publication"
     t.text     "attachment_meta"
     t.integer  "month_of_publication"
+    t.boolean  "fulltext_content"
+    t.string   "doi"
+    t.boolean  "periodical"
+    t.text     "statement_of_responsibility"
   end
 
   add_index "manifestations", ["access_address"], :name => "index_manifestations_on_access_address"
-  add_index "manifestations", ["carrier_type_id"], :name => "index_manifestations_on_carrier_type_id"
-  add_index "manifestations", ["frequency_id"], :name => "index_manifestations_on_frequency_id"
-  add_index "manifestations", ["isbn"], :name => "index_manifestations_on_isbn"
-  add_index "manifestations", ["issn"], :name => "index_manifestations_on_issn"
-  add_index "manifestations", ["lccn"], :name => "index_manifestations_on_lccn"
+  add_index "manifestations", ["date_of_publication"], :name => "index_manifestations_on_date_of_publication"
+  add_index "manifestations", ["doi"], :name => "index_manifestations_on_doi"
   add_index "manifestations", ["manifestation_identifier"], :name => "index_manifestations_on_manifestation_identifier"
-  add_index "manifestations", ["nbn"], :name => "index_manifestations_on_nbn"
-  add_index "manifestations", ["oclc_number"], :name => "index_manifestations_on_oclc_number"
-  add_index "manifestations", ["required_role_id"], :name => "index_manifestations_on_required_role_id"
   add_index "manifestations", ["updated_at"], :name => "index_manifestations_on_updated_at"
 
   create_table "medium_of_performances", :force => true do |t|
@@ -733,6 +783,25 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
 
   add_index "produces", ["agent_id"], :name => "index_produces_on_agent_id"
   add_index "produces", ["manifestation_id"], :name => "index_produces_on_manifestation_id"
+
+  create_table "profiles", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "user_group_id"
+    t.integer  "library_id"
+    t.string   "locale"
+    t.string   "user_number"
+    t.text     "full_name"
+    t.text     "note"
+    t.text     "keyword_list"
+    t.integer  "required_role_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.datetime "expired_at"
+    t.boolean  "share_bookmarks"
+  end
+
+  add_index "profiles", ["user_id"], :name => "index_profiles_on_user_id"
+  add_index "profiles", ["user_number"], :name => "index_profiles_on_user_number", :unique => true
 
   create_table "realize_types", :force => true do |t|
     t.string   "name"
@@ -816,6 +885,41 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
   add_index "reserves", ["request_status_type_id"], :name => "index_reserves_on_request_status_type_id"
   add_index "reserves", ["user_id"], :name => "index_reserves_on_user_id"
 
+  create_table "resource_export_file_transitions", :force => true do |t|
+    t.string   "to_state"
+    t.text     "metadata",                :default => "{}"
+    t.integer  "sort_key"
+    t.integer  "resource_export_file_id"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+  end
+
+  add_index "resource_export_file_transitions", ["resource_export_file_id"], :name => "index_resource_export_file_transitions_on_file_id"
+  add_index "resource_export_file_transitions", ["sort_key", "resource_export_file_id"], :name => "index_resource_export_file_transitions_on_sort_key_and_file_id", :unique => true
+
+  create_table "resource_export_files", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "resource_export_file_name"
+    t.string   "resource_export_content_type"
+    t.integer  "resource_export_file_size"
+    t.datetime "resource_export_updated_at"
+    t.datetime "executed_at"
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
+  create_table "resource_import_file_transitions", :force => true do |t|
+    t.string   "to_state"
+    t.text     "metadata",                :default => "{}"
+    t.integer  "sort_key"
+    t.integer  "resource_import_file_id"
+    t.datetime "created_at",                                :null => false
+    t.datetime "updated_at",                                :null => false
+  end
+
+  add_index "resource_import_file_transitions", ["resource_import_file_id"], :name => "index_resource_import_file_transitions_on_file_id"
+  add_index "resource_import_file_transitions", ["sort_key", "resource_import_file_id"], :name => "index_resource_import_file_transitions_on_sort_key_and_file_id", :unique => true
+
   create_table "resource_import_files", :force => true do |t|
     t.integer  "parent_id"
     t.string   "content_type"
@@ -823,7 +927,6 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
     t.integer  "user_id"
     t.text     "note"
     t.datetime "executed_at"
-    t.string   "state"
     t.string   "resource_import_file_name"
     t.string   "resource_import_content_type"
     t.integer  "resource_import_file_size"
@@ -833,10 +936,11 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
     t.string   "edit_mode"
     t.string   "resource_import_fingerprint"
     t.text     "error_message"
+    t.string   "user_encoding"
+    t.integer  "default_shelf_id"
   end
 
   add_index "resource_import_files", ["parent_id"], :name => "index_resource_import_files_on_parent_id"
-  add_index "resource_import_files", ["state"], :name => "index_resource_import_files_on_state"
   add_index "resource_import_files", ["user_id"], :name => "index_resource_import_files_on_user_id"
 
   create_table "resource_import_results", :force => true do |t|
@@ -853,12 +957,13 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
   add_index "resource_import_results", ["resource_import_file_id"], :name => "index_resource_import_results_on_resource_import_file_id"
 
   create_table "roles", :force => true do |t|
-    t.string   "name"
-    t.text     "display_name"
+    t.string   "name",                        :null => false
+    t.string   "display_name"
     t.text     "note"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "score",        :default => 0, :null => false
     t.integer  "position"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
   end
 
   create_table "search_engines", :force => true do |t|
@@ -916,8 +1021,8 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
     t.text     "title_subseries"
     t.text     "numbering_subseries"
     t.integer  "position"
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
     t.text     "title_transcription"
     t.text     "title_alternative"
     t.string   "series_statement_identifier"
@@ -926,9 +1031,15 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
     t.integer  "manifestation_id"
     t.text     "note"
     t.text     "title_subseries_transcription"
+    t.text     "creator_string"
+    t.text     "volume_number_string"
+    t.text     "volume_number_transcription_string"
+    t.boolean  "series_master"
+    t.integer  "root_manifestation_id"
   end
 
   add_index "series_statements", ["manifestation_id"], :name => "index_series_statements_on_manifestation_id"
+  add_index "series_statements", ["root_manifestation_id"], :name => "index_series_statements_on_root_manifestation_id"
   add_index "series_statements", ["series_statement_identifier"], :name => "index_series_statements_on_series_statement_identifier"
 
   create_table "shelves", :force => true do |t|
@@ -988,8 +1099,9 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
   create_table "tags", :force => true do |t|
     t.string   "name"
     t.string   "name_transcription"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+    t.integer  "taggings_count",     :default => 0
   end
 
   create_table "use_restrictions", :force => true do |t|
@@ -1013,6 +1125,29 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
   end
 
   add_index "user_checkout_stats", ["state"], :name => "index_user_checkout_stats_on_state"
+
+  create_table "user_export_file_transitions", :force => true do |t|
+    t.string   "to_state"
+    t.text     "metadata",            :default => "{}"
+    t.integer  "sort_key"
+    t.integer  "user_export_file_id"
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+  end
+
+  add_index "user_export_file_transitions", ["sort_key", "user_export_file_id"], :name => "index_user_export_file_transitions_on_sort_key_and_file_id", :unique => true
+  add_index "user_export_file_transitions", ["user_export_file_id"], :name => "index_user_export_file_transitions_on_file_id"
+
+  create_table "user_export_files", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "user_export_file_name"
+    t.string   "user_export_content_type"
+    t.integer  "user_export_file_size"
+    t.datetime "user_export_updated_at"
+    t.datetime "executed_at"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+  end
 
   create_table "user_group_has_checkout_types", :force => true do |t|
     t.integer  "user_group_id",                                      :null => false
@@ -1056,6 +1191,47 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
     t.datetime "updated_at", :null => false
   end
 
+  add_index "user_has_roles", ["role_id"], :name => "index_user_has_roles_on_role_id"
+  add_index "user_has_roles", ["user_id"], :name => "index_user_has_roles_on_user_id"
+
+  create_table "user_import_file_transitions", :force => true do |t|
+    t.string   "to_state"
+    t.text     "metadata",            :default => "{}"
+    t.integer  "sort_key"
+    t.integer  "user_import_file_id"
+    t.datetime "created_at",                            :null => false
+    t.datetime "updated_at",                            :null => false
+  end
+
+  add_index "user_import_file_transitions", ["sort_key", "user_import_file_id"], :name => "index_user_import_file_transitions_on_sort_key_and_file_id", :unique => true
+  add_index "user_import_file_transitions", ["user_import_file_id"], :name => "index_user_import_file_transitions_on_user_import_file_id"
+
+  create_table "user_import_files", :force => true do |t|
+    t.integer  "user_id"
+    t.text     "note"
+    t.datetime "executed_at"
+    t.string   "user_import_file_name"
+    t.string   "user_import_content_type"
+    t.string   "user_import_file_size"
+    t.datetime "user_import_updated_at"
+    t.string   "user_import_fingerprint"
+    t.string   "edit_mode"
+    t.text     "error_message"
+    t.datetime "created_at",               :null => false
+    t.datetime "updated_at",               :null => false
+    t.string   "user_encoding"
+    t.integer  "default_library_id"
+    t.integer  "default_user_group_id"
+  end
+
+  create_table "user_import_results", :force => true do |t|
+    t.integer  "user_import_file_id"
+    t.integer  "user_id"
+    t.text     "body"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
+
   create_table "user_reserve_stats", :force => true do |t|
     t.datetime "start_date"
     t.datetime "end_date"
@@ -1088,17 +1264,9 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
     t.string   "checkout_icalendar_token"
     t.boolean  "share_bookmarks"
     t.string   "username"
-    t.string   "user_number"
-    t.string   "state"
-    t.string   "locale"
     t.datetime "deleted_at"
     t.datetime "expired_at"
-    t.integer  "library_id",               :default => 1,     :null => false
-    t.integer  "required_role_id",         :default => 1,     :null => false
-    t.integer  "user_group_id",            :default => 1,     :null => false
-    t.text     "note"
-    t.text     "keyword_list"
-    t.integer  "failed_attempts"
+    t.integer  "failed_attempts",          :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
     t.datetime "confirmed_at"
@@ -1108,8 +1276,6 @@ ActiveRecord::Schema.define(:version => 20130221154434) do
   add_index "users", ["email"], :name => "index_users_on_email"
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["unlock_token"], :name => "index_users_on_unlock_token", :unique => true
-  add_index "users", ["user_group_id"], :name => "index_users_on_user_group_id"
-  add_index "users", ["user_number"], :name => "index_users_on_user_number", :unique => true
   add_index "users", ["username"], :name => "index_users_on_username", :unique => true
 
   create_table "versions", :force => true do |t|

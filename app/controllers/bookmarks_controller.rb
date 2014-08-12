@@ -17,7 +17,7 @@ class BookmarksController < ApplicationController
     end
     user = @user
     unless current_user.has_role?('Librarian')
-      if user and user != current_user and !user.try(:share_bookmarks)
+      if user and user != current_user and !user.profile.try(:share_bookmarks)
         access_denied; return
       end
       if current_user == @user
