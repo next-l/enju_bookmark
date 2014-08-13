@@ -36,7 +36,7 @@ class Tag < ActiveRecord::Base
   end
 
   def save_taggings
-    self.taggings.collect(&:taggable).each do |t| t.save end
+    taggings.collect(&:taggable).each do |t| t.save end
   end
 
   def tagged(taggable_type)

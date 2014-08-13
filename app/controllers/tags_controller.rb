@@ -2,7 +2,6 @@ class TagsController < ApplicationController
   load_and_authorize_resource
   before_filter :get_user
   after_filter :solr_commit, :only => [:create, :update, :destroy]
-  cache_sweeper :bookmark_sweeper, :only => [:create, :update, :destroy]
 
   def index
     session[:params] ={} unless session[:params]
