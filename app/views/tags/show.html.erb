@@ -1,5 +1,5 @@
 <div id="content_detail" class="ui-corner-all ui-widget-content">
-  <h1 class="title"><%= t('page.showing', :model => t('activerecord.models.tag')) -%></h1>
+  <h1 class="title"><%= t('page.showing', model: t('activerecord.models.tag')) -%></h1>
   <div id="content_list">
 <p id="notice"><%= notice %></p>
 
@@ -30,9 +30,9 @@
   <ul>
     <li><%= link_to t('page.back'), :back -%></li>
     <li><%= link_to t('page.edit'), edit_tag_path(@tag.name) -%></li>
-    <li><%= link_to t('page.search_resource', :model => t('activerecord.models.resource')), manifestations_path(:tag => @tag.name) -%></li>
+    <li><%= link_to t('page.search_resource', model: t('activerecord.models.resource')), manifestations_path(:tag => @tag.name) -%></li>
     <%- if user_signed_in? -%>
-      <li><%= link_to t('page.search_resource', :model => t('activerecord.models.bookmark')), user_bookmarks_path(current_user, :tag => @tag.name) -%></li>
+      <li><%= link_to t('page.search_resource', model: t('activerecord.models.bookmark')), user_bookmarks_path(current_user, :tag => @tag.name) -%></li>
     <%- end -%>
   </ul>
 </div>

@@ -1,5 +1,5 @@
 <div id="content_detail" class="ui-corner-all ui-widget-content">
-<h1 class="title"><%= t('page.listing', :model => t('activerecord.models.bookmark_stat_has_manifestation')) -%></h1>
+<h1 class="title"><%= t('page.listing', model: t('activerecord.models.bookmark_stat_has_manifestation')) -%></h1>
 <div id="content_list">
 
 <table class="table table-striped index">
@@ -16,7 +16,7 @@
     <td><%= bookmark_stat_has_manifestation.bookmarks_count -%></td>
     <td><%= link_to t('page.show'), bookmark_stat_has_manifestation -%></td>
     <td><%= link_to t('page.edit'), edit_bookmark_stat_has_manifestation_path(bookmark_stat_has_manifestation) -%></td>
-    <td><%= link_to t('page.destroy'), bookmark_stat_has_manifestation, :data => {:confirm => t('page.are_you_sure')}, :method => :delete -%></td>
+    <td><%= link_to t('page.destroy'), bookmark_stat_has_manifestation, data: {confirm: t('page.are_you_sure')}, method: :delete -%></td>
   </tr>
 <%- end -%>
 </table>
@@ -27,6 +27,6 @@
 
 <div id="submenu" class="ui-corner-all ui-widget-content">
   <ul>
-    <li><%= link_to t('page.new', :model => t('activerecord.models.bookmark_stat_has_manifestation')), new_bookmark_stat_has_manifestation_path -%></li>
+    <li><%= link_to t('page.new', model: t('activerecord.models.bookmark_stat_has_manifestation')), new_bookmark_stat_has_manifestation_path -%></li>
   </ul>
 </div>
