@@ -3,9 +3,9 @@ class BookmarkStat < ActiveRecord::Base
   include CalculateStat
   attr_accessible :start_date, :end_date, :note
   default_scope :order => 'id DESC'
-  scope :not_calculated, where(:state => 'pending')
+  scope :not_calculated, -> {in_state(:pending)}
   has_many :bookmark_stat_has_manifestations
-  has_many :manifestations, :through => :bookmark_stat_has_manifestations
+  has_many :manifestations, through: :bookmark_stat_has_manifestations
 
   paginates_per 10
 
@@ -51,7 +51,6 @@ end
 #  started_at   :datetime
 #  completed_at :datetime
 #  note         :text
-#  state        :string(255)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #

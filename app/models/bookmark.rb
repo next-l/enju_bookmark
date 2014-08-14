@@ -5,7 +5,7 @@ class Bookmark < ActiveRecord::Base
   scope :user_bookmarks, lambda {|user| where(:user_id => user.id)}
   scope :shared, where(:shared => true)
   belongs_to :manifestation, touch: true
-  belongs_to :user #, :counter_cache => true, :validate => true
+  belongs_to :user #, :counter_cache => true, validate: true
 
   validates_presence_of :user, :title
   validates_presence_of :url, :on => :create
@@ -52,7 +52,7 @@ class Bookmark < ActiveRecord::Base
     #user.tag(self, :with => tag_list, :on => :tags)
     taggings.each do |tagging|
       tagging.tagger = user
-      tagging.save(:validate => false)
+      tagging.save(validate: false)
     end
   end
 

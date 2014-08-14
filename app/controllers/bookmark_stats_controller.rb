@@ -1,6 +1,6 @@
 class BookmarkStatsController < ApplicationController
   load_and_authorize_resource
-  after_filter :convert_charset, :only => :show
+  after_filter :convert_charset, only: :show
 
   # GET /bookmark_stats
   # GET /bookmark_stats.json
@@ -9,14 +9,14 @@ class BookmarkStatsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @bookmark_stats }
+      format.json { render json: @bookmark_stats }
     end
   end
 
   # GET /bookmark_stats/1
   # GET /bookmark_stats/1.json
   def show
-    if params[:format] == 'csv'
+    if params[:format] == 'txt'
       per_page = 65534
     else
       per_page = BookmarkStatHasManifestation.default_per_page
@@ -25,8 +25,8 @@ class BookmarkStatsController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @bookmark_stat }
-      format.csv
+      format.json { render json: @bookmark_stat }
+      format.txt
     end
   end
 
@@ -37,7 +37,7 @@ class BookmarkStatsController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render :json => @bookmark_stat }
+      format.json { render json: @bookmark_stat }
     end
   end
 
@@ -52,11 +52,11 @@ class BookmarkStatsController < ApplicationController
 
     respond_to do |format|
       if @bookmark_stat.save
-        format.html { redirect_to @bookmark_stat, :notice => t('controller.successfully_created', :model => t('activerecord.models.bookmark_stat')) }
-        format.json { render :json => @bookmark_stat, :status => :created, :location => @bookmark_stat }
+        format.html { redirect_to @bookmark_stat, notice: t('controller.successfully_created', model: t('activerecord.models.bookmark_stat')) }
+        format.json { render json: @bookmark_stat, status: :created, location: @bookmark_stat }
       else
-        format.html { render :action => "new" }
-        format.json { render :json => @bookmark_stat.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @bookmark_stat.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -66,11 +66,11 @@ class BookmarkStatsController < ApplicationController
   def update
     respond_to do |format|
       if @bookmark_stat.update_attributes(params[:bookmark_stat])
-        format.html { redirect_to @bookmark_stat, :notice => t('controller.successfully_updated', :model => t('activerecord.models.bookmark_stat')) }
+        format.html { redirect_to @bookmark_stat, notice: t('controller.successfully_updated', model: t('activerecord.models.bookmark_stat')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @bookmark_stat.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @bookmark_stat.errors, status: :unprocessable_entity }
       end
     end
   end

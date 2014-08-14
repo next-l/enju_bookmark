@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 class BookmarksController < ApplicationController
   before_filter :store_location
-  load_and_authorize_resource :except => :index
-  authorize_resource :only => :index
-  before_filter :get_user, :only => :index
-  after_filter :solr_commit, :only => [:create, :update, :destroy]
+  load_and_authorize_resource except: :index
+  authorize_resource only: :index
+  before_filter :get_user, only: :index
+  after_filter :solr_commit, only: [:create, :update, :destroy]
 
   # GET /bookmarks
   # GET /bookmarks.json
@@ -41,7 +41,7 @@ class BookmarksController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @bookmarks }
+      format.json { render json: @bookmarks }
     end
   end
 
@@ -50,7 +50,7 @@ class BookmarksController < ApplicationController
   def show
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @bookmark }
+      format.json { render json: @bookmark }
     end
   end
 
@@ -81,20 +81,20 @@ class BookmarksController < ApplicationController
 
     respond_to do |format|
       if @bookmark.save
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.bookmark'))
+        flash[:notice] = t('controller.successfully_created', model: t('activerecord.models.bookmark'))
         @bookmark.create_tag_index
         @bookmark.manifestation.index!
         if params[:mode] == 'tag_edit'
           format.html { redirect_to(@bookmark.manifestation) }
-          format.json { render :json => @bookmark, :status => :created, :location => @bookmark }
+          format.json { render json: @bookmark, status: :created, location: @bookmark }
         else
           format.html { redirect_to(@bookmark) }
-          format.json { render :json => @bookmark, :status => :created, :location => @bookmark }
+          format.json { render json: @bookmark, status: :created, location: @bookmark }
         end
       else
         @user = current_user
-        format.html { render :action => "new" }
-        format.json { render :json => @bookmark.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @bookmark.errors, status: :unprocessable_entity }
       end
     end
 
@@ -112,7 +112,7 @@ class BookmarksController < ApplicationController
 
     respond_to do |format|
       if @bookmark.update_attributes(params[:bookmark])
-        flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.bookmark'))
+        flash[:notice] = t('controller.successfully_updated', model: t('activerecord.models.bookmark'))
         @bookmark.manifestation.index!
         @bookmark.create_tag_index
         case params[:mode]
@@ -124,8 +124,8 @@ class BookmarksController < ApplicationController
           format.json { head :no_content }
         end
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @bookmark.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @bookmark.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -134,17 +134,17 @@ class BookmarksController < ApplicationController
   # DELETE /bookmarks/1.json
   def destroy
     @bookmark.destroy
-    flash[:notice] = t('controller.successfully_deleted', :model => t('activerecord.models.bookmark'))
+    flash[:notice] = t('controller.successfully_deleted', model: t('activerecord.models.bookmark'))
     @bookmark.create_tag_index
 
     if @user
       respond_to do |format|
-        format.html { redirect_to user_bookmarks_url(@user) }
+        format.html { redirect_to bookmarks_url(user_id: @user.username) }
         format.json { head :no_content }
       end
     else
       respond_to do |format|
-        format.html { redirect_to user_bookmarks_url(@bookmark.user) }
+        format.html { redirect_to bookmarks_url(user_id: @bookmark.user.username) }
         format.json { head :no_content }
       end
     end

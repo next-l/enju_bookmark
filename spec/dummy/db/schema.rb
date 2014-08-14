@@ -190,12 +190,9 @@ ActiveRecord::Schema.define(:version => 20140812093836) do
     t.datetime "started_at"
     t.datetime "completed_at"
     t.text     "note"
-    t.string   "state"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
-
-  add_index "bookmark_stats", ["state"], :name => "index_bookmark_stats_on_state"
 
   create_table "bookmarks", :force => true do |t|
     t.integer  "user_id",          :null => false
@@ -794,7 +791,6 @@ ActiveRecord::Schema.define(:version => 20140812093836) do
     t.integer  "required_role_id"
     t.datetime "created_at",       :null => false
     t.datetime "updated_at",       :null => false
-    t.datetime "expired_at"
     t.boolean  "share_bookmarks"
   end
 

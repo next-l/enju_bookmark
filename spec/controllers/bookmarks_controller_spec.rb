@@ -466,7 +466,7 @@ describe BookmarksController do
 
       it "redirects to the bookmarks list" do
         delete :destroy, :id => @bookmark.id
-        response.should redirect_to user_bookmarks_url(@bookmark.user)
+        response.should redirect_to bookmarks_url(user_id: @bookmark.user.username)
       end
     end
 
@@ -479,7 +479,7 @@ describe BookmarksController do
 
       it "redirects to the bookmarks list" do
         delete :destroy, :id => @bookmark.id
-        response.should redirect_to user_bookmarks_url(@bookmark.user)
+        response.should redirect_to bookmarks_url(user_id: @bookmark.user.username)
       end
     end
 
@@ -497,7 +497,7 @@ describe BookmarksController do
 
       it "should destroy my bookmark" do
         delete :destroy, :id => 3
-        response.should redirect_to user_bookmarks_url(users(:user1))
+        response.should redirect_to bookmarks_url(user_id: users(:user1).username)
       end
 
       it "should not destroy other user's bookmark" do

@@ -1,7 +1,7 @@
 class TagsController < ApplicationController
   load_and_authorize_resource
   before_filter :get_user
-  after_filter :solr_commit, :only => [:create, :update, :destroy]
+  after_filter :solr_commit, only: [:create, :update, :destroy]
 
   def index
     session[:params] ={} unless session[:params]
@@ -27,7 +27,7 @@ class TagsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @tags }
+      format.json { render json: @tags }
       format.rss
       format.atom
     end
@@ -36,7 +36,7 @@ class TagsController < ApplicationController
   def show
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @tag }
+      format.json { render json: @tag }
     end
   end
 
@@ -49,11 +49,11 @@ class TagsController < ApplicationController
 
     respond_to do |format|
       if @tag.update_attributes(params[:tag])
-        format.html { redirect_to @tag, :notice => t('controller.successfully_updated', :model => t('activerecord.models.tag')) }
+        format.html { redirect_to @tag, notice: t('controller.successfully_updated', model: t('activerecord.models.tag')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @tag.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @tag.errors, status: :unprocessable_entity }
       end
     end
   end

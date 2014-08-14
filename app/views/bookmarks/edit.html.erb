@@ -40,6 +40,6 @@
   <ul>
     <li><%= link_to t('page.showing', model: t('activerecord.models.manifestation')), @bookmark.manifestation -%></li>
     <li><%= link_to t('page.show'), @bookmark -%></li>
-    <li><%= link_to t('page.back'), user_bookmarks_path(@bookmark.user) -%></li>
+    <li><%= link_to t('page.back'), bookmarks_path(user_id: @bookmark.user.username) -%></li>
   </ul>
 </div>

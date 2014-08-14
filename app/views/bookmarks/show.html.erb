@@ -21,7 +21,7 @@
 <p>
   <strong><%= t('page.tag') -%>:</strong>
   <%- @bookmark.tag_counts.collect {|tag| -%>
-  <%= link_to tag.name, manifestations_path(:tag => tag.name) -%>
+  <%= link_to tag.name, manifestations_path(tag: tag.name) -%>
   <%- } -%>
 </p>
 
