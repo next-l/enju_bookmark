@@ -8,11 +8,11 @@ class Bookmark < ActiveRecord::Base
   belongs_to :user #, :counter_cache => true, validate: true
 
   validates_presence_of :user, :title
-  validates_presence_of :url, :on => :create
-  validates_presence_of :manifestation_id, :on => :update
+  validates_presence_of :url, on: :create
+  validates_presence_of :manifestation_id, on: :update
   validates_associated :user, :manifestation
-  validates_uniqueness_of :manifestation_id, :scope => :user_id
-  validates :url, :url => true, :presence => true, :length => {:maximum => 255}
+  validates_uniqueness_of :manifestation_id, scope: :user_id
+  validates :url, url: true, :presence => true, :length => {:maximum => 255}
   before_save :create_manifestation, :if => :url_changed?
   validate :bookmarkable_url?
   validate :already_bookmarked?, :if => :url_changed?
@@ -27,7 +27,7 @@ class Bookmark < ActiveRecord::Base
       manifestation.title
     end
     string :url
-    string :tag, :multiple => true do
+    string :tag, multiple: true do
       tags.pluck(:name)
     end
     integer :user_id
@@ -49,7 +49,7 @@ class Bookmark < ActiveRecord::Base
   end
 
   def save_tagger
-    #user.tag(self, :with => tag_list, :on => :tags)
+    #user.tag(self, with: tag_list, on: :tags)
     taggings.each do |tagging|
       tagging.tagger = user
       tagging.save(validate: false)
@@ -151,7 +151,7 @@ class Bookmark < ActiveRecord::Base
       return
     end
     manifestation = Manifestation.new(:access_address => url)
-    manifestation.carrier_type = CarrierType.where(:name => 'file').first
+    manifestation.carrier_type = CarrierType.where(name: 'file').first
     if self.title.present?
       manifestation.original_title = self.title
     else
@@ -166,12 +166,12 @@ class Bookmark < ActiveRecord::Base
       item.shelf = Shelf.web
       item.manifestation = manifestation
       if defined?(EnjuCirculation)
-        item.circulation_status = CirculationStatus.where(:name => 'Not Available').first
+        item.circulation_status = CirculationStatus.where(name: 'Not Available').first
       end
 
       item.save!
       if defined?(EnjuCirculation)
-        item.use_restriction = UseRestriction.where(:name => 'Not For Loan').first
+        item.use_restriction = UseRestriction.where(name: 'Not For Loan').first
       end
     end
   end

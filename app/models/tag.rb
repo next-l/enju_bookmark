@@ -1,6 +1,6 @@
 class Tag < ActiveRecord::Base
   attr_accessible :name, :name_transcription
-  has_many :taggings, dependent: :destroy, :class_name => 'ActsAsTaggableOn::Tagging'
+  has_many :taggings, dependent: :destroy, class_name: 'ActsAsTaggableOn::Tagging'
   validates :name, :presence => true
   after_save :save_taggings
   after_destroy :save_taggings
@@ -13,7 +13,7 @@ class Tag < ActiveRecord::Base
     string :name
     time :created_at
     time :updated_at
-    integer :bookmark_ids, :multiple => true do
+    integer :bookmark_ids, multiple: true do
       tagged(Bookmark).compact.collect(&:id)
     end
     integer :taggings_count do
