@@ -12,7 +12,7 @@ class Bookmark < ActiveRecord::Base
   validates_presence_of :manifestation_id, on: :update
   validates_associated :user, :manifestation
   validates_uniqueness_of :manifestation_id, scope: :user_id
-  validates :url, url: true, :presence => true, :length => {:maximum => 255}
+  validates :url, url: true, presence: true, length: {:maximum => 255}
   before_save :create_manifestation, :if => :url_changed?
   validate :bookmarkable_url?
   validate :already_bookmarked?, :if => :url_changed?
