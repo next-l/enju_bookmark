@@ -26,6 +26,11 @@
 </p>
 
 <p>
+  <strong><%= t('activerecord.attributes.bookmark.shared') -%>:</strong>
+  <%= localized_boolean(@bookmark.shared) -%>
+</p>
+
+<p>
   <strong><%= t('activerecord.attributes.bookmark.note') -%>:</strong>
   <%= @bookmark.note -%>
 </p>

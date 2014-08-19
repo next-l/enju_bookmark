@@ -28,11 +28,7 @@ module EnjuBookmark
       end
 
       def tags
-        if self.bookmarks.first
-          self.bookmarks.tag_counts
-        else
-          []
-        end
+        bookmarks.map{|bookmark| bookmark.tags}.flatten
       end
     end
   end

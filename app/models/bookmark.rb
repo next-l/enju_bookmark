@@ -17,7 +17,8 @@ class Bookmark < ActiveRecord::Base
   validate :bookmarkable_url?
   validate :already_bookmarked?, :if => :url_changed?
   before_save :replace_space_in_tags
-  after_destroy :reindex_manifestation
+  after_save :tag_index!
+  after_destroy :tag_index!
 
   acts_as_taggable_on :tags
   normalize_attributes :url
@@ -41,15 +42,10 @@ class Bookmark < ActiveRecord::Base
 
   def replace_space_in_tags
     # タグに含まれている全角スペースを除去する
-    self.tag_list = self.tag_list.map{|tag| tag.gsub('　', ' ').gsub(' ', ', ')}
-  end
-
-  def reindex_manifestation
-    self.manifestation.try(:index!)
+    self.tag_list = tag_list.map{|tag| tag.gsub('　', ' ').gsub(' ', ', ')}
   end
 
   def save_tagger
-    #user.tag(self, with: tag_list, on: :tags)
     taggings.each do |tagging|
       tagging.tagger = user
       tagging.save(validate: false)
@@ -57,7 +53,7 @@ class Bookmark < ActiveRecord::Base
   end
 
   def shelved?
-    true if self.manifestation.items.on_web.first
+    true if manifestation.items.on_web.first
   end
 
   def self.get_title(string)
@@ -132,7 +128,7 @@ class Bookmark < ActiveRecord::Base
     if url.try(:my_host?)
       manifestation = self.my_host_resource
     else
-      manifestation = Manifestation.where(:access_address => self.url).first if self.url.present?
+      manifestation = Manifestation.where(:access_address => url).first if url.present?
     end
   end
 
@@ -152,8 +148,8 @@ class Bookmark < ActiveRecord::Base
     end
     manifestation = Manifestation.new(:access_address => url)
     manifestation.carrier_type = CarrierType.where(name: 'file').first
-    if self.title.present?
-      manifestation.original_title = self.title
+    if title.present?
+      manifestation.original_title = title
     else
       manifestation.original_title = self.get_title
     end
@@ -184,12 +180,12 @@ class Bookmark < ActiveRecord::Base
     end
   end
 
-  def create_tag_index
-    taggings.each do |tagging|
-      Tag.find(tagging.tag_id).index!
-    end
+  def tag_index!
+    manifestation.reload
+    manifestation.index
+    taggings.map{|tagging| Tag.find(tagging.tag_id).index}
+    Sunspot.commit
   end
-
 end
 
 # == Schema Information

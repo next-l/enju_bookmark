@@ -82,8 +82,6 @@ class BookmarksController < ApplicationController
     respond_to do |format|
       if @bookmark.save
         flash[:notice] = t('controller.successfully_created', model: t('activerecord.models.bookmark'))
-        @bookmark.create_tag_index
-        @bookmark.manifestation.index!
         if params[:mode] == 'tag_edit'
           format.html { redirect_to(@bookmark.manifestation) }
           format.json { render json: @bookmark, status: :created, location: @bookmark }
@@ -113,8 +111,6 @@ class BookmarksController < ApplicationController
     respond_to do |format|
       if @bookmark.update_attributes(params[:bookmark])
         flash[:notice] = t('controller.successfully_updated', model: t('activerecord.models.bookmark'))
-        @bookmark.manifestation.index!
-        @bookmark.create_tag_index
         case params[:mode]
         when 'tag_edit'
           format.html { redirect_to @bookmark.manifestation }
@@ -135,7 +131,6 @@ class BookmarksController < ApplicationController
   def destroy
     @bookmark.destroy
     flash[:notice] = t('controller.successfully_deleted', model: t('activerecord.models.bookmark'))
-    @bookmark.create_tag_index
 
     if @user
       respond_to do |format|
