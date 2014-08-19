@@ -81,12 +81,12 @@ class BookmarksController < ApplicationController
 
     respond_to do |format|
       if @bookmark.save
-        flash[:notice] = t('controller.successfully_created', model: t('activerecord.models.bookmark'))
+        @bookmark.tag_index!
         if params[:mode] == 'tag_edit'
-          format.html { redirect_to(@bookmark.manifestation) }
+          format.html { redirect_to @bookmark.manifestation , notice: t('controller.successfully_created', model: t('activerecord.models.bookmark')) }
           format.json { render json: @bookmark, status: :created, location: @bookmark }
         else
-          format.html { redirect_to(@bookmark) }
+          format.html { redirect_to @bookmark , notice: t('controller.successfully_created', model: t('activerecord.models.bookmark')) }
           format.json { render json: @bookmark, status: :created, location: @bookmark }
         end
       else
@@ -110,13 +110,13 @@ class BookmarksController < ApplicationController
 
     respond_to do |format|
       if @bookmark.update_attributes(params[:bookmark])
-        flash[:notice] = t('controller.successfully_updated', model: t('activerecord.models.bookmark'))
+        @bookmark.tag_index!
         case params[:mode]
         when 'tag_edit'
-          format.html { redirect_to @bookmark.manifestation }
+          format.html { redirect_to @bookmark.manifestation, notice: t('controller.successfully_updated', model: t('activerecord.models.bookmark')) }
           format.json { head :no_content }
         else
-          format.html { redirect_to @bookmark }
+          format.html { redirect_to @bookmark, notice: t('controller.successfully_updated', model: t('activerecord.models.bookmark')) }
           format.json { head :no_content }
         end
       else
@@ -130,16 +130,15 @@ class BookmarksController < ApplicationController
   # DELETE /bookmarks/1.json
   def destroy
     @bookmark.destroy
-    flash[:notice] = t('controller.successfully_deleted', model: t('activerecord.models.bookmark'))
 
     if @user
       respond_to do |format|
-        format.html { redirect_to bookmarks_url(user_id: @user.username) }
+        format.html { redirect_to bookmarks_url(user_id: @user.username), notice: t('controller.successfully_deleted', model: t('activerecord.models.bookmark')) }
         format.json { head :no_content }
       end
     else
       respond_to do |format|
-        format.html { redirect_to bookmarks_url(user_id: @bookmark.user.username) }
+        format.html { redirect_to bookmarks_url(user_id: @bookmark.user.username), notice: t('controller.successfully_deleted', model: t('activerecord.models.bookmark')) }
         format.json { head :no_content }
       end
     end

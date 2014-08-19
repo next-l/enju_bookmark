@@ -13,12 +13,10 @@ class Bookmark < ActiveRecord::Base
   validates_associated :user, :manifestation
   validates_uniqueness_of :manifestation_id, scope: :user_id
   validates :url, url: true, presence: true, length: {:maximum => 255}
-  before_save :create_manifestation, :if => :url_changed?
   validate :bookmarkable_url?
   validate :already_bookmarked?, :if => :url_changed?
+  before_save :create_manifestation, :if => :url_changed?
   before_save :replace_space_in_tags
-  after_save :tag_index!
-  after_destroy :tag_index!
 
   acts_as_taggable_on :tags
   normalize_attributes :url
@@ -29,7 +27,7 @@ class Bookmark < ActiveRecord::Base
     end
     string :url
     string :tag, multiple: true do
-      tags.pluck(:name)
+      tag_list
     end
     integer :user_id
     integer :manifestation_id
@@ -156,9 +154,7 @@ class Bookmark < ActiveRecord::Base
     Manifestation.transaction do
       manifestation.save
       self.manifestation = manifestation
-      item = Item.new(
-        :manifestation_id => manifestation.id
-      )
+      item = Item.new
       item.shelf = Shelf.web
       item.manifestation = manifestation
       if defined?(EnjuCirculation)

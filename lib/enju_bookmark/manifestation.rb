@@ -12,10 +12,10 @@ module EnjuBookmark
 
         searchable do
           string :tag, :multiple => true do
-            tags.collect(&:name)
+            bookmarks.map{|bookmark| bookmark.tag_list}.flatten
           end
           text :tag do
-            tags.collect(&:name)
+            bookmarks.map{|bookmark| bookmark.tag_list}.flatten
           end
         end
       end
