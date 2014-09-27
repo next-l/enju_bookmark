@@ -1,6 +1,6 @@
-class CreateRequestStatusTypes < ActiveRecord::Migration
+class CreateEventCategories < ActiveRecord::Migration
   def self.up
-    create_table :request_status_types do |t|
+    create_table :event_categories do |t|
       t.string :name, :null => false
       t.text :display_name
       t.text :note
@@ -11,6 +11,6 @@ class CreateRequestStatusTypes < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :request_status_types
+    drop_table :event_categories
   end
 end
