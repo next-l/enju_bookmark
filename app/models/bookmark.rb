@@ -2,20 +2,20 @@
 class Bookmark < ActiveRecord::Base
   attr_accessible :title, :url, :note, :shared, :tag_list
   scope :bookmarked, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
-  scope :user_bookmarks, lambda {|user| where(:user_id => user.id)}
-  scope :shared, where(:shared => true)
+  scope :user_bookmarks, lambda {|user| where(user_id: user.id)}
+  scope :shared, where(shared: true)
   belongs_to :manifestation, touch: true
-  belongs_to :user #, :counter_cache => true, validate: true
+  belongs_to :user #, counter_cache: true, validate: true
 
   validates_presence_of :user, :title
   validates_presence_of :url, on: :create
   validates_presence_of :manifestation_id, on: :update
   validates_associated :user, :manifestation
   validates_uniqueness_of :manifestation_id, scope: :user_id
-  validates :url, url: true, presence: true, length: {:maximum => 255}
+  validates :url, url: true, presence: true, length: {maximum: 255}
   validate :bookmarkable_url?
-  validate :already_bookmarked?, :if => :url_changed?
-  before_save :create_manifestation, :if => :url_changed?
+  validate :already_bookmarked?, if: :url_changed?
+  before_save :create_manifestation, if: :url_changed?
   before_save :replace_space_in_tags
 
   acts_as_taggable_on :tags
@@ -76,7 +76,7 @@ class Bookmark < ActiveRecord::Base
     end
     unless manifestation
       normalized_url = Addressable::URI.parse(url).normalize.to_s
-      doc = Nokogiri::HTML(open(normalized_url).read)
+      doc = Nokogiri::HTML(Faraday.get(normalized_url).body)
       # TODO: 日本語以外
       #charsets = ['iso-2022-jp', 'euc-jp', 'shift_jis', 'iso-8859-1']
       #if charsets.include?(page.charset.downcase)
@@ -96,7 +96,7 @@ class Bookmark < ActiveRecord::Base
   end
 
   def self.get_canonical_url(url)
-    doc = Nokogiri::HTML(open(url))
+    doc = Nokogiri::HTML(Faraday.get(url).body)
     canonical_url = doc.search("/html/head/link[@rel='canonical']").first['href']
     # TODO: URLを相対指定している時
     Addressable::URI.parse(canonical_url).normalize.to_s
@@ -126,7 +126,7 @@ class Bookmark < ActiveRecord::Base
     if url.try(:my_host?)
       manifestation = self.my_host_resource
     else
-      manifestation = Manifestation.where(:access_address => url).first if url.present?
+      manifestation = Manifestation.where(access_address: url).first if url.present?
     end
   end
 
@@ -144,7 +144,7 @@ class Bookmark < ActiveRecord::Base
       self.manifestation_id = manifestation.id
       return
     end
-    manifestation = Manifestation.new(:access_address => url)
+    manifestation = Manifestation.new(access_address: url)
     manifestation.carrier_type = CarrierType.where(name: 'file').first
     if title.present?
       manifestation.original_title = title
@@ -170,7 +170,7 @@ class Bookmark < ActiveRecord::Base
 
   def self.manifestations_count(start_date, end_date, manifestation)
     if manifestation
-      self.bookmarked(start_date, end_date).where(:manifestation_id => manifestation.id).count
+      self.bookmarked(start_date, end_date).where(manifestation_id: manifestation.id).count
     else
       0
     end
