@@ -23,7 +23,7 @@ module EnjuBookmark
         can :show, Bookmark do |bookmark|
           if bookmark.user == user
             true
-          elsif user.share_bookmarks
+          elsif user.profile.try(:share_bookmarks)
             true
           else
             false

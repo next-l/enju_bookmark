@@ -1521,7 +1521,6 @@ ActiveRecord::Schema.define(version: 20141013152013) do
     t.datetime "updated_at"
     t.boolean  "save_checkout_history",    default: false, null: false
     t.string   "checkout_icalendar_token"
-    t.boolean  "share_bookmarks"
     t.string   "username"
     t.datetime "deleted_at"
     t.datetime "expired_at"
