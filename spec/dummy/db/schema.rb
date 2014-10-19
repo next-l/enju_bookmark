@@ -990,11 +990,13 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.boolean  "save_checkout_history",    default: false, null: false
     t.datetime "expired_at"
     t.boolean  "share_bookmarks"
+    t.text     "full_name_transcription"
+    t.datetime "date_of_birth"
   end
 
   add_index "profiles", ["checkout_icalendar_token"], name: "index_profiles_on_checkout_icalendar_token", unique: true
   add_index "profiles", ["user_id"], name: "index_profiles_on_user_id"
-  add_index "profiles", ["user_number"], name: "index_profiles_on_user_number"
+  add_index "profiles", ["user_number"], name: "index_profiles_on_user_number", unique: true
 
   create_table "realize_types", force: true do |t|
     t.string   "name"
@@ -1165,12 +1167,13 @@ ActiveRecord::Schema.define(version: 20141014065831) do
   add_index "resource_import_results", ["resource_import_file_id"], name: "index_resource_import_results_on_resource_import_file_id"
 
   create_table "roles", force: true do |t|
-    t.string   "name"
-    t.text     "display_name"
+    t.string   "name",                     null: false
+    t.string   "display_name"
     t.text     "note"
-    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "score",        default: 0, null: false
+    t.integer  "position"
   end
 
   create_table "search_engines", force: true do |t|
@@ -1435,7 +1438,6 @@ ActiveRecord::Schema.define(version: 20141014065831) do
 
   create_table "user_groups", force: true do |t|
     t.string   "name"
-    t.text     "string"
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
@@ -1455,6 +1457,9 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "user_has_roles", ["role_id"], name: "index_user_has_roles_on_role_id"
+  add_index "user_has_roles", ["user_id"], name: "index_user_has_roles_on_user_id"
 
   create_table "user_import_file_transitions", force: true do |t|
     t.string   "to_state"
