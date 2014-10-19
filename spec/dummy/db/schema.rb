@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141013152013) do
+ActiveRecord::Schema.define(version: 20141014065831) do
 
   create_table "accepts", force: true do |t|
     t.integer  "basket_id"
@@ -337,6 +337,7 @@ ActiveRecord::Schema.define(version: 20141013152013) do
     t.integer  "lock_version",           default: 0, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "shelf_id"
   end
 
   add_index "checkouts", ["basket_id"], name: "index_checkouts_on_basket_id"
@@ -344,6 +345,7 @@ ActiveRecord::Schema.define(version: 20141013152013) do
   add_index "checkouts", ["item_id", "basket_id"], name: "index_checkouts_on_item_id_and_basket_id", unique: true
   add_index "checkouts", ["item_id"], name: "index_checkouts_on_item_id"
   add_index "checkouts", ["librarian_id"], name: "index_checkouts_on_librarian_id"
+  add_index "checkouts", ["shelf_id"], name: "index_checkouts_on_shelf_id"
   add_index "checkouts", ["user_id"], name: "index_checkouts_on_user_id"
 
   create_table "circulation_statuses", force: true do |t|
@@ -380,6 +382,17 @@ ActiveRecord::Schema.define(version: 20141013152013) do
   add_index "classifications", ["classification_type_id"], name: "index_classifications_on_classification_type_id"
   add_index "classifications", ["manifestation_id"], name: "index_classifications_on_manifestation_id"
   add_index "classifications", ["parent_id"], name: "index_classifications_on_parent_id"
+
+  create_table "colors", force: true do |t|
+    t.integer  "library_group_id"
+    t.string   "property"
+    t.string   "code"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "colors", ["library_group_id"], name: "index_colors_on_library_group_id"
 
   create_table "content_types", force: true do |t|
     t.string   "name",         null: false
@@ -658,7 +671,10 @@ ActiveRecord::Schema.define(version: 20141013152013) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.datetime "deleted_at"
+    t.text     "opening_hour"
     t.string   "isil"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   add_index "libraries", ["library_group_id"], name: "index_libraries_on_library_group_id"
@@ -668,18 +684,15 @@ ActiveRecord::Schema.define(version: 20141013152013) do
     t.string   "name",                                                           null: false
     t.text     "display_name"
     t.string   "short_name",                                                     null: false
-    t.string   "email"
     t.text     "my_networks"
     t.text     "login_banner"
     t.text     "note"
-    t.integer  "valid_period_for_new_user",   default: 365,                      null: false
-    t.boolean  "post_to_union_catalog",       default: false,                    null: false
     t.integer  "country_id"
+    t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "admin_networks"
     t.boolean  "allow_bookmark_external_url", default: false,                    null: false
-    t.integer  "position"
     t.string   "url",                         default: "http://localhost:3000/"
   end
 
