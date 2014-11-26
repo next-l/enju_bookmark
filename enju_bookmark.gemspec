@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "enju_seed", "~> 0.1.1.pre11"
   s.add_dependency "acts-as-taggable-on", "~> 3.4"
-  s.add_dependency "statesman"
+  s.add_dependency "statesman", "~> 1.0"
   s.add_dependency "faraday"
 
   s.add_development_dependency "sqlite3"
@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "pg"
   s.add_development_dependency "rspec-rails", "~> 3.1"
   s.add_development_dependency "factory_girl_rails"
-  s.add_development_dependency "enju_leaf", "~> 1.1.0.rc15"
+  s.add_development_dependency "enju_leaf", "~> 1.1.0.rc16"
   s.add_development_dependency "enju_circulation", "~> 0.1.0.pre41"
   s.add_development_dependency "sunspot_solr", "~> 2.1"
   s.add_development_dependency "mobylette"

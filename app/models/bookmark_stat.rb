@@ -1,5 +1,5 @@
 class BookmarkStat < ActiveRecord::Base
-  include Statesman::Adapters::ActiveRecordModel
+  include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
   attr_accessible :start_date, :end_date, :note
   default_scope { order('bookmark_stats.id DESC') }
@@ -38,6 +38,10 @@ class BookmarkStat < ActiveRecord::Base
   private
   def self.transition_class
     BookmarkStatTransition
+  end
+
+  def self.initial_state
+    :pending
   end
 end
 
