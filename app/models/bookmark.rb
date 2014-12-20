@@ -2,7 +2,7 @@
 class Bookmark < ActiveRecord::Base
   scope :bookmarked, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
   scope :user_bookmarks, lambda {|user| where(user_id: user.id)}
-  scope :shared, where(shared: true)
+  scope :shared, -> {where(shared: true)}
   belongs_to :manifestation, touch: true
   belongs_to :user #, counter_cache: true, validate: true
 
