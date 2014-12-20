@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "enju_seed", "~> 0.1.1.pre12"
   s.add_dependency "acts-as-taggable-on", "~> 3.4"
-  s.add_dependency "statesman", "~> 1.0"
+  s.add_dependency "statesman"
   s.add_dependency "faraday"
 
   s.add_development_dependency "sqlite3"
