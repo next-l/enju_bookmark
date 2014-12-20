@@ -134,7 +134,7 @@ describe BookmarksController do
       login_fixture_admin
 
       it "assigns the requested bookmark as @bookmark" do
-        get :new
+        get :new, bookmark: { title: 'test' }
         expect(assigns(:bookmark)).not_to be_valid
         expect(response).to be_success
       end
@@ -144,7 +144,7 @@ describe BookmarksController do
       login_fixture_librarian
 
       it "assigns the requested bookmark as @bookmark" do
-        get :new
+        get :new, bookmark: { title: 'test' }
         expect(assigns(:bookmark)).not_to be_valid
         expect(response).to be_success
       end
@@ -154,7 +154,7 @@ describe BookmarksController do
       login_fixture_user
 
       it "should get my new template without url" do
-        get :new
+        get :new, bookmark: { title: 'test' }
         expect(assigns(:bookmark)).not_to be_valid
         expect(response).to be_success
       end
@@ -395,7 +395,7 @@ describe BookmarksController do
       end
 
       it "should update bookmark" do
-        put :update, :id => 3, :bookmark => { }
+        put :update, :id => 3, :bookmark => { title: 'test' }
         expect(response).to redirect_to bookmark_url(assigns(:bookmark))
       end
   
