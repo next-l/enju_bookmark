@@ -48,7 +48,7 @@ class TagsController < ApplicationController
     #@tag = Tag.find(params[:id])
 
     respond_to do |format|
-      if @tag.update_attributes(params[:tag])
+      if @tag.update_attributes(tag_params)
         format.html { redirect_to @tag, notice: t('controller.successfully_updated', model: t('activerecord.models.tag')) }
         format.json { head :no_content }
       else
@@ -68,5 +68,10 @@ class TagsController < ApplicationController
       format.html { redirect_to tags_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def tag_params
+    params.require(:tag).permit(:name, :name_transcription)
   end
 end

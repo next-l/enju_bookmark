@@ -78,4 +78,11 @@ class BookmarkStatHasManifestationsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+  def bookmark_stat_has_manifestation_params
+    params.require(:bookmark_stat_has_manifestation).permit(
+      :bookmark_stat_id, :manifestation_id
+    )
+  end
 end

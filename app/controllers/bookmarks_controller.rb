@@ -56,7 +56,7 @@ class BookmarksController < ApplicationController
 
   # GET /bookmarks/new
   def new
-    @bookmark = current_user.bookmarks.new(params[:bookmark])
+    @bookmark = current_user.bookmarks.new(bookmark_params)
     manifestation = @bookmark.get_manifestation
     if manifestation
       if manifestation.bookmarked?(current_user)
@@ -77,7 +77,7 @@ class BookmarksController < ApplicationController
   # POST /bookmarks
   # POST /bookmarks.json
   def create
-    @bookmark = current_user.bookmarks.new(params[:bookmark])
+    @bookmark = current_user.bookmarks.new(bookmark_params)
 
     respond_to do |format|
       if @bookmark.save
@@ -109,7 +109,7 @@ class BookmarksController < ApplicationController
     @bookmark.taggings.where(:tagger_id => @bookmark.user.id).map{|t| t.destroy}
 
     respond_to do |format|
-      if @bookmark.update_attributes(params[:bookmark])
+      if @bookmark.update_attributes(bookmark_params)
         @bookmark.tag_index!
         case params[:mode]
         when 'tag_edit'
@@ -142,5 +142,10 @@ class BookmarksController < ApplicationController
         format.json { head :no_content }
       end
     end
+  end
+
+  private
+  def bookmark_params
+    params.require(:bookmark).permit(:title, :url, :note, :shared, :tag_list)
   end
 end

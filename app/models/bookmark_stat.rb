@@ -1,7 +1,6 @@
 class BookmarkStat < ActiveRecord::Base
   include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
-  attr_accessible :start_date, :end_date, :note
   default_scope { order('bookmark_stats.id DESC') }
   scope :not_calculated, -> {in_state(:pending)}
   has_many :bookmark_stat_has_manifestations
