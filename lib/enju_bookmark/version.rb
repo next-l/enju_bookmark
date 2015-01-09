@@ -1,3 +1,3 @@
 module EnjuBookmark
-  VERSION = "0.2.0.pre1"
+  VERSION = "0.1.2.pre20"
 end

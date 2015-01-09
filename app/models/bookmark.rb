@@ -1,78 +1,51 @@
 # -*- encoding: utf-8 -*-
 class Bookmark < ActiveRecord::Base
-  include Elasticsearch::Model
-  include Elasticsearch::Model::Callbacks
   scope :bookmarked, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
-  scope :user_bookmarks, lambda {|user| where(:user_id => user.id)}
-  scope :shared, -> {where(:shared => true)}
-  belongs_to :manifestation, :touch => true
-  belongs_to :user #, :counter_cache => true, :validate => true
+  scope :user_bookmarks, lambda {|user| where(user_id: user.id)}
+  scope :shared, -> {where(shared: true)}
+  belongs_to :manifestation, touch: true
+  belongs_to :user #, counter_cache: true, validate: true
 
   validates_presence_of :user, :title
-  validates_presence_of :url, :on => :create
-  validates_presence_of :manifestation_id, :on => :update
+  validates_presence_of :url, on: :create
+  validates_presence_of :manifestation_id, on: :update
   validates_associated :user, :manifestation
-  validates_uniqueness_of :manifestation_id, :scope => :user_id
-  validates :url, :url => true, :presence => true, :length => {:maximum => 255}
-  before_save :create_manifestation, :if => :url_changed?
+  validates_uniqueness_of :manifestation_id, scope: :user_id
+  validates :url, url: true, presence: true, length: {maximum: 255}
   validate :bookmarkable_url?
-  validate :already_bookmarked?, :if => :url_changed?
+  validate :already_bookmarked?, if: :url_changed?
+  before_save :create_manifestation, if: :url_changed?
   before_save :replace_space_in_tags
-  after_destroy :reindex_manifestation
 
   acts_as_taggable_on :tags
   normalize_attributes :url
 
-  index_name "#{name.downcase.pluralize}-#{Rails.env}"
-
-  after_commit on: :create do
-    index_document
-  end
-
-  after_commit on: :update do
-    update_document
-  end
-
-  after_commit on: :destroy do
-    delete_document
-  end
-
-  settings do
-    mappings dynamic: 'false', _routing: {required: false} do
-      indexes :title
-      indexes :url
-      indexes :tag
-      indexes :user_id, type: 'integer'
-      indexes :manifestation_id, type: 'integer'
-      indexes :created_at, type: 'date'
-      indexes :updated_at, type: 'date'
-      indexes :shared, type: 'boolean'
+  searchable do
+    text :title do
+      manifestation.title
     end
-  end
-
-  def as_indexed_json(options={})
-    as_json.merge(
-      title: manifestation.title,
-      tag: tags.pluck(:name)
-    )
+    string :url
+    string :tag, multiple: true do
+      tag_list
+    end
+    integer :user_id
+    integer :manifestation_id
+    time :created_at
+    time :updated_at
+    boolean :shared
   end
 
   paginates_per 10
 
   def replace_space_in_tags
     # タグに含まれている全角スペースを除去する
-    self.tag_list = self.tag_list.map{|tag| tag.gsub('　', ' ').gsub(' ', ', ')}
-  end
-
-  def reindex_manifestation
-    manifestation.__elasticsearch__.update_document if manifestation
+    self.tag_list = tag_list.map{|tag| tag.gsub('　', ' ').gsub(' ', ', ')}
   end
 
   def save_tagger
-    #user.tag(self, :with => tag_list, :on => :tags)
     taggings.each do |tagging|
       tagging.tagger = user
-      tagging.save(:validate => false)
+      tagging.save(validate: false)
     end
   end
 
@@ -102,7 +75,7 @@ class Bookmark < ActiveRecord::Base
     end
     unless manifestation
       normalized_url = Addressable::URI.parse(url).normalize.to_s
-      doc = Nokogiri::HTML(open(normalized_url).read)
+      doc = Nokogiri::HTML(Faraday.get(normalized_url).body)
       # TODO: 日本語以外
       #charsets = ['iso-2022-jp', 'euc-jp', 'shift_jis', 'iso-8859-1']
       #if charsets.include?(page.charset.downcase)
@@ -122,7 +95,7 @@ class Bookmark < ActiveRecord::Base
   end
 
   def self.get_canonical_url(url)
-    doc = Nokogiri::HTML(open(url))
+    doc = Nokogiri::HTML(Faraday.get(url).body)
     canonical_url = doc.search("/html/head/link[@rel='canonical']").first['href']
     # TODO: URLを相対指定している時
     Addressable::URI.parse(canonical_url).normalize.to_s
@@ -152,7 +125,7 @@ class Bookmark < ActiveRecord::Base
     if url.try(:my_host?)
       manifestation = self.my_host_resource
     else
-      manifestation = Manifestation.where(:access_address => self.url).first if self.url.present?
+      manifestation = Manifestation.where(access_address: url).first if url.present?
     end
   end
 
@@ -170,46 +143,44 @@ class Bookmark < ActiveRecord::Base
       self.manifestation_id = manifestation.id
       return
     end
-    manifestation = Manifestation.new(:access_address => url)
-    manifestation.carrier_type = CarrierType.where(:name => 'file').first
-    if self.title.present?
-      manifestation.original_title = self.title
+    manifestation = Manifestation.new(access_address: url)
+    manifestation.carrier_type = CarrierType.where(name: 'file').first
+    if title.present?
+      manifestation.original_title = title
     else
       manifestation.original_title = self.get_title
     end
     Manifestation.transaction do
       manifestation.save
       self.manifestation = manifestation
-      item = Item.new(
-        :manifestation_id => manifestation.id
-      )
+      item = Item.new
       item.shelf = Shelf.web
       item.manifestation = manifestation
       if defined?(EnjuCirculation)
-        item.circulation_status = CirculationStatus.where(:name => 'Not Available').first
+        item.circulation_status = CirculationStatus.where(name: 'Not Available').first
       end
 
       item.save!
       if defined?(EnjuCirculation)
-        item.use_restriction = UseRestriction.where(:name => 'Not For Loan').first
+        item.use_restriction = UseRestriction.where(name: 'Not For Loan').first
       end
     end
   end
 
   def self.manifestations_count(start_date, end_date, manifestation)
     if manifestation
-      self.bookmarked(start_date, end_date).where(:manifestation_id => manifestation.id).count
+      self.bookmarked(start_date, end_date).where(manifestation_id: manifestation.id).count
     else
       0
     end
   end
 
-  def create_tag_index
-    taggings.each do |tagging|
-      Tag.find(tagging.tag_id).__elasticsearch__.update_document
-    end
+  def tag_index!
+    manifestation.reload
+    manifestation.index
+    taggings.map{|tagging| Tag.find(tagging.tag_id).index}
+    Sunspot.commit
   end
-
 end
 
 # == Schema Information
@@ -223,6 +194,7 @@ end
 #  url              :string(255)
 #  note             :text
 #  shared           :boolean
-#  created_at       :datetime
-#  updated_at       :datetime
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
+

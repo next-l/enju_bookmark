@@ -1,5 +1,5 @@
 <div id="content_detail" class="ui-corner-all ui-widget-content">
-<h1 class="title"><%= t('page.showing', :model => t('activerecord.models.bookmark_stat')) -%></h1>
+<h1 class="title"><%= t('page.showing', model: t('activerecord.models.bookmark_stat')) -%></h1>
 <div id="content_list">
 <p id="notice"><%= notice %></p>
 
@@ -15,7 +15,7 @@
 
 <p>
   <strong><%= t('activerecord.attributes.bookmark_stat.state') -%>:</strong>
-  <%= @bookmark_stat.state -%>
+  <%= @bookmark_stat.current_state -%>
 </p>
 
 <p>
@@ -31,7 +31,7 @@
   <%- @stats.each do |stat| -%>
     <tr class="line<%= cycle("0", "1") -%>">
       <td>
-        <%= render 'manifestations/show_index', :manifestation => stat.manifestation if stat.manifestation -%>
+        <%= render 'manifestations/show_index', manifestation: stat.manifestation if stat.manifestation -%>
       </td>
       <td><%= stat.bookmarks_count -%></td>
     </tr>
@@ -50,6 +50,6 @@
   </ul>
   <h4><%= t('page.export') -%></h4>
   <ul>
-    <li><%= link_to 'CSV', bookmark_stat_path(@bookmark_stat, :format => :csv, :locale => @locale.to_s) -%></li>
+    <li><%= link_to 'TSV', bookmark_stat_path(@bookmark_stat, format: :txt) -%></li>
   </ul>
 </div>

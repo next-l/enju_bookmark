@@ -1,10 +1,9 @@
 class TagsController < ApplicationController
-  before_action :set_tag, only: [:show, :edit, :update, :destroy]
-  before_action :get_user
-  after_action :verify_authorized
+  load_and_authorize_resource
+  before_filter :get_user
+  after_filter :solr_commit, only: [:create, :update, :destroy]
 
   def index
-    authorize Tag
     session[:params] ={} unless session[:params]
     session[:params][:tag] = params
 
@@ -28,7 +27,7 @@ class TagsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @tags }
+      format.json { render json: @tags }
       format.rss
       format.atom
     end
@@ -37,21 +36,24 @@ class TagsController < ApplicationController
   def show
     respond_to do |format|
       format.html # show.html.erb
-      format.json { render :json => @tag }
+      format.json { render json: @tag }
     end
   end
 
   def edit
+    #@tag = Tag.find(params[:id])
   end
 
   def update
+    #@tag = Tag.find(params[:id])
+
     respond_to do |format|
       if @tag.update_attributes(tag_params)
-        format.html { redirect_to @tag, :notice => t('controller.successfully_updated', :model => t('activerecord.models.tag')) }
+        format.html { redirect_to @tag, notice: t('controller.successfully_updated', model: t('activerecord.models.tag')) }
         format.json { head :no_content }
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @tag.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @tag.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -59,6 +61,7 @@ class TagsController < ApplicationController
   # DELETE /tags/1
   # DELETE /tags/1.json
   def destroy
+    #@tag = Tag.find(params[:id])
     @tag.destroy
 
     respond_to do |format|
@@ -68,15 +71,7 @@ class TagsController < ApplicationController
   end
 
   private
-
-  def set_tag
-    @tag = Tag.friendly.find(params[:id])
-    authorize @tag
-  end
-
   def tag_params
-    params.require(:tag).permit(
-      :name, :name_transcription
-    )
+    params.require(:tag).permit(:name, :name_transcription)
   end
 end

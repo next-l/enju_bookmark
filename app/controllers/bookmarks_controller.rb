@@ -1,22 +1,22 @@
 # -*- encoding: utf-8 -*-
 class BookmarksController < ApplicationController
-  before_action :set_bookmark, only: [:show, :edit, :update, :destroy]
-  before_action :store_location
-  before_action :get_user, :only => :index
-  after_action :verify_authorized
+  before_filter :store_location
+  load_and_authorize_resource except: :index
+  authorize_resource only: :index
+  before_filter :get_user, only: :index
+  after_filter :solr_commit, only: [:create, :update, :destroy]
 
   # GET /bookmarks
   # GET /bookmarks.json
   def index
-    authorize Bookmark
     search = Bookmark.search(:include => [:manifestation])
     query = params[:query].to_s.strip
     unless query.blank?
       @query = query.dup
     end
     user = @user
-    unless current_user.try(:has_role?, 'Librarian')
-      if user and user != current_user and !user.try(:share_bookmarks)
+    unless current_user.has_role?('Librarian')
+      if user and user != current_user and !user.profile.try(:share_bookmarks)
         access_denied; return
       end
       if current_user == @user
@@ -41,20 +41,22 @@ class BookmarksController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render :json => @bookmarks }
+      format.json { render json: @bookmarks }
     end
   end
 
   # GET /bookmarks/1
   # GET /bookmarks/1.json
   def show
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json { render json: @bookmark }
+    end
   end
 
   # GET /bookmarks/new
   def new
-    @bookmark = Bookmark.new(bookmark_params)
-    @bookmark.user = current_user
-    authorize @bookmark
+    @bookmark = current_user.bookmarks.new(bookmark_params)
     manifestation = @bookmark.get_manifestation
     if manifestation
       if manifestation.bookmarked?(current_user)
@@ -75,26 +77,22 @@ class BookmarksController < ApplicationController
   # POST /bookmarks
   # POST /bookmarks.json
   def create
-    @bookmark = Bookmark.new(bookmark_params)
-    @bookmark.user = current_user
-    authorize @bookmark
+    @bookmark = current_user.bookmarks.new(bookmark_params)
 
     respond_to do |format|
       if @bookmark.save
-        flash[:notice] = t('controller.successfully_created', :model => t('activerecord.models.bookmark'))
-        @bookmark.create_tag_index
-        @bookmark.manifestation.__elasticsearch__.update_document
+        @bookmark.tag_index!
         if params[:mode] == 'tag_edit'
-          format.html { redirect_to(@bookmark.manifestation) }
-          format.json { render :json => @bookmark, :status => :created, :location => @bookmark }
+          format.html { redirect_to @bookmark.manifestation , notice: t('controller.successfully_created', model: t('activerecord.models.bookmark')) }
+          format.json { render json: @bookmark, status: :created, location: @bookmark }
         else
-          format.html { redirect_to(@bookmark) }
-          format.json { render :json => @bookmark, :status => :created, :location => @bookmark }
+          format.html { redirect_to @bookmark , notice: t('controller.successfully_created', model: t('activerecord.models.bookmark')) }
+          format.json { render json: @bookmark, status: :created, location: @bookmark }
         end
       else
         @user = current_user
-        format.html { render :action => "new" }
-        format.json { render :json => @bookmark.errors, :status => :unprocessable_entity }
+        format.html { render action: "new" }
+        format.json { render json: @bookmark.errors, status: :unprocessable_entity }
       end
     end
 
@@ -112,20 +110,18 @@ class BookmarksController < ApplicationController
 
     respond_to do |format|
       if @bookmark.update_attributes(bookmark_params)
-        flash[:notice] = t('controller.successfully_updated', :model => t('activerecord.models.bookmark'))
-        @bookmark.manifestation.__elasticsearch__.update_document
-        @bookmark.create_tag_index
+        @bookmark.tag_index!
         case params[:mode]
         when 'tag_edit'
-          format.html { redirect_to @bookmark.manifestation }
+          format.html { redirect_to @bookmark.manifestation, notice: t('controller.successfully_updated', model: t('activerecord.models.bookmark')) }
           format.json { head :no_content }
         else
-          format.html { redirect_to @bookmark }
+          format.html { redirect_to @bookmark, notice: t('controller.successfully_updated', model: t('activerecord.models.bookmark')) }
           format.json { head :no_content }
         end
       else
-        format.html { render :action => "edit" }
-        format.json { render :json => @bookmark.errors, :status => :unprocessable_entity }
+        format.html { render action: "edit" }
+        format.json { render json: @bookmark.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -134,31 +130,22 @@ class BookmarksController < ApplicationController
   # DELETE /bookmarks/1.json
   def destroy
     @bookmark.destroy
-    flash[:notice] = t('controller.successfully_destroyed', :model => t('activerecord.models.bookmark'))
-    @bookmark.create_tag_index
 
     if @user
       respond_to do |format|
-        format.html { redirect_to user_bookmarks_url(@user) }
+        format.html { redirect_to bookmarks_url(user_id: @user.username), notice: t('controller.successfully_deleted', model: t('activerecord.models.bookmark')) }
         format.json { head :no_content }
       end
     else
       respond_to do |format|
-        format.html { redirect_to user_bookmarks_url(@bookmark.user) }
+        format.html { redirect_to bookmarks_url(user_id: @bookmark.user.username), notice: t('controller.successfully_deleted', model: t('activerecord.models.bookmark')) }
         format.json { head :no_content }
       end
     end
   end
 
   private
-  def set_bookmark
-    @bookmark = Bookmark.find(params[:id])
-    authorize @bookmark
-  end
-
   def bookmark_params
-    params.require(:bookmark).permit(
-      :title, :url, :note, :shared, :tag_list
-    )
+    params.require(:bookmark).permit(:title, :url, :note, :shared, :tag_list)
   end
 end

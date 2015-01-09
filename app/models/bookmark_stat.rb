@@ -1,9 +1,10 @@
 class BookmarkStat < ActiveRecord::Base
-  include Statesman::Adapters::ActiveRecordModel
+  include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
+  default_scope { order('bookmark_stats.id DESC') }
   scope :not_calculated, -> {in_state(:pending)}
   has_many :bookmark_stat_has_manifestations
-  has_many :manifestations, :through => :bookmark_stat_has_manifestations
+  has_many :manifestations, through: :bookmark_stat_has_manifestations
 
   paginates_per 10
 
@@ -24,7 +25,7 @@ class BookmarkStat < ActiveRecord::Base
       if daily_count > 0
         self.manifestations << manifestation
         sql = ['UPDATE bookmark_stat_has_manifestations SET bookmarks_count = ? WHERE bookmark_stat_id = ? AND manifestation_id = ?', daily_count, self.id, manifestation.id]
-        BookmarkStat.connection.execute(
+        ActiveRecord::Base.connection.execute(
           self.class.send(:sanitize_sql_array, sql)
         )
       end
@@ -32,10 +33,14 @@ class BookmarkStat < ActiveRecord::Base
     self.completed_at = Time.zone.now
     transition_to!(:completed)
   end
-  
+
   private
   def self.transition_class
     BookmarkStatTransition
+  end
+
+  def self.initial_state
+    :pending
   end
 end
 
@@ -49,6 +54,7 @@ end
 #  started_at   :datetime
 #  completed_at :datetime
 #  note         :text
-#  created_at   :datetime
-#  updated_at   :datetime
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
 #
+

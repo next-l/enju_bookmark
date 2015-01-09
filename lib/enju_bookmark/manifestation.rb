@@ -7,35 +7,28 @@ module EnjuBookmark
     module ClassMethods
       def enju_bookmark_manifestation_model
         include InstanceMethods
-        has_many :bookmarks, -> {includes(:tags)}, :dependent => :destroy, :foreign_key => :manifestation_id
-        has_many :users, :through => :bookmarks
+        has_many :bookmarks, dependent: :destroy, foreign_key: :manifestation_id
+        has_many :users, through: :bookmarks
 
-        settings do
-          mappings dynamic: 'false', _routing: {required: false} do
-            indexes :tag
+        searchable do
+          string :tag, multiple: true do
+            bookmarks.map{|bookmark| bookmark.tag_list}.flatten
+          end
+          text :tag do
+            bookmarks.map{|bookmark| bookmark.tag_list}.flatten
           end
         end
       end
     end
 
     module InstanceMethods
-      def as_indexed_json(options={})
-        super.merge(
-          tag: tags.collect(&:name)
-        )
-      end
-
       def bookmarked?(user)
-        return true if user.bookmarks.where(:url => url).first
+        return true if user.bookmarks.where(url: url).first
         false
       end
 
       def tags
-        if self.bookmarks.first
-          self.bookmarks.tag_counts
-        else
-          []
-        end
+        bookmarks.map{|bookmark| bookmark.tags}.flatten
       end
     end
   end

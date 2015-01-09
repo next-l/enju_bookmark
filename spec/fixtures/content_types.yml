@@ -6,8 +6,8 @@ one:
   display_name: text
   note: MyText
   position: 1
-  created_at: <%= Time.zone.now %>
-  updated_at: <%= Time.zone.now %>
+  created_at: <%= Time.zone.now.to_s(:db) %>
+  updated_at: <%= Time.zone.now.to_s(:db) %>
 
 two:
   id: 2
@@ -15,8 +15,8 @@ two:
   display_name: Cartographic Dataset
   note: MyText
   position: 2
-  created_at: <%= Time.zone.now %>
-  updated_at: <%= Time.zone.now %>
+  created_at: <%= Time.zone.now.to_s(:db) %>
+  updated_at: <%= Time.zone.now.to_s(:db) %>
 
 three:
   id: 3
@@ -24,8 +24,8 @@ three:
   display_name: Cartographic Image
   note: MyText
   position: 3
-  created_at: <%= Time.zone.now %>
-  updated_at: <%= Time.zone.now %>
+  created_at: <%= Time.zone.now.to_s(:db) %>
+  updated_at: <%= Time.zone.now.to_s(:db) %>
 
 # == Schema Information
 #

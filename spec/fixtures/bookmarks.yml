@@ -53,6 +53,7 @@ bookmark_00005:
 #  url              :string(255)
 #  note             :text
 #  shared           :boolean
-#  created_at       :datetime
-#  updated_at       :datetime
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
+
