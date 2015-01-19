@@ -1,13 +1,22 @@
-class BookmarkPolicy < AdminPolicy
+class BookmarkPolicy < ApplicationPolicy
   def index?
     user.try(:has_role?, 'User')
   end
 
   def show?
-    if user.try(:has_role?, 'Librarian')
+    case user.try(:role).try(:name)
+    when 'Administrator'
       true
-    elsif user and user == record.user
+    when 'Librarian'
       true
+    when 'User'
+      if record.user == user
+        true
+      elsif user.profile.try(:share_bookmarks)
+        true
+      else
+        false
+      end
     end
   end
 
@@ -16,18 +25,17 @@ class BookmarkPolicy < AdminPolicy
   end
 
   def update?
-    if user.try(:has_role?, 'Librarian')
+    case user.try(:role).try(:name)
+    when 'Administrator'
       true
-    elsif user and user == record.user
+    when 'Librarian'
       true
+    when 'User'
+      true if record.user == user
     end
   end
 
   def destroy?
-    if user.try(:has_role?, 'Librarian')
-      true
-    elsif user and user == record.user
-      true
-    end
+    update?
   end
 end

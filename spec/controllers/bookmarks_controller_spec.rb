@@ -287,7 +287,7 @@ describe BookmarksController do
       describe "with valid params" do
         it "assigns a newly created bookmark as @bookmark" do
           post :create, :bookmark => @attrs
-          expect(assigns(:bookmark)).not_to be_valid
+          expect(assigns(:bookmark)).to be_nil
         end
 
         it "should be forbidden" do
@@ -299,7 +299,7 @@ describe BookmarksController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved bookmark as @bookmark" do
           post :create, :bookmark => @invalid_attrs
-          expect(assigns(:bookmark)).not_to be_valid
+          expect(assigns(:bookmark)).to be_nil
         end
 
         it "should be forbidden" do

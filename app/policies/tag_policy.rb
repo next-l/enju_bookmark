@@ -1,4 +1,4 @@
-class TagPolicy < AdminPolicy
+class TagPolicy < ApplicationPolicy
   def index?
     true
   end
@@ -8,7 +8,7 @@ class TagPolicy < AdminPolicy
   end
 
   def create?
-    user.try(:has_role?, 'User')
+    user.try(:has_role?, 'Librarian')
   end
 
   def update?

@@ -1,6 +1,7 @@
 class BookmarkStatsController < ApplicationController
-  load_and_authorize_resource
-  after_filter :convert_charset, only: :show
+  before_action :set_bookmark_stat, only: [:show, :edit, :update, :destroy]
+  before_action :check_policy, only: [:index, :new, :create]
+  after_action :convert_charset, only: :show
 
   # GET /bookmark_stats
   # GET /bookmark_stats.json
@@ -87,6 +88,15 @@ class BookmarkStatsController < ApplicationController
   end
 
   private
+  def set_bookmark_stat
+    @bookmark_stat = BookmarkStat.find(params[:id])
+    authorize @bookmark_stat
+  end
+
+  def check_policy
+    authorize BookmarkStat
+  end
+
   def bookmark_stat_params
     params.require(:bookmark_stat).permit(:start_date, :end_date, :note)
   end

@@ -1,7 +1,8 @@
 class TagsController < ApplicationController
-  load_and_authorize_resource
-  before_filter :get_user
-  after_filter :solr_commit, only: [:create, :update, :destroy]
+  before_action :set_tag, only: [:show, :edit, :update, :destroy]
+  before_action :check_policy, only: [:index, :new, :create]
+  before_action :get_user
+  after_action :solr_commit, only: [:create, :update, :destroy]
 
   def index
     session[:params] ={} unless session[:params]
@@ -71,6 +72,15 @@ class TagsController < ApplicationController
   end
 
   private
+  def set_tag
+    @tag = Tag.find(params[:id])
+    authorize @tag
+  end
+
+  def check_policy
+    authorize Tag
+  end
+
   def tag_params
     params.require(:tag).permit(:name, :name_transcription)
   end

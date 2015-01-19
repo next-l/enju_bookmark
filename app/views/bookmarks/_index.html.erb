@@ -27,9 +27,9 @@
     </td>
     <td><%= l(bookmark.created_at) -%></td>
     <td>
-      <%- if can? :delete, bookmark -%>
-        <%= link_to t('page.show'), bookmark_path(bookmark) -%>
-        <%= link_to t('page.destroy'), bookmark_path(bookmark), data: {confirm: t('page.are_you_sure')}, method: :delete -%>
+      <%- if policy(bookmark).destroy? -%>
+        <%= link_to t('page.show'), bookmark -%>
+        <%= link_to t('page.destroy'), bookmark, data: {confirm: t('page.are_you_sure')}, method: :delete -%>
       <%- end -%>
     </td>
   </tr>
