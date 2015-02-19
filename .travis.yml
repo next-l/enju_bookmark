@@ -17,3 +17,4 @@ notifications:
   slack:
     secure: UYYu1zrEkpVI3sEDEI++6CTrqpVBItPx1xI6fwA6CoJhcqQRVImj9lLTjNbIm0jvEpn+TOXMO4GCyk6s38eL/J1itCTL2tmasmt+oa9wvwcHtx+SGspFnwqPJBO/aEMWN4gZofsGTiReJ9Gn796UvNExDMLjk2nMp1paV2EsVXU=
 sudo: false
+cache: bundler
