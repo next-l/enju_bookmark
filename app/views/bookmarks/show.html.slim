@@ -1,0 +1,58 @@
+#col1.row
+  h1.title
+    = t('page.showing', model: t('activerecord.models.bookmark'))
+  #content_list.col-md-9
+    p#notice
+      = notice
+    p
+      strong
+        = t('activerecord.models.user')
+        | :
+      = link_to @bookmark.user.username, @bookmark.user.profile
+    p
+      strong
+        = t('activerecord.models.manifestation')
+        | :
+      = link_to @bookmark.manifestation.original_title, @bookmark.manifestation
+    p
+      strong
+        = t('activerecord.attributes.bookmark.url')
+        | :
+      = link_to @bookmark.url, @bookmark.url
+    p
+      strong
+        = t('page.tag')
+        | :
+      - - @bookmark.tag_counts.collect {|tag|
+      = link_to tag.name, manifestations_path(tag: tag.name)
+      - - }
+    p
+      strong
+        = t('activerecord.attributes.bookmark.shared')
+        | :
+      = localized_boolean(@bookmark.shared)
+    p
+      strong
+        = t('activerecord.attributes.bookmark.note')
+        | :
+      = @bookmark.note
+    p
+      strong
+        = t('page.created_at')
+        | :
+      = l(@bookmark.created_at)
+    p
+      strong
+        = t('page.updated_at')
+        | :
+      = l(@bookmark.updated_at)
+  #submenu.col-md-3
+  ul
+    li
+      = link_to t('page.edit'),edit_bookmark_path(@bookmark)
+    li
+      = link_to t('page.destroy'), @bookmark, data: {confirm: t('page.are_you_sure')}, method: :delete
+    li
+      = link_to t('page.back_to', model: t('activerecord.models.manifestation')), @bookmark.manifestation
+    li
+      = link_to t('page.back'), bookmarks_url

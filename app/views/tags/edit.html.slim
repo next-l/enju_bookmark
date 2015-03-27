@@ -1,0 +1,18 @@
+#col1.row
+  h1.title
+    = t('page.editing', model: t('activerecord.models.tag'))
+  #content_list.col-md-9
+    = form_for(@tag, url: tag_path(@tag.name)) do |f|
+      = f.error_messages
+      .field
+        = f.label :name
+        br
+        = f.text_field :name, value: @tag.name
+      .actions
+        = f.submit
+  #submenu.col-md-3
+  ul
+    li
+      = link_to t('page.show'), tag_path(@tag.name)
+    li
+      = link_to t('page.back'), tags_path
