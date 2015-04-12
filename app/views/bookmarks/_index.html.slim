@@ -1,7 +1,7 @@
 #col1.row
-  h1.title
-    = t('page.listing', model: t('activerecord.models.bookmark'))
   #content_list.col-md-9
+    h1.title
+      = t('page.listing', model: t('activerecord.models.bookmark'))
     .search_form
       = form_for :bookmarks, url: bookmarks_path, html: {method: 'get'} do
         p
@@ -34,12 +34,12 @@
             = link_to t('page.destroy'), bookmark, data: {confirm: t('page.are_you_sure')}, method: :delete
     = paginate(@bookmarks)
   #submenu.col-md-3
-  - if user_signed_in?
-    h4
-      = t('page.bookmarklet')
-    ul
-      li
-        | <a href="javascript:window.location.href='
-        = new_bookmark_url
-        | ?bookmark[url]='+encodeURIComponent(location.href)+'&bookmark[title]='+encodeURIComponent(document.title);">
-        = t('bookmark.add_to_library_bookmark')
+    - if user_signed_in?
+      h4
+        = t('page.bookmarklet')
+      ul
+        li
+          | <a href="javascript:window.location.href='
+          = new_bookmark_url
+          | ?bookmark[url]='+encodeURIComponent(location.href)+'&bookmark[title]='+encodeURIComponent(document.title);">
+          = t('bookmark.add_to_library_bookmark')

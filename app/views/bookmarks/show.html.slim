@@ -1,7 +1,7 @@
 #col1.row
-  h1.title
-    = t('page.showing', model: t('activerecord.models.bookmark'))
   #content_list.col-md-9
+    h1.title
+      = t('page.showing', model: t('activerecord.models.bookmark'))
     p#notice
       = notice
     p
@@ -47,12 +47,12 @@
         | :
       = l(@bookmark.updated_at)
   #submenu.col-md-3
-  ul
-    li
-      = link_to t('page.edit'),edit_bookmark_path(@bookmark)
-    li
-      = link_to t('page.destroy'), @bookmark, data: {confirm: t('page.are_you_sure')}, method: :delete
-    li
-      = link_to t('page.back_to', model: t('activerecord.models.manifestation')), @bookmark.manifestation
-    li
-      = link_to t('page.back'), bookmarks_url
+    ul
+      li
+        = link_to t('page.edit'),edit_bookmark_path(@bookmark)
+      li
+        = link_to t('page.destroy'), @bookmark, data: {confirm: t('page.are_you_sure')}, method: :delete
+      li
+        = link_to t('page.back_to', model: t('activerecord.models.manifestation')), @bookmark.manifestation
+      li
+        = link_to t('page.back'), bookmarks_url
