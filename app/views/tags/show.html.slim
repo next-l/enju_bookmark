@@ -1,0 +1,37 @@
+#col1.row
+  #content_list.col-md-9
+    h1.title
+      = t('page.showing', model: t('activerecord.models.tag'))
+    p#notice
+      = notice
+    h2.resource_title
+      |  [T] 
+      = @tag.name
+    p
+      |  (
+      = link_to_wikipedia(@tag.name)
+      | ) 
+    p
+      strong
+        = t('activerecord.attributes.tag.taggings_count')
+        | :
+      = @tag.taggings.size
+      |  (
+      = link_to t('page.search'), manifestations_path(tag: @tag.name)
+      | ) 
+    p
+      strong
+        = t('page.created_at')
+        | :
+      = l(@tag.created_at)
+  #submenu.col-md-3
+    ul
+      li
+        = link_to t('page.back'), :back
+      li
+        = link_to t('page.edit'), edit_tag_path(@tag.name)
+      li
+        = link_to t('page.search_resource', model: t('activerecord.models.resource')), manifestations_path(tag: @tag.name)
+      - if user_signed_in?
+        li
+          = link_to t('page.search_resource', model: t('activerecord.models.bookmark')), bookmarks_path(user_id: current_user.username, tag: @tag.name)

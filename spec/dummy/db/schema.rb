@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141014065831) do
+ActiveRecord::Schema.define(version: 20150305030046) do
 
   create_table "accepts", force: :cascade do |t|
     t.integer  "basket_id"
@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "user_id"
     t.text     "note"
     t.datetime "executed_at"
-    t.string   "agent_import_file_name"
+    t.string   "agent_import_filename"
     t.string   "agent_import_content_type"
     t.integer  "agent_import_file_size"
     t.datetime "agent_import_updated_at"
@@ -810,7 +810,7 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "required_score",                  default: 0,     null: false
     t.integer  "frequency_id",                    default: 1,     null: false
     t.boolean  "subscription_master",             default: false, null: false
-    t.string   "attachment_file_name"
+    t.string   "attachment_filename"
     t.string   "attachment_content_type"
     t.integer  "attachment_file_size"
     t.datetime "attachment_updated_at"
@@ -943,7 +943,7 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "picture_file_name"
+    t.string   "picture_filename"
     t.string   "picture_content_type"
     t.integer  "picture_file_size"
     t.datetime "picture_updated_at"
@@ -1108,14 +1108,16 @@ ActiveRecord::Schema.define(version: 20141014065831) do
 
   create_table "resource_export_files", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "resource_export_file_name"
-    t.string   "resource_export_content_type"
-    t.integer  "resource_export_file_size"
-    t.datetime "resource_export_updated_at"
     t.datetime "executed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "resource_export_id"
+    t.string   "resource_export_filename"
+    t.integer  "resource_export_size"
+    t.integer  "resource_export_content_type"
   end
+
+  add_index "resource_export_files", ["resource_export_id"], name: "index_resource_export_files_on_resource_export_id"
 
   create_table "resource_import_file_transitions", force: :cascade do |t|
     t.string   "to_state"
@@ -1136,7 +1138,7 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "user_id"
     t.text     "note"
     t.datetime "executed_at"
-    t.string   "resource_import_file_name"
+    t.string   "resource_import_filename"
     t.string   "resource_import_content_type"
     t.integer  "resource_import_file_size"
     t.datetime "resource_import_updated_at"
@@ -1407,14 +1409,16 @@ ActiveRecord::Schema.define(version: 20141014065831) do
 
   create_table "user_export_files", force: :cascade do |t|
     t.integer  "user_id"
-    t.string   "user_export_file_name"
-    t.string   "user_export_content_type"
-    t.integer  "user_export_file_size"
-    t.datetime "user_export_updated_at"
     t.datetime "executed_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "user_export_id"
+    t.string   "user_export_filename"
+    t.integer  "user_export_size"
+    t.string   "user_export_content_type"
   end
+
+  add_index "user_export_files", ["user_export_id"], name: "index_user_export_files_on_user_export_id"
 
   create_table "user_group_has_checkout_types", force: :cascade do |t|
     t.integer  "user_group_id",                                   null: false
@@ -1477,7 +1481,7 @@ ActiveRecord::Schema.define(version: 20141014065831) do
     t.integer  "user_id"
     t.text     "note"
     t.datetime "executed_at"
-    t.string   "user_import_file_name"
+    t.string   "user_import_filename"
     t.string   "user_import_content_type"
     t.string   "user_import_file_size"
     t.datetime "user_import_updated_at"
