@@ -25,10 +25,10 @@
       .form-control
         = f.submit
   #submenu.col-md-3
-    ul
-      li
+    ul.list-group
+      li.list-group-item
         = link_to t('page.showing', model: t('activerecord.models.manifestation')), @bookmark.manifestation
-      li
+      li.list-group-item
         = link_to t('page.show'), @bookmark
-      li
+      li.list-group-item
         = link_to t('page.back'), bookmarks_path(user_id: @bookmark.user.username)

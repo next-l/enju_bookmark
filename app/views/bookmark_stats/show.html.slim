@@ -40,13 +40,13 @@
           = stat.bookmarks_count
     = paginate(@stats)
   #submenu.col-md-3
-  ul
-    li
+  ul.list-group
+    li.list-group-item
       = link_to t('page.edit'), edit_bookmark_stat_path(@bookmark_stat)
-    li
+    li.list-group-item
       = back_to_index(flash[:page_info])
   h4
     = t('page.export')
-  ul
-    li
+  ul.list-group
+    li.list-group-item
       = link_to 'TSV', bookmark_stat_path(@bookmark_stat, format: :txt)
