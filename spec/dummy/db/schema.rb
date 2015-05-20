@@ -694,6 +694,7 @@ ActiveRecord::Schema.define(version: 20150305030046) do
     t.text     "admin_networks"
     t.boolean  "allow_bookmark_external_url", default: false,                    null: false
     t.string   "url",                         default: "http://localhost:3000/"
+    t.text     "settings"
   end
 
   add_index "library_groups", ["short_name"], name: "index_library_groups_on_short_name"
