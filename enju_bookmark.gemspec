@@ -17,13 +17,13 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/log/*"] - Dir["spec/dummy/solr/{data,pids,default,development,test}/*"] - Dir["spec/dummy/tmp/*"]
 
   s.add_dependency "acts-as-taggable-on", "~> 3.5"
-  s.add_dependency "statesman", "~> 1.2"
+  s.add_dependency "statesman", "~> 1.3"
   s.add_dependency "faraday"
 
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "mysql2"
   s.add_development_dependency "pg"
-  s.add_development_dependency "rspec-rails", "~> 3.2"
+  s.add_development_dependency "rspec-rails", "~> 3.3"
   s.add_development_dependency "factory_girl_rails"
   #s.add_development_dependency "enju_leaf", "~> 1.2.0.beta.1"
   #s.add_development_dependency "enju_circulation", "~> 0.2.0.beta.1"
