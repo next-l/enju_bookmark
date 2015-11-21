@@ -109,7 +109,7 @@ describe BookmarkStatsController do
 
       it "should not assign the requested bookmark_stat as @bookmark_stat" do
         get :new
-        expect(assigns(:bookmark_stat)).not_to be_valid
+        expect(assigns(:bookmark_stat)).to be_nil
         expect(response).to be_forbidden
       end
     end
@@ -117,7 +117,7 @@ describe BookmarkStatsController do
     describe "When not logged in" do
       it "should not assign the requested bookmark_stat as @bookmark_stat" do
         get :new
-        expect(assigns(:bookmark_stat)).not_to be_valid
+        expect(assigns(:bookmark_stat)).to be_nil
         expect(response).to redirect_to(new_user_session_url)
       end
     end
@@ -231,7 +231,7 @@ describe BookmarkStatsController do
       describe "with valid params" do
         it "assigns a newly created bookmark_stat as @bookmark_stat" do
           post :create, :bookmark_stat => @attrs
-          expect(assigns(:bookmark_stat)).to be_valid
+          expect(assigns(:bookmark_stat)).to be_nil
         end
 
         it "should be forbidden" do
@@ -243,7 +243,7 @@ describe BookmarkStatsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved bookmark_stat as @bookmark_stat" do
           post :create, :bookmark_stat => @invalid_attrs
-          expect(assigns(:bookmark_stat)).not_to be_valid
+          expect(assigns(:bookmark_stat)).to be_nil
         end
 
         it "should be forbidden" do
@@ -257,7 +257,7 @@ describe BookmarkStatsController do
       describe "with valid params" do
         it "assigns a newly created bookmark_stat as @bookmark_stat" do
           post :create, :bookmark_stat => @attrs
-          expect(assigns(:bookmark_stat)).to be_valid
+          expect(assigns(:bookmark_stat)).to be_nil
         end
 
         it "should be forbidden" do
@@ -269,7 +269,7 @@ describe BookmarkStatsController do
       describe "with invalid params" do
         it "assigns a newly created but unsaved bookmark_stat as @bookmark_stat" do
           post :create, :bookmark_stat => @invalid_attrs
-          expect(assigns(:bookmark_stat)).not_to be_valid
+          expect(assigns(:bookmark_stat)).to be_nil
         end
 
         it "should be forbidden" do

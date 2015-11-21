@@ -18,7 +18,7 @@ class Bookmark < ActiveRecord::Base
   before_save :replace_space_in_tags
 
   acts_as_taggable_on :tags
-  normalize_attributes :url
+  strip_attributes only: :url
 
   searchable do
     text :title do

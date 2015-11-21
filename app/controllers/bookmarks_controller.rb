@@ -1,10 +1,9 @@
-# -*- encoding: utf-8 -*-
 class BookmarksController < ApplicationController
-  before_filter :store_location
-  load_and_authorize_resource except: :index
-  authorize_resource only: :index
-  before_filter :get_user, only: :index
-  after_filter :solr_commit, only: [:create, :update, :destroy]
+  before_action :store_location
+  before_action :set_bookmark, only: [:show, :edit, :update, :destroy]
+  before_action :check_policy, only: [:index, :new, :create]
+  before_action :get_user, only: :index
+  after_action :solr_commit, only: [:create, :update, :destroy]
 
   # GET /bookmarks
   # GET /bookmarks.json
@@ -145,6 +144,15 @@ class BookmarksController < ApplicationController
   end
 
   private
+  def set_bookmark
+    @bookmark = Bookmark.find(params[:id])
+    authorize @bookmark
+  end
+
+  def check_policy
+    authorize Bookmark
+  end
+
   def bookmark_params
     params.require(:bookmark).permit(:title, :url, :note, :shared, :tag_list)
   end
