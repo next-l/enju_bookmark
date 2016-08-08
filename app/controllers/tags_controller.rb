@@ -1,7 +1,6 @@
 class TagsController < ApplicationController
   before_action :set_tag, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  after_action :solr_commit, only: [:create, :update, :destroy]
 
   def index
     session[:params] ={} unless session[:params]
