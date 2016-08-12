@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "enju_biblio", "~> 0.2.0.beta.1"
   s.add_dependency "enju_manifestation_viewer", "~> 0.2.0.beta.1"
-  s.add_dependency "acts-as-taggable-on", "~> 3.5"
+  s.add_dependency "acts-as-taggable-on", "~> 4.0"
   s.add_dependency "statesman", "~> 1.3"
   s.add_dependency "faraday"
 
