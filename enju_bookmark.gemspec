@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/log/*"] - Dir["spec/dummy/solr/{data,pids,default,development,test}/*"] - Dir["spec/dummy/tmp/*"]
 
   s.add_dependency "enju_biblio", "~> 0.2.0.beta.1"
-  s.add_dependency "enju_library", "~> 0.2.0.beta.2"
   s.add_dependency "enju_manifestation_viewer", "~> 0.2.0.beta.1"
   s.add_dependency "acts-as-taggable-on", "~> 3.5"
   s.add_dependency "statesman", "~> 1.3"
@@ -28,7 +27,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency "pg"
   s.add_development_dependency "rspec-rails", "~> 3.4"
   s.add_development_dependency "factory_girl_rails"
-  s.add_development_dependency "enju_circulation", "~> 0.2.0.beta.1"
   s.add_development_dependency "sunspot_solr", "2.2.0"
   s.add_development_dependency "annotate"
   s.add_development_dependency "simplecov"

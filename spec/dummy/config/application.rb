@@ -5,7 +5,6 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 require 'enju_bookmark'
 require 'enju_leaf'
-require 'enju_circulation'
 
 module Dummy
   class Application < Rails::Application
