@@ -48,10 +48,9 @@ end
 #  user_id          :integer          not null
 #  manifestation_id :integer
 #  title            :text
-#  url              :string(255)
+#  url              :string
 #  note             :text
 #  shared           :boolean
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  created_at       :datetime
+#  updated_at       :datetime
 #
-

@@ -48,9 +48,9 @@ end
 # Table name: tags
 #
 #  id                 :integer          not null, primary key
-#  name               :string(255)
-#  name_transcription :string(255)
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
+#  name               :string
+#  name_transcription :string
+#  created_at         :datetime
+#  updated_at         :datetime
 #  taggings_count     :integer          default(0)
 #
