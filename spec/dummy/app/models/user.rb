@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 class User < ActiveRecord::Base
   devise :database_authenticatable, #:registerable,
     :recoverable, :rememberable, :trackable, #, :validatable
@@ -7,3 +6,5 @@ class User < ActiveRecord::Base
   include EnjuSeed::EnjuUser
   include EnjuBookmark::EnjuUser
 end
+
+Item.include(EnjuLibrary::EnjuItem)
