@@ -4,7 +4,6 @@ rvm:
   - 2.2.5
   - 2.3.1
 before_script:
-  - mysql -e 'create database enju_bookmark_dummy_test'
   - psql -c 'create database enju_bookmark_dummy_test;' -U postgres
   - bundle exec rake db:migrate
 after_script:
