@@ -1,10 +1,7 @@
-# -*- encoding: utf-8 -*-
 class BookmarksController < ApplicationController
-  before_action :store_location
   before_action :set_bookmark, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  before_action :get_user, only: :index
-  after_action :solr_commit, only: [:create, :update, :destroy]
+  before_action :set_user, only: :index
 
   # GET /bookmarks
   # GET /bookmarks.json
