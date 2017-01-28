@@ -49,7 +49,7 @@ describe TagsController do
 
       it "assigns the requested tag as @tag" do
         tag = FactoryGirl.create(:tag)
-        get :show, :id => tag.id
+        get :show, :id => tag.name
         expect(assigns(:tag)).to eq(tag)
       end
     end
@@ -59,7 +59,7 @@ describe TagsController do
 
       it "assigns the requested tag as @tag" do
         tag = FactoryGirl.create(:tag)
-        get :show, :id => tag.id
+        get :show, :id => tag.name
         expect(assigns(:tag)).to eq(tag)
       end
     end
@@ -69,7 +69,7 @@ describe TagsController do
 
       it "assigns the requested tag as @tag" do
         tag = FactoryGirl.create(:tag)
-        get :show, :id => tag.id
+        get :show, :id => tag.name
         expect(assigns(:tag)).to eq(tag)
       end
     end
@@ -77,7 +77,7 @@ describe TagsController do
     describe "When not logged in" do
       it "assigns the requested tag as @tag" do
         tag = FactoryGirl.create(:tag)
-        get :show, :id => tag.id
+        get :show, :id => tag.name
         expect(assigns(:tag)).to eq(tag)
       end
     end
@@ -89,7 +89,7 @@ describe TagsController do
 
       it "assigns the requested tag as @tag" do
         tag = FactoryGirl.create(:tag)
-        get :edit, :id => tag.id
+        get :edit, :id => tag.name
         expect(assigns(:tag)).to eq(tag)
       end
     end
@@ -99,7 +99,7 @@ describe TagsController do
 
       it "assigns the requested tag as @tag" do
         tag = FactoryGirl.create(:tag)
-        get :edit, :id => tag.id
+        get :edit, :id => tag.name
         expect(assigns(:tag)).to eq(tag)
       end
     end
@@ -109,7 +109,7 @@ describe TagsController do
 
       it "assigns the requested tag as @tag" do
         tag = FactoryGirl.create(:tag)
-        get :edit, :id => tag.id
+        get :edit, :id => tag.name
         expect(response).to be_forbidden
       end
     end
@@ -117,7 +117,7 @@ describe TagsController do
     describe "When not logged in" do
       it "should not assign the requested tag as @tag" do
         tag = FactoryGirl.create(:tag)
-        get :edit, :id => tag.id
+        get :edit, :id => tag.name
         expect(response).to redirect_to(new_user_session_url)
       end
     end
@@ -135,11 +135,11 @@ describe TagsController do
 
       describe "with valid params" do
         it "updates the requested tag" do
-          put :update, :id => @tag.id, :tag => @attrs
+          put :update, :id => @tag.name, :tag => @attrs
         end
 
         it "assigns the requested tag as @tag" do
-          put :update, :id => @tag.id, :tag => @attrs
+          put :update, :id => @tag.name, :tag => @attrs
           expect(assigns(:tag)).to eq(@tag)
           expect(response).to redirect_to(assigns(:tag))
         end
@@ -147,11 +147,11 @@ describe TagsController do
 
       describe "with invalid params" do
         it "assigns the requested tag as @tag" do
-          put :update, :id => @tag.id, :tag => @invalid_attrs
+          put :update, :id => @tag.name, :tag => @invalid_attrs
         end
 
         it "re-renders the 'edit' template" do
-          put :update, :id => @tag.id, :tag => @invalid_attrs
+          put :update, :id => @tag.name, :tag => @invalid_attrs
           expect(response).to render_template("edit")
         end
       end
@@ -162,11 +162,11 @@ describe TagsController do
 
       describe "with valid params" do
         it "updates the requested tag" do
-          put :update, :id => @tag.id, :tag => @attrs
+          put :update, :id => @tag.name, :tag => @attrs
         end
 
         it "assigns the requested tag as @tag" do
-          put :update, :id => @tag.id, :tag => @attrs
+          put :update, :id => @tag.name, :tag => @attrs
           expect(assigns(:tag)).to eq(@tag)
           expect(response).to redirect_to(assigns(:tag))
         end
@@ -174,12 +174,12 @@ describe TagsController do
 
       describe "with invalid params" do
         it "assigns the tag as @tag" do
-          put :update, :id => @tag.id, :tag => @invalid_attrs
+          put :update, :id => @tag.name, :tag => @invalid_attrs
           expect(assigns(:tag)).not_to be_valid
         end
 
         it "re-renders the 'edit' template" do
-          put :update, :id => @tag.id, :tag => @invalid_attrs
+          put :update, :id => @tag.name, :tag => @invalid_attrs
           expect(response).to render_template("edit")
         end
       end
@@ -190,11 +190,11 @@ describe TagsController do
 
       describe "with valid params" do
         it "updates the requested tag" do
-          put :update, :id => @tag.id, :tag => @attrs
+          put :update, :id => @tag.name, :tag => @attrs
         end
 
         it "assigns the requested tag as @tag" do
-          put :update, :id => @tag.id, :tag => @attrs
+          put :update, :id => @tag.name, :tag => @attrs
           expect(assigns(:tag)).to eq(@tag)
           expect(response).to be_forbidden
         end
@@ -202,7 +202,7 @@ describe TagsController do
 
       describe "with invalid params" do
         it "assigns the requested tag as @tag" do
-          put :update, :id => @tag.id, :tag => @invalid_attrs
+          put :update, :id => @tag.name, :tag => @invalid_attrs
           expect(response).to be_forbidden
         end
       end
@@ -211,18 +211,18 @@ describe TagsController do
     describe "When not logged in" do
       describe "with valid params" do
         it "updates the requested tag" do
-          put :update, :id => @tag.id, :tag => @attrs
+          put :update, :id => @tag.name, :tag => @attrs
         end
 
         it "should be forbidden" do
-          put :update, :id => @tag.id, :tag => @attrs
+          put :update, :id => @tag.name, :tag => @attrs
           expect(response).to redirect_to(new_user_session_url)
         end
       end
 
       describe "with invalid params" do
         it "assigns the requested tag as @tag" do
-          put :update, :id => @tag.id, :tag => @invalid_attrs
+          put :update, :id => @tag.name, :tag => @invalid_attrs
           expect(response).to redirect_to(new_user_session_url)
         end
       end
