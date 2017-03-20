@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 class Bookmark < ActiveRecord::Base
   scope :bookmarked, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
   scope :user_bookmarks, lambda {|user| where(user_id: user.id)}
@@ -70,7 +69,7 @@ class Bookmark < ActiveRecord::Base
     return if url.blank?
     return unless Addressable::URI.parse(url).host
     if manifestation_id = url.bookmarkable_id
-      manifestation = Manifestation.find(manifestation_id)
+      self.manifestation = Manifestation.find(manifestation_id)
       return manifestation.original_title
     end
     unless manifestation
