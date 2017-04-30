@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 class Bookmark < ActiveRecord::Base
   scope :bookmarked, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
   scope :user_bookmarks, lambda {|user| where(user_id: user.id)}
@@ -144,7 +143,7 @@ class Bookmark < ActiveRecord::Base
       return
     end
     manifestation = Manifestation.new(access_address: url)
-    manifestation.carrier_type = CarrierType.where(name: 'file').first
+    manifestation.carrier_type = CarrierType.find_by(name: 'file')
     if title.present?
       manifestation.original_title = title
     else
@@ -154,15 +153,15 @@ class Bookmark < ActiveRecord::Base
       manifestation.save
       self.manifestation = manifestation
       item = Item.new
-      item.shelf = Shelf.web
+      item.shelf = Shelf.find_by(name: 'web')
       item.manifestation = manifestation
       if defined?(EnjuCirculation)
-        item.circulation_status = CirculationStatus.where(name: 'Not Available').first
+        item.circulation_status = CirculationStatus.find_by(name: 'Not Available')
       end
 
       item.save!
       if defined?(EnjuCirculation)
-        item.use_restriction = UseRestriction.where(name: 'Not For Loan').first
+        item.use_restriction = UseRestriction.find_by(name: 'Not For Loan')
       end
     end
   end
