@@ -1,7 +1,0 @@
-.tag_cloud
-  .hTagcloud
-    ul.popularity
-      - unless @tags.empty?
-        - tag_cloud @tags, ['popular', 'v-popular', 'vv-popular', 'vvv-popular', 'vvvv-popular'] do |tag, css_class|
-          li
-            = link_to tag.name, manifestations_path(tag: tag.name), class: css_class
