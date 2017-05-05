@@ -57,21 +57,21 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.integer  "agent_import_file_id"
     t.integer  "agent_id"
     t.text     "body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "agent_merge_lists", force: :cascade do |t|
     t.string   "title"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "agent_merges", force: :cascade do |t|
     t.integer  "agent_id",            null: false
     t.integer  "agent_merge_list_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
     t.index ["agent_id"], name: "index_agent_merges_on_agent_id", using: :btree
     t.index ["agent_merge_list_id"], name: "index_agent_merges_on_agent_merge_list_id", using: :btree
   end
@@ -100,16 +100,16 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "agent_relationships", force: :cascade do |t|
     t.integer  "parent_id"
     t.integer  "child_id"
     t.integer  "agent_relationship_type_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.integer  "position"
     t.index ["child_id"], name: "index_agent_relationships_on_child_id", using: :btree
     t.index ["parent_id"], name: "index_agent_relationships_on_parent_id", using: :btree
@@ -190,8 +190,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.integer  "bookmark_stat_id", null: false
     t.integer  "manifestation_id", null: false
     t.integer  "bookmarks_count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.index ["bookmark_stat_id"], name: "index_bookmark_stat_has_manifestations_on_bookmark_stat_id", using: :btree
     t.index ["manifestation_id"], name: "index_bookmark_stat_has_manifestations_on_manifestation_id", using: :btree
   end
@@ -201,8 +201,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.text     "metadata",         default: "{}"
     t.integer  "sort_key"
     t.integer  "bookmark_stat_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
     t.boolean  "most_recent"
     t.index ["bookmark_stat_id"], name: "index_bookmark_stat_transitions_on_bookmark_stat_id", using: :btree
     t.index ["sort_key", "bookmark_stat_id"], name: "index_bookmark_stat_transitions_on_sort_key_and_stat_id", unique: true, using: :btree
@@ -214,8 +214,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.datetime "started_at"
     t.datetime "completed_at"
     t.text     "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "bookmarks", force: :cascade do |t|
@@ -225,8 +225,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.string   "url"
     t.text     "note"
     t.boolean  "shared"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.index ["manifestation_id"], name: "index_bookmarks_on_manifestation_id", using: :btree
     t.index ["url"], name: "index_bookmarks_on_url", using: :btree
     t.index ["user_id"], name: "index_bookmarks_on_user_id", using: :btree
@@ -313,8 +313,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.integer  "user_checkout_stat_id",             null: false
     t.integer  "user_id",                           null: false
     t.integer  "checkouts_count",       default: 0, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.index ["user_checkout_stat_id"], name: "index_checkout_stat_has_users_on_user_checkout_stat_id", using: :btree
     t.index ["user_id"], name: "index_checkout_stat_has_users_on_user_id", using: :btree
   end
@@ -362,8 +362,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.string   "property"
     t.string   "code"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.index ["library_group_id"], name: "index_colors_on_library_group_id", using: :btree
   end
 
@@ -451,9 +451,10 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.uuid     "manifestation_id", null: false
     t.uuid     "item_id",          null: false
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
     t.index ["item_id"], name: "index_exemplifies_on_item_id", unique: true, using: :btree
+    t.index ["manifestation_id"], name: "index_exemplifies_on_manifestation_id", using: :btree
   end
 
   create_table "form_of_works", force: :cascade do |t|
@@ -480,8 +481,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.text     "display_name"
     t.text     "note"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "identifiers", force: :cascade do |t|
@@ -617,13 +618,13 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.datetime "acquired_at"
     t.integer  "bookstore_id"
     t.integer  "budget_type_id"
+    t.integer  "circulation_status_id",   default: 1,     null: false
+    t.integer  "checkout_type_id",        default: 1,     null: false
     t.string   "binding_item_identifier"
     t.string   "binding_call_number"
     t.datetime "binded_at"
     t.uuid     "manifestation_id"
     t.uuid     "shelf_id",                                null: false
-    t.integer  "circulation_status_id",   default: 1,     null: false
-    t.integer  "checkout_type_id",        default: 1,     null: false
     t.index ["binding_item_identifier"], name: "index_items_on_binding_item_identifier", using: :btree
     t.index ["bookstore_id"], name: "index_items_on_bookstore_id", using: :btree
     t.index ["checkout_type_id"], name: "index_items_on_checkout_type_id", using: :btree
@@ -745,8 +746,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.datetime "started_at"
     t.datetime "completed_at"
     t.integer  "user_id"
@@ -790,8 +791,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.datetime "started_at"
     t.datetime "completed_at"
     t.integer  "user_id"
@@ -887,8 +888,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.datetime "sent_at"
     t.datetime "deleted_at"
     t.text     "body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   create_table "message_templates", force: :cascade do |t|
@@ -897,8 +898,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.text     "body",                      null: false
     t.integer  "position"
     t.string   "locale",     default: "en"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.index ["status"], name: "index_message_templates_on_status", unique: true, using: :btree
   end
 
@@ -996,12 +997,12 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.integer  "required_role_id"
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
+    t.string   "checkout_icalendar_token"
+    t.boolean  "save_checkout_history",    default: false, null: false
     t.datetime "expired_at"
     t.boolean  "share_bookmarks"
     t.text     "full_name_transcription"
     t.datetime "date_of_birth"
-    t.string   "checkout_icalendar_token"
-    t.boolean  "save_checkout_history",    default: false, null: false
     t.index ["checkout_icalendar_token"], name: "index_profiles_on_checkout_icalendar_token", unique: true, using: :btree
     t.index ["library_id"], name: "index_profiles_on_library_id", using: :btree
     t.index ["user_group_id"], name: "index_profiles_on_user_group_id", using: :btree
@@ -1070,8 +1071,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.integer  "user_reserve_stat_id", null: false
     t.integer  "user_id",              null: false
     t.integer  "reserves_count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
     t.index ["user_id"], name: "index_reserve_stat_has_users_on_user_id", using: :btree
     t.index ["user_reserve_stat_id"], name: "index_reserve_stat_has_users_on_user_reserve_stat_id", using: :btree
   end
@@ -1122,8 +1123,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
   create_table "resource_export_files", force: :cascade do |t|
     t.integer  "user_id"
     t.datetime "executed_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.jsonb    "attachment_data"
   end
 
@@ -1159,8 +1160,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.integer  "manifestation_id"
     t.integer  "item_id"
     t.text     "body"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
     t.text     "error_message"
     t.index ["item_id"], name: "index_resource_import_results_on_item_id", using: :btree
     t.index ["manifestation_id"], name: "index_resource_import_results_on_manifestation_id", using: :btree
@@ -1212,15 +1213,15 @@ ActiveRecord::Schema.define(version: 20170305064014) do
 
   create_table "series_statement_merge_lists", force: :cascade do |t|
     t.string   "title"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "series_statement_merges", force: :cascade do |t|
     t.integer  "series_statement_id",            null: false
     t.integer  "series_statement_merge_list_id", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
     t.index ["series_statement_id"], name: "index_series_statement_merges_on_series_statement_id", using: :btree
     t.index ["series_statement_merge_list_id"], name: "index_series_statement_merges_on_list_id", using: :btree
   end
@@ -1231,8 +1232,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.text     "title_subseries"
     t.text     "numbering_subseries"
     t.integer  "position"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.text     "title_transcription"
     t.text     "title_alternative"
     t.string   "series_statement_identifier"
@@ -1296,13 +1297,15 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.datetime "created_at"
     t.index ["tag_id"], name: "index_taggings_on_tag_id", using: :btree
     t.index ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context", using: :btree
+    t.index ["taggable_type", "taggable_id"], name: "index_taggings_on_taggable_type_and_taggable_id", using: :btree
+    t.index ["tagger_type", "tagger_id"], name: "index_taggings_on_tagger_type_and_tagger_id", using: :btree
   end
 
   create_table "tags", force: :cascade do |t|
     t.string   "name"
     t.string   "name_transcription"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
   create_table "use_restrictions", force: :cascade do |t|
@@ -1331,8 +1334,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.datetime "started_at"
     t.datetime "completed_at"
     t.integer  "user_id"
@@ -1453,8 +1456,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.datetime "start_date"
     t.datetime "end_date"
     t.text     "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
     t.datetime "started_at"
     t.datetime "completed_at"
     t.integer  "user_id"
@@ -1472,8 +1475,8 @@ ActiveRecord::Schema.define(version: 20170305064014) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
     t.string   "username"
     t.datetime "deleted_at"
     t.datetime "expired_at"

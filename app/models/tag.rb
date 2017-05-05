@@ -50,7 +50,6 @@ end
 #  id                 :integer          not null, primary key
 #  name               :string
 #  name_transcription :string
-#  created_at         :datetime
-#  updated_at         :datetime
-#  taggings_count     :integer          default(0)
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
 #
