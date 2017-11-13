@@ -1,22 +1,14 @@
-class CreateBookmarks < ActiveRecord::Migration[5.0]
-  def self.up
-    create_table :bookmarks, :force => true do |t|
-      t.integer :user_id, :null => false
-      t.integer :manifestation_id
+class CreateBookmarks < ActiveRecord::Migration[5.1]
+  def change
+    create_table :bookmarks, force: true, type: :uuid, default: 'gen_random_uuid()' do |t|
+      t.references :user, null: false, foreign_key: true
+      t.references :manifestation, null: false, foreign_key: true, type: :uuid
       t.text :title
-      t.string :url
+      t.string :url, index: true, null: false
       t.text :note
-      t.boolean :shared
+      t.boolean :shared, null: false, default: false
 
       t.timestamps
     end
-
-    add_index :bookmarks, :user_id
-    add_index :bookmarks, :manifestation_id
-    add_index :bookmarks, :url
-  end
-
-  def self.down
-    drop_table :bookmarks
   end
 end

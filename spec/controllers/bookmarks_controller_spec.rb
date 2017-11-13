@@ -240,7 +240,7 @@ describe BookmarksController do
       end
 
       it 'should create bookmark with local url' do
-        post :create, params: { bookmark: { title: 'example', url: "#{LibraryGroup.site_config.url}manifestations/10" } }
+        post :create, params: { bookmark: { title: 'example', url: "#{LibraryGroup.site_config.url}manifestations/#{manifestations(:manifestation_00010).id}" } }
         expect(assigns(:bookmark)).to be_valid
         expect(response).to redirect_to bookmark_url(assigns(:bookmark))
       end
