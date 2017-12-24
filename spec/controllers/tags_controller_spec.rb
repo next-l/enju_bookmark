@@ -48,7 +48,7 @@ describe TagsController do
       login_fixture_admin
 
       it "assigns the requested tag as @tag" do
-        tag = FactoryGirl.create(:tag)
+        tag = FactoryBot.create(:tag)
         get :show, :id => tag.name
         expect(assigns(:tag)).to eq(tag)
       end
@@ -58,7 +58,7 @@ describe TagsController do
       login_fixture_librarian
 
       it "assigns the requested tag as @tag" do
-        tag = FactoryGirl.create(:tag)
+        tag = FactoryBot.create(:tag)
         get :show, :id => tag.name
         expect(assigns(:tag)).to eq(tag)
       end
@@ -68,7 +68,7 @@ describe TagsController do
       login_fixture_user
 
       it "assigns the requested tag as @tag" do
-        tag = FactoryGirl.create(:tag)
+        tag = FactoryBot.create(:tag)
         get :show, :id => tag.name
         expect(assigns(:tag)).to eq(tag)
       end
@@ -76,7 +76,7 @@ describe TagsController do
 
     describe "When not logged in" do
       it "assigns the requested tag as @tag" do
-        tag = FactoryGirl.create(:tag)
+        tag = FactoryBot.create(:tag)
         get :show, :id => tag.name
         expect(assigns(:tag)).to eq(tag)
       end
@@ -88,7 +88,7 @@ describe TagsController do
       login_fixture_admin
 
       it "assigns the requested tag as @tag" do
-        tag = FactoryGirl.create(:tag)
+        tag = FactoryBot.create(:tag)
         get :edit, :id => tag.name
         expect(assigns(:tag)).to eq(tag)
       end
@@ -98,7 +98,7 @@ describe TagsController do
       login_fixture_librarian
 
       it "assigns the requested tag as @tag" do
-        tag = FactoryGirl.create(:tag)
+        tag = FactoryBot.create(:tag)
         get :edit, :id => tag.name
         expect(assigns(:tag)).to eq(tag)
       end
@@ -108,7 +108,7 @@ describe TagsController do
       login_fixture_user
 
       it "assigns the requested tag as @tag" do
-        tag = FactoryGirl.create(:tag)
+        tag = FactoryBot.create(:tag)
         get :edit, :id => tag.name
         expect(response).to be_forbidden
       end
@@ -116,7 +116,7 @@ describe TagsController do
 
     describe "When not logged in" do
       it "should not assign the requested tag as @tag" do
-        tag = FactoryGirl.create(:tag)
+        tag = FactoryBot.create(:tag)
         get :edit, :id => tag.name
         expect(response).to redirect_to(new_user_session_url)
       end
@@ -125,8 +125,8 @@ describe TagsController do
 
   describe "PUT update" do
     before(:each) do
-      @tag = FactoryGirl.create(:tag)
-      @attrs = FactoryGirl.attributes_for(:tag)
+      @tag = FactoryBot.create(:tag)
+      @attrs = FactoryBot.attributes_for(:tag)
       @invalid_attrs = {:name => ''}
     end
 
@@ -231,7 +231,7 @@ describe TagsController do
 
   describe "DELETE destroy" do
     before(:each) do
-      @tag = FactoryGirl.create(:tag)
+      @tag = FactoryBot.create(:tag)
     end
 
     describe "When logged in as Administrator" do

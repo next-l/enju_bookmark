@@ -77,7 +77,7 @@ describe BookmarksController do
       login_fixture_admin
 
       it "assigns the requested bookmark as @bookmark" do
-        bookmark = FactoryGirl.create(:bookmark)
+        bookmark = FactoryBot.create(:bookmark)
         get :show, :id => bookmark.id
         expect(assigns(:bookmark)).to eq(bookmark)
       end
@@ -87,7 +87,7 @@ describe BookmarksController do
       login_fixture_librarian
 
       it "assigns the requested bookmark as @bookmark" do
-        bookmark = FactoryGirl.create(:bookmark)
+        bookmark = FactoryBot.create(:bookmark)
         get :show, :id => bookmark.id
         expect(assigns(:bookmark)).to eq(bookmark)
       end
@@ -102,7 +102,7 @@ describe BookmarksController do
       login_fixture_user
 
       it "assigns the requested bookmark as @bookmark" do
-        bookmark = FactoryGirl.create(:bookmark)
+        bookmark = FactoryBot.create(:bookmark)
         get :show, :id => bookmark.id
         expect(assigns(:bookmark)).to eq(bookmark)
       end
@@ -120,7 +120,7 @@ describe BookmarksController do
 
     describe "When not logged in" do
       it "assigns the requested bookmark as @bookmark" do
-        bookmark = FactoryGirl.create(:bookmark)
+        bookmark = FactoryBot.create(:bookmark)
         get :show, :id => bookmark.id
         expect(assigns(:bookmark)).to eq(bookmark)
         expect(response).to redirect_to new_user_session_url
@@ -222,14 +222,14 @@ describe BookmarksController do
   describe "POST create" do
     before(:each) do
       @bookmark = bookmarks(:bookmark_00001)
-      @attrs = FactoryGirl.attributes_for(:bookmark)
+      @attrs = FactoryBot.attributes_for(:bookmark)
       @invalid_attrs = {:url => ''}
     end
 
     describe "When logged in as User" do
       login_fixture_user
 #      before(:each) do
-#        @user = FactoryGirl.create(:user)
+#        @user = FactoryBot.create(:user)
 #        sign_in @user
 #      end
 
@@ -312,7 +312,7 @@ describe BookmarksController do
   describe "PUT update" do
     before(:each) do
       @bookmark = bookmarks(:bookmark_00001)
-      @attrs = FactoryGirl.attributes_for(:bookmark)
+      @attrs = FactoryBot.attributes_for(:bookmark)
       @invalid_attrs = {:url => ''}
     end
 
