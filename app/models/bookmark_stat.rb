@@ -8,7 +8,7 @@ class BookmarkStat < ActiveRecord::Base
 
   paginates_per 10
 
-  has_many :bookmark_stat_transitions
+  has_many :bookmark_stat_transitions, autosave: false
 
   def state_machine
     BookmarkStatStateMachine.new(self, transition_class: BookmarkStatTransition)
