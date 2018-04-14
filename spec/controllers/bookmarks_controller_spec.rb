@@ -36,7 +36,7 @@ describe BookmarksController do
 
       it 'should get my bookmark index' do
         get :index
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(assigns(:bookmarks)).to eq users(:user1).bookmarks.page(1)
       end
 
@@ -48,7 +48,7 @@ describe BookmarksController do
 
       it "should get other user's public bookmark index" do
         get :index, params: { user_id: users(:admin).username }
-        expect(response).to be_success
+        expect(response).to be_successful
         expect(assigns(:bookmarks)).to eq users(:admin).bookmarks.page(1)
       end
 
@@ -77,7 +77,7 @@ describe BookmarksController do
       login_fixture_admin
 
       it 'assigns the requested bookmark as @bookmark' do
-        bookmark = FactoryGirl.create(:bookmark)
+        bookmark = FactoryBot.create(:bookmark)
         get :show, params: { id: bookmark.id }
         expect(assigns(:bookmark)).to eq(bookmark)
       end
@@ -87,14 +87,14 @@ describe BookmarksController do
       login_fixture_librarian
 
       it 'assigns the requested bookmark as @bookmark' do
-        bookmark = FactoryGirl.create(:bookmark)
+        bookmark = FactoryBot.create(:bookmark)
         get :show, params: { id: bookmark.id }
         expect(assigns(:bookmark)).to eq(bookmark)
       end
 
       it "should shot other user's bookmark" do
         get :show, params: { id: 3 }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
@@ -102,7 +102,7 @@ describe BookmarksController do
       login_fixture_user
 
       it 'assigns the requested bookmark as @bookmark' do
-        bookmark = FactoryGirl.create(:bookmark)
+        bookmark = FactoryBot.create(:bookmark)
         get :show, params: { id: bookmark.id }
         expect(assigns(:bookmark)).to eq(bookmark)
       end
@@ -114,13 +114,13 @@ describe BookmarksController do
 
       it 'should show my bookmark' do
         get :show, params: { id: 3 }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
     describe 'When not logged in' do
       it 'assigns the requested bookmark as @bookmark' do
-        bookmark = FactoryGirl.create(:bookmark)
+        bookmark = FactoryBot.create(:bookmark)
         get :show, params: { id: bookmark.id }
         expect(assigns(:bookmark)).to eq(bookmark)
         expect(response).to redirect_to new_user_session_url
@@ -135,7 +135,7 @@ describe BookmarksController do
       it 'assigns the requested bookmark as @bookmark' do
         get :new, params: { bookmark: { title: 'test' } }
         expect(assigns(:bookmark)).not_to be_valid
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
@@ -145,7 +145,7 @@ describe BookmarksController do
       it 'assigns the requested bookmark as @bookmark' do
         get :new, params: { bookmark: { title: 'test' } }
         expect(assigns(:bookmark)).not_to be_valid
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
@@ -155,22 +155,22 @@ describe BookmarksController do
       it 'should get my new template without url' do
         get :new, params: { bookmark: { title: 'test' } }
         expect(assigns(:bookmark)).not_to be_valid
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'should not get new template with url already bookmarked' do
         get :new, params: { bookmark: { url: 'http://www.slis.keio.ac.jp/' } }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'should get my new template with external url' do
         get :new, params: { bookmark: { title: 'example', url: 'http://example.com' } }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'should get my new template with internal url' do
         get :new, params: { bookmark: { url: "#{LibraryGroup.site_config.url}/manifestations/1" } }
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
   end
@@ -182,7 +182,7 @@ describe BookmarksController do
       it 'assigns the requested bookmark as @bookmark' do
         get :edit, params: { id: 3 }
         expect(assigns(:bookmark)).to eq(Bookmark.find(3))
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
@@ -192,7 +192,7 @@ describe BookmarksController do
       it 'assigns the requested bookmark as @bookmark' do
         get :edit, params: { id: 3 }
         expect(assigns(:bookmark)).to eq(Bookmark.find(3))
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
@@ -207,7 +207,7 @@ describe BookmarksController do
       it 'should edit my bookmark' do
         get :edit, params: { id: 3 }
         expect(assigns(:bookmark)).to eq(Bookmark.find(3))
-        expect(response).to be_success
+        expect(response).to be_successful
       end
     end
 
@@ -222,14 +222,14 @@ describe BookmarksController do
   describe 'POST create' do
     before(:each) do
       @bookmark = bookmarks(:bookmark_00001)
-      @attrs = FactoryGirl.attributes_for(:bookmark)
+      @attrs = FactoryBot.attributes_for(:bookmark)
       @invalid_attrs = { url: '' }
     end
 
     describe 'When logged in as User' do
       login_fixture_user
       #      before(:each) do
-      #        @user = FactoryGirl.create(:user)
+      #        @user = FactoryBot.create(:user)
       #        sign_in @user
       #      end
 
@@ -264,13 +264,13 @@ describe BookmarksController do
       it 'should not create bookmark without url' do
         post :create, params: { bookmark: { title: 'test' } }
         expect(assigns(:bookmark)).not_to be_valid
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it 'should not create bookmark already bookmarked' do
         post :create, params: { bookmark: { user_id: users(:user1).id, url: 'http://www.slis.keio.ac.jp/' } }
         expect(assigns(:bookmark)).not_to be_valid
-        expect(response).to be_success
+        expect(response).to be_successful
       end
 
       it "should not create other user's bookmark" do
@@ -312,7 +312,7 @@ describe BookmarksController do
   describe 'PUT update' do
     before(:each) do
       @bookmark = bookmarks(:bookmark_00001)
-      @attrs = FactoryGirl.attributes_for(:bookmark)
+      @attrs = FactoryBot.attributes_for(:bookmark)
       @invalid_attrs = { url: '' }
     end
 

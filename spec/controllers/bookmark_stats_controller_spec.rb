@@ -7,7 +7,7 @@ describe BookmarkStatsController do
 
   describe 'GET index' do
     before(:each) do
-      FactoryGirl.create(:bookmark_stat)
+      FactoryBot.create(:bookmark_stat)
     end
 
     describe 'When logged in as Administrator' do
@@ -50,7 +50,7 @@ describe BookmarkStatsController do
       login_fixture_admin
 
       it 'assigns the requested bookmark_stat as @bookmark_stat' do
-        bookmark_stat = FactoryGirl.create(:bookmark_stat)
+        bookmark_stat = FactoryBot.create(:bookmark_stat)
         get :show, params: { id: bookmark_stat.id }
         expect(assigns(:bookmark_stat)).to eq(bookmark_stat)
       end
@@ -60,7 +60,7 @@ describe BookmarkStatsController do
       login_fixture_librarian
 
       it 'assigns the requested bookmark_stat as @bookmark_stat' do
-        bookmark_stat = FactoryGirl.create(:bookmark_stat)
+        bookmark_stat = FactoryBot.create(:bookmark_stat)
         get :show, params: { id: bookmark_stat.id }
         expect(assigns(:bookmark_stat)).to eq(bookmark_stat)
       end
@@ -70,7 +70,7 @@ describe BookmarkStatsController do
       login_fixture_user
 
       it 'assigns the requested bookmark_stat as @bookmark_stat' do
-        bookmark_stat = FactoryGirl.create(:bookmark_stat)
+        bookmark_stat = FactoryBot.create(:bookmark_stat)
         get :show, params: { id: bookmark_stat.id }
         expect(assigns(:bookmark_stat)).to eq(bookmark_stat)
       end
@@ -78,7 +78,7 @@ describe BookmarkStatsController do
 
     describe 'When not logged in' do
       it 'assigns the requested bookmark_stat as @bookmark_stat' do
-        bookmark_stat = FactoryGirl.create(:bookmark_stat)
+        bookmark_stat = FactoryBot.create(:bookmark_stat)
         get :show, params: { id: bookmark_stat.id }
         expect(assigns(:bookmark_stat)).to eq(bookmark_stat)
       end
@@ -128,7 +128,7 @@ describe BookmarkStatsController do
       login_fixture_admin
 
       it 'assigns the requested bookmark_stat as @bookmark_stat' do
-        bookmark_stat = FactoryGirl.create(:bookmark_stat)
+        bookmark_stat = FactoryBot.create(:bookmark_stat)
         get :edit, params: { id: bookmark_stat.id }
         expect(assigns(:bookmark_stat)).to eq(bookmark_stat)
       end
@@ -138,7 +138,7 @@ describe BookmarkStatsController do
       login_fixture_librarian
 
       it 'assigns the requested bookmark_stat as @bookmark_stat' do
-        bookmark_stat = FactoryGirl.create(:bookmark_stat)
+        bookmark_stat = FactoryBot.create(:bookmark_stat)
         get :edit, params: { id: bookmark_stat.id }
         expect(assigns(:bookmark_stat)).to eq(bookmark_stat)
       end
@@ -148,7 +148,7 @@ describe BookmarkStatsController do
       login_fixture_user
 
       it 'assigns the requested bookmark_stat as @bookmark_stat' do
-        bookmark_stat = FactoryGirl.create(:bookmark_stat)
+        bookmark_stat = FactoryBot.create(:bookmark_stat)
         get :edit, params: { id: bookmark_stat.id }
         expect(response).to be_forbidden
       end
@@ -156,7 +156,7 @@ describe BookmarkStatsController do
 
     describe 'When not logged in' do
       it 'should not assign the requested bookmark_stat as @bookmark_stat' do
-        bookmark_stat = FactoryGirl.create(:bookmark_stat)
+        bookmark_stat = FactoryBot.create(:bookmark_stat)
         get :edit, params: { id: bookmark_stat.id }
         expect(response).to redirect_to(new_user_session_url)
       end
@@ -165,7 +165,7 @@ describe BookmarkStatsController do
 
   describe 'POST create' do
     before(:each) do
-      @attrs = FactoryGirl.attributes_for(:bookmark_stat)
+      @attrs = FactoryBot.attributes_for(:bookmark_stat)
       @invalid_attrs = { start_date: '' }
     end
 
@@ -282,8 +282,8 @@ describe BookmarkStatsController do
 
   describe 'PUT update' do
     before(:each) do
-      @bookmark_stat = FactoryGirl.create(:bookmark_stat)
-      @attrs = FactoryGirl.attributes_for(:bookmark_stat)
+      @bookmark_stat = FactoryBot.create(:bookmark_stat)
+      @attrs = FactoryBot.attributes_for(:bookmark_stat)
       @invalid_attrs = { start_date: '' }
     end
 
@@ -383,7 +383,7 @@ describe BookmarkStatsController do
 
   describe 'DELETE destroy' do
     before(:each) do
-      @bookmark_stat = FactoryGirl.create(:bookmark_stat)
+      @bookmark_stat = FactoryBot.create(:bookmark_stat)
     end
 
     describe 'When logged in as Administrator' do

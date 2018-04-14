@@ -13,8 +13,8 @@ describe User do
     end
 
     it 'should export share_bookmarks' do
-      user = FactoryGirl.create(:user,
-                                profile: FactoryGirl.create(:profile,
+      user = FactoryBot.create(:user,
+                                profile: FactoryBot.create(:profile,
                                                             share_bookmarks: true))
       lines = User.export
       rows = CSV.new(lines, col_sep: "\t", headers: true)

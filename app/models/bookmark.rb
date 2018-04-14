@@ -188,11 +188,11 @@ end
 #
 #  id               :integer          not null, primary key
 #  user_id          :integer          not null
-#  manifestation_id :integer
+#  manifestation_id :uuid             not null
 #  title            :text
-#  url              :string
+#  url              :string           not null
 #  note             :text
-#  shared           :boolean
+#  shared           :boolean          default(FALSE), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #

@@ -1,14 +1,19 @@
 language: ruby
 cache: bundler
 rvm:
-  - 2.2.7
-  - 2.3.3
+  - 2.3.4
+  - 2.4.1
 before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
   - psql -c 'create database enju_bookmark_dummy_test;' -U postgres
   - psql enju_bookmark_dummy_test -c 'CREATE EXTENSION pgcrypto'
   - bundle exec rake db:migrate
+script:
+  - bundle exec rspec
 after_script:
-  - bundle exec codeclimate-test-reporter
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 services:
   - redis-server
 env:
@@ -17,6 +22,5 @@ notifications:
   slack:
     secure: UYYu1zrEkpVI3sEDEI++6CTrqpVBItPx1xI6fwA6CoJhcqQRVImj9lLTjNbIm0jvEpn+TOXMO4GCyk6s38eL/J1itCTL2tmasmt+oa9wvwcHtx+SGspFnwqPJBO/aEMWN4gZofsGTiReJ9Gn796UvNExDMLjk2nMp1paV2EsVXU=
 sudo: false
-dist: precise
 addons:
-  postgresql: "9.5"
+  postgresql: "9.6"
