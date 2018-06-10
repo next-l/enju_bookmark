@@ -7,7 +7,7 @@ class TagsController < ApplicationController
     session[:params] ={} unless session[:params]
     session[:params][:tag] = params
 
-    sort = {:sort_by => 'created_at', :order => 'desc'}
+    sort = {sort_by: 'created_at', order: 'desc'}
     case params[:sort_by]
     when 'name'
       sort[:sort_by] = 'name'
@@ -21,7 +21,7 @@ class TagsController < ApplicationController
 
     @tags = Tag.search do
       fulltext query if query.present?
-      paginate :page => page.to_i, :per_page => Tag.default_per_page
+      paginate page: page.to_i, per_page: Tag.default_per_page
       order_by sort[:sort_by], sort[:order]
     end.results
 
