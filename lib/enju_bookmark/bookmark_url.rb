@@ -16,7 +16,7 @@ module BookmarkUrl
     if self.my_host?
       url = ::Addressable::URI.parse(self)
       path = url.path.split("/").reverse
-      if path[1] == "manifestations" and Manifestation.where(:id => path[0]).first
+      if path[1] == "manifestations" and Manifestation.where(id: path[0]).first
         true
       else
         false

@@ -1,7 +1,7 @@
 module EnjuBookmark
   module BookmarkHelper
     def link_to_tag(tag)
-      link_to tag, manifestations_path(:tag => tag.name)
+      link_to tag, manifestations_path(tag: tag.name)
     end
 
     def render_tag_cloud(tags, options = {})
@@ -22,10 +22,10 @@ module EnjuBookmark
       end
       divisor = ((max - min).div(classes.size)) + 1
 
-      content_tag :div, :class => "hTagcloud" do
-        content_tag :ul, :class => "popularity" do
+      content_tag :div, class: "hTagcloud" do
+        content_tag :ul, class: "popularity" do
           tags.collect do |tag|
-            concat(content_tag :li, link_to(tag.name, manifestations_path(:tag => tag.name), :class => classes[(tag.taggings.size - min).div(divisor)]) + "\n")
+            concat(content_tag :li, link_to(tag.name, manifestations_path(tag: tag.name), class: classes[(tag.taggings.size - min).div(divisor)]) + "\n")
           end
         end
       end
