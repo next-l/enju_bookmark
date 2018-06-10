@@ -3,7 +3,7 @@ module EnjuBookmark
     extend ActiveSupport::Concern
 
     included do
-      has_many :bookmarks, :dependent => :destroy
+      has_many :bookmarks, dependent: :destroy
       acts_as_tagger
     end
 

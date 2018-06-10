@@ -6,7 +6,7 @@ class BookmarksController < ApplicationController
   # GET /bookmarks
   # GET /bookmarks.json
   def index
-    search = Bookmark.search(:include => [:manifestation])
+    search = Bookmark.search(include: [:manifestation])
     query = params[:query].to_s.strip
     unless query.blank?
       @query = query.dup
@@ -103,7 +103,7 @@ class BookmarksController < ApplicationController
       access_denied; return
     end
     @bookmark.title = @bookmark.manifestation.try(:original_title)
-    @bookmark.taggings.where(:tagger_id => @bookmark.user.id).map{|t| t.destroy}
+    @bookmark.taggings.where(tagger_id: @bookmark.user.id).map{|t| t.destroy}
 
     respond_to do |format|
       if @bookmark.update_attributes(bookmark_params)

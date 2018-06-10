@@ -29,7 +29,7 @@ class Tag < ActiveRecord::Base
       tags = Tag.search do
         with(:bookmark_ids).any_of bookmark_ids
         order_by :taggings_count, :desc
-        paginate(:page => 1, :per_page => count)
+        paginate(page: 1, per_page: count)
       end.results
     end
   end
@@ -39,7 +39,7 @@ class Tag < ActiveRecord::Base
   end
 
   def tagged(taggable_type)
-    self.taggings.where(:taggable_type => taggable_type.to_s).includes(:taggable).collect(&:taggable)
+    self.taggings.where(taggable_type: taggable_type.to_s).includes(:taggable).collect(&:taggable)
   end
 end
 
