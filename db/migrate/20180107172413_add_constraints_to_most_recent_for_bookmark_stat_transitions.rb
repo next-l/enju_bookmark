@@ -1,4 +1,4 @@
-class AddConstraintsToMostRecentForBookmarkStatTransitions < ActiveRecord::Migration
+class AddConstraintsToMostRecentForBookmarkStatTransitions < ActiveRecord::Migration[4.2]
   disable_ddl_transaction!
 
   def up
