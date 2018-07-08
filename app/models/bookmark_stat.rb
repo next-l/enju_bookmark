@@ -21,7 +21,7 @@ class BookmarkStat < ActiveRecord::Base
     self.started_at = Time.zone.now
     Manifestation.find_each do |manifestation|
       daily_count = Bookmark.manifestations_count(start_date, end_date, manifestation)
-      #manifestation.update_attributes({:daily_bookmarks_count => daily_count, :total_count => manifestation.total_count + daily_count})
+      # manifestation.update_attributes({:daily_bookmarks_count => daily_count, :total_count => manifestation.total_count + daily_count})
       if daily_count > 0
         self.manifestations << manifestation
         sql = ['UPDATE bookmark_stat_has_manifestations SET bookmarks_count = ? WHERE bookmark_stat_id = ? AND manifestation_id = ?', daily_count, self.id, manifestation.id]

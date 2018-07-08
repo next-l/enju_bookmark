@@ -76,15 +76,15 @@ class Bookmark < ActiveRecord::Base
       normalized_url = Addressable::URI.parse(url).normalize.to_s
       doc = Nokogiri::HTML(Faraday.get(normalized_url).body)
       # TODO: 日本語以外
-      #charsets = ['iso-2022-jp', 'euc-jp', 'shift_jis', 'iso-8859-1']
-      #if charsets.include?(page.charset.downcase)
+      # charsets = ['iso-2022-jp', 'euc-jp', 'shift_jis', 'iso-8859-1']
+      # if charsets.include?(page.charset.downcase)
         title = NKF.nkf('-w', CGI.unescapeHTML((doc.at("title").inner_text))).to_s.gsub(/\r\n|\r|\n/, '').gsub(/\s+/, ' ').strip
         if title.blank?
           title = url
         end
-      #else
+      # else
       #  title = (doc/"title").inner_text
-      #end
+      # end
       title
     end
   rescue OpenURI::HTTPError

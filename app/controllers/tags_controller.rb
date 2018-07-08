@@ -40,11 +40,11 @@ class TagsController < ApplicationController
   end
 
   def edit
-    #@tag = Tag.find(params[:id])
+    # @tag = Tag.find(params[:id])
   end
 
   def update
-    #@tag = Tag.find(params[:id])
+    # @tag = Tag.find(params[:id])
 
     respond_to do |format|
       if @tag.update_attributes(tag_params)
@@ -60,7 +60,7 @@ class TagsController < ApplicationController
   # DELETE /tags/1
   # DELETE /tags/1.json
   def destroy
-    #@tag = Tag.find(params[:id])
+    # @tag = Tag.find(params[:id])
     @tag.destroy
 
     respond_to do |format|

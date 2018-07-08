@@ -6,17 +6,17 @@ module EnjuBookmark
 
     def render_tag_cloud(tags, options = {})
       # TODO: add options to specify different limits and sorts
-      #tags = Tag.all(:limit => 100, :order => 'taggings_count DESC').sort_by(&:name)
+      # tags = Tag.all(:limit => 100, :order => 'taggings_count DESC').sort_by(&:name)
 
       # TODO: add option to specify which classes you want and overide this if you want?
       classes = %w(popular v-popular vv-popular vvv-popular vvvv-popular)
 
       max, min = 0, 0
       tags.each do |tag|
-        #if options[:max] or options[:min]
+        # if options[:max] or options[:min]
         #  max = options[:max].to_i
         #  min = options[:min].to_i
-        #end
+        # end
         max = tag.taggings.size if tag.taggings.size > max
         min = tag.taggings.size if tag.taggings.size < min
       end
