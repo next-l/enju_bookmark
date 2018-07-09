@@ -1,9 +1,13 @@
-class ActsAsTaggableOnMigration < ActiveRecord::Migration[4.2]
+# This migration comes from acts_as_taggable_on_engine (originally 1)
+if ActiveRecord.gem_version >= Gem::Version.new('5.0')
+  class ActsAsTaggableOnMigration < ActiveRecord::Migration[4.2]; end
+else
+  class ActsAsTaggableOnMigration < ActiveRecord::Migration; end
+end
+ActsAsTaggableOnMigration.class_eval do
   def self.up
     create_table :tags do |t|
       t.string :name
-      t.string :name_transcription
-      t.timestamps
     end
 
     create_table :taggings do |t|
@@ -14,7 +18,9 @@ class ActsAsTaggableOnMigration < ActiveRecord::Migration[4.2]
       t.references :taggable, polymorphic: true
       t.references :tagger, polymorphic: true
 
-      t.string :context
+      # Limit is created to prevent MySQL error on index
+      # length for MyISAM table type: http://bit.ly/vgW2Ql
+      t.string :context, limit: 128
 
       t.datetime :created_at
     end

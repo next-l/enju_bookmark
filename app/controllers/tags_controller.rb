@@ -80,6 +80,6 @@ class TagsController < ApplicationController
   end
 
   def tag_params
-    params.require(:tag).permit(:name, :name_transcription)
+    params.require(:tag).permit(:name)
   end
 end
