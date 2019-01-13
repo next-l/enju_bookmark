@@ -8,7 +8,7 @@ class BookmarkStat < ActiveRecord::Base
 
   paginates_per 10
 
-  has_many :bookmark_stat_transitions
+  has_many :bookmark_stat_transitions, autosave: false
 
   def state_machine
     BookmarkStatStateMachine.new(self, transition_class: BookmarkStatTransition)
@@ -21,7 +21,7 @@ class BookmarkStat < ActiveRecord::Base
     self.started_at = Time.zone.now
     Manifestation.find_each do |manifestation|
       daily_count = Bookmark.manifestations_count(start_date, end_date, manifestation)
-      #manifestation.update_attributes({:daily_bookmarks_count => daily_count, :total_count => manifestation.total_count + daily_count})
+      # manifestation.update_attributes({:daily_bookmarks_count => daily_count, :total_count => manifestation.total_count + daily_count})
       if daily_count > 0
         self.manifestations << manifestation
         sql = ['UPDATE bookmark_stat_has_manifestations SET bookmarks_count = ? WHERE bookmark_stat_id = ? AND manifestation_id = ?', daily_count, self.id, manifestation.id]
@@ -54,6 +54,6 @@ end
 #  started_at   :datetime
 #  completed_at :datetime
 #  note         :text
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  created_at   :datetime
+#  updated_at   :datetime
 #

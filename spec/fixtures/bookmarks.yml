@@ -1,7 +1,7 @@
 --- 
 bookmark_00001: 
   updated_at: 2007-11-21 21:38:47.964470 +09:00
-  manifestation_id: 1ff5b88a-1964-4db0-acb3-ae1d9e3a307e
+  manifestation_id: 1
   user_id: 1
   id: 1
   url: "http://www.example.com"
@@ -11,7 +11,7 @@ bookmark_00001:
   created_at: 2007-11-21 21:38:47.964470 +09:00
 bookmark_00002: 
   updated_at: 2007-11-21 21:43:26.704516 +09:00
-  manifestation_id: 32662cf8-82b1-4c27-a5c6-2561da75d0a2
+  manifestation_id: 2
   user_id: 2
   id: 2
   url: "http://www.example.jp"
@@ -19,7 +19,7 @@ bookmark_00002:
   created_at: 2007-11-21 21:40:28.457279 +09:00
 bookmark_00003: 
   updated_at: 2007-11-21 21:43:26.704516 +09:00
-  manifestation_id: 6bd50ef9-5c1a-413b-b6a3-faa832bead79
+  manifestation_id: 3
   user_id: 3
   id: 3
   url: "http://www.example.org"
@@ -27,7 +27,7 @@ bookmark_00003:
   created_at: 2007-11-21 21:40:28.457279 +09:00
 bookmark_00004: 
   updated_at: 2007-11-21 21:43:26.704516 +09:00
-  manifestation_id: 1ff5b88a-1964-4db0-acb3-ae1d9e3a307e
+  manifestation_id: 1
   user_id: 4
   id: 4
   url: "http://www.example.net"
@@ -35,7 +35,7 @@ bookmark_00004:
   created_at: 2007-11-21 21:40:28.457279 +09:00
 bookmark_00005: 
   updated_at: 2007-11-21 21:43:26.704516 +09:00
-  manifestation_id: 32662cf8-82b1-4c27-a5c6-2561da75d0a2
+  manifestation_id: 2
   user_id: 5
   id: 5
   url: "http://www.example.co.jp"
@@ -48,11 +48,11 @@ bookmark_00005:
 #
 #  id               :integer          not null, primary key
 #  user_id          :integer          not null
-#  manifestation_id :uuid             not null
+#  manifestation_id :integer
 #  title            :text
-#  url              :string           not null
+#  url              :string
 #  note             :text
-#  shared           :boolean          default(FALSE), not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  shared           :boolean
+#  created_at       :datetime
+#  updated_at       :datetime
 #

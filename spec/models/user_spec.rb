@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 describe User do
-  # pending "add some examples to (or delete) #{__FILE__}"
+  #pending "add some examples to (or delete) #{__FILE__}"
   fixtures :all
 
-  describe '.export' do
+  describe ".export" do
     it "should export all user's information" do
       lines = User.export
       CSV.parse(lines, col_sep: "\t")
@@ -12,20 +12,20 @@ describe User do
       expect(lines.split(/\n/).size).to eq User.count + 1
     end
 
-    it 'should export share_bookmarks' do
+    it "should export share_bookmarks" do
       user = FactoryBot.create(:user,
-                                profile: FactoryBot.create(:profile,
-                                                            share_bookmarks: true))
+        profile: FactoryBot.create(:profile,
+          share_bookmarks: true))
       lines = User.export
       rows = CSV.new(lines, col_sep: "\t", headers: true)
       rows.each do |row|
-        if row['username'] == user.username
-          expect(row['share_bookmarks']).to eq 'true'
+        if row["username"] == user.username
+          expect(row["share_bookmarks"]).to eq "true"
         end
       end
     end
 
-    it 'should work even if EnjuBookmark module is undefined' do
+    it "should work even if EnjuBookmark module is undefined" do
       Object.send(:remove_const, :EnjuBookmark)
       lines = User.export
       expect(lines).not_to be_empty
@@ -78,3 +78,4 @@ end
 #  save_search_history      :boolean         default(FALSE), not null
 #  answer_feed_token        :string(255)
 #
+

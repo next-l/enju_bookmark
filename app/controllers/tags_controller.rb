@@ -1,7 +1,6 @@
 class TagsController < ApplicationController
   before_action :set_tag, only: [:show, :edit, :update, :destroy]
   before_action :check_policy, only: [:index, :new, :create]
-  before_action :set_user
 
   def index
     session[:params] ={} unless session[:params]
@@ -41,11 +40,11 @@ class TagsController < ApplicationController
   end
 
   def edit
-    #@tag = Tag.find(params[:id])
+    # @tag = Tag.find(params[:id])
   end
 
   def update
-    #@tag = Tag.find(params[:id])
+    # @tag = Tag.find(params[:id])
 
     respond_to do |format|
       if @tag.update_attributes(tag_params)
@@ -61,7 +60,7 @@ class TagsController < ApplicationController
   # DELETE /tags/1
   # DELETE /tags/1.json
   def destroy
-    #@tag = Tag.find(params[:id])
+    # @tag = Tag.find(params[:id])
     @tag.destroy
 
     respond_to do |format|
@@ -81,6 +80,6 @@ class TagsController < ApplicationController
   end
 
   def tag_params
-    params.require(:tag).permit(:name, :name_transcription)
+    params.require(:tag).permit(:name)
   end
 end

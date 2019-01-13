@@ -2,8 +2,8 @@ class Bookmark < ActiveRecord::Base
   scope :bookmarked, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
   scope :user_bookmarks, lambda {|user| where(user_id: user.id)}
   scope :shared, -> {where(shared: true)}
-  belongs_to :manifestation, touch: true
-  belongs_to :user #, counter_cache: true, validate: true
+  belongs_to :manifestation, touch: true, optional: true
+  belongs_to :user
 
   validates_presence_of :user, :title
   validates_presence_of :url, on: :create
@@ -69,22 +69,22 @@ class Bookmark < ActiveRecord::Base
     return if url.blank?
     return unless Addressable::URI.parse(url).host
     if manifestation_id = url.bookmarkable_id
-      manifestation = Manifestation.find(manifestation_id)
+      self.manifestation = Manifestation.find(manifestation_id)
       return manifestation.original_title
     end
     unless manifestation
       normalized_url = Addressable::URI.parse(url).normalize.to_s
       doc = Nokogiri::HTML(Faraday.get(normalized_url).body)
       # TODO: 日本語以外
-      #charsets = ['iso-2022-jp', 'euc-jp', 'shift_jis', 'iso-8859-1']
-      #if charsets.include?(page.charset.downcase)
+      # charsets = ['iso-2022-jp', 'euc-jp', 'shift_jis', 'iso-8859-1']
+      # if charsets.include?(page.charset.downcase)
         title = NKF.nkf('-w', CGI.unescapeHTML((doc.at("title").inner_text))).to_s.gsub(/\r\n|\r|\n/, '').gsub(/\s+/, ' ').strip
         if title.blank?
           title = url
         end
-      #else
+      # else
       #  title = (doc/"title").inner_text
-      #end
+      # end
       title
     end
   rescue OpenURI::HTTPError
@@ -143,7 +143,7 @@ class Bookmark < ActiveRecord::Base
       return
     end
     manifestation = Manifestation.new(access_address: url)
-    manifestation.carrier_type = CarrierType.find_by(name: 'file')
+    manifestation.carrier_type = CarrierType.where(name: 'file').first
     if title.present?
       manifestation.original_title = title
     else
@@ -153,15 +153,15 @@ class Bookmark < ActiveRecord::Base
       manifestation.save
       self.manifestation = manifestation
       item = Item.new
-      item.shelf = Shelf.find_by(name: 'web')
+      item.shelf = Shelf.web
       item.manifestation = manifestation
       if defined?(EnjuCirculation)
-        item.circulation_status = CirculationStatus.find_by(name: 'Not Available')
+        item.circulation_status = CirculationStatus.where(name: 'Not Available').first
       end
 
       item.save!
       if defined?(EnjuCirculation)
-        item.use_restriction = UseRestriction.find_by(name: 'Not For Loan')
+        item.use_restriction = UseRestriction.where(name: 'Not For Loan').first
       end
     end
   end
@@ -188,11 +188,11 @@ end
 #
 #  id               :integer          not null, primary key
 #  user_id          :integer          not null
-#  manifestation_id :uuid             not null
+#  manifestation_id :integer
 #  title            :text
-#  url              :string           not null
+#  url              :string
 #  note             :text
-#  shared           :boolean          default(FALSE), not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  shared           :boolean
+#  created_at       :datetime
+#  updated_at       :datetime
 #

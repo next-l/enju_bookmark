@@ -2,39 +2,39 @@
 require 'rails_helper'
 
 describe Bookmark do
-  # pending "add some examples to (or delete) #{__FILE__}"
+  #pending "add some examples to (or delete) #{__FILE__}"
   fixtures :all
 
-  it 'should be shelved' do
+  it "should be shelved" do
     bookmarks(:bookmark_00001).shelved?.should be_truthy
   end
 
-  it 'should create bookmark with url' do
+  it "should create bookmark with url" do
     old_manifestation_count = Manifestation.count
     old_item_count = Item.count
-    lambda do
+    lambda{
       bookmark = FactoryBot.create(:user).bookmarks.create(url: 'http://www.example.com/', title: 'test')
-    end.should change(Bookmark, :count)
+    }.should change(Bookmark, :count)
     Manifestation.count.should eq old_manifestation_count + 1
     Item.count.should eq old_item_count + 1
   end
 
-  it 'should create bookmark with local resource url' do
+  it "should create bookmark with local resource url" do
     old_manifestation_count = Manifestation.count
     old_item_count = Item.count
-    lambda do
+    lambda{
       bookmark = FactoryBot.create(:user).bookmarks.create(url: "#{LibraryGroup.site_config.url}manifestations/1", title: 'test')
-    end.should change(Bookmark, :count)
+    }.should change(Bookmark, :count)
     assert_equal old_manifestation_count, Manifestation.count
     assert_equal old_item_count, Item.count
   end
 
-  it 'should not create bookmark with local resource url' do
+  it "should not create bookmark with local resource url" do
     old_manifestation_count = Manifestation.count
     old_item_count = Item.count
-    lambda do
+    lambda{
       bookmark = FactoryBot.create(:user).bookmarks.create(url: "#{LibraryGroup.site_config.url}libraries/1", title: 'test')
-    end.should_not change(Bookmark, :count)
+    }.should_not change(Bookmark, :count)
     assert_equal old_manifestation_count, Manifestation.count
     assert_equal old_item_count, Item.count
   end
@@ -46,11 +46,11 @@ end
 #
 #  id               :integer          not null, primary key
 #  user_id          :integer          not null
-#  manifestation_id :uuid             not null
+#  manifestation_id :integer
 #  title            :text
-#  url              :string           not null
+#  url              :string
 #  note             :text
-#  shared           :boolean          default(FALSE), not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  shared           :boolean
+#  created_at       :datetime
+#  updated_at       :datetime
 #

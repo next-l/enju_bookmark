@@ -1,7 +1,8 @@
 FactoryBot.define do
-  factory :bookmark do |f|
-    f.sequence(:title){|n| "bookmark_#{n}"}
-    f.sequence(:url){|n| "http://example.jp/#{n}"}
-    f.user_id{FactoryBot.create(:user).id}
+  factory :bookmark do
+    sequence(:title){|n| "bookmark_#{n}"}
+    sequence(:url){|n| "http://example.jp/#{n}"}
+    user_id{FactoryBot.create(:user).id}
+    association :manifestation
   end
 end
