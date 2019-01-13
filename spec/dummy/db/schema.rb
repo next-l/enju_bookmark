@@ -177,48 +177,48 @@ ActiveRecord::Schema.define(version: 2019_01_02_034126) do
     t.index ["user_id"], name: "index_baskets_on_user_id"
   end
 
-  create_table "bookmark_stat_has_manifestations", id: :serial, force: :cascade do |t|
+  create_table "bookmark_stat_has_manifestations", force: :cascade do |t|
     t.integer "bookmark_stat_id", null: false
     t.integer "manifestation_id", null: false
     t.integer "bookmarks_count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["bookmark_stat_id"], name: "index_bookmark_stat_has_manifestations_on_bookmark_stat_id"
     t.index ["manifestation_id"], name: "index_bookmark_stat_has_manifestations_on_manifestation_id"
   end
 
-  create_table "bookmark_stat_transitions", id: :serial, force: :cascade do |t|
+  create_table "bookmark_stat_transitions", force: :cascade do |t|
     t.string "to_state"
     t.text "metadata", default: "{}"
     t.integer "sort_key"
     t.integer "bookmark_stat_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
     t.index ["bookmark_stat_id", "most_recent"], name: "index_bookmark_stat_transitions_parent_most_recent", unique: true, where: "most_recent"
     t.index ["bookmark_stat_id"], name: "index_bookmark_stat_transitions_on_bookmark_stat_id"
     t.index ["sort_key", "bookmark_stat_id"], name: "index_bookmark_stat_transitions_on_sort_key_and_stat_id", unique: true
   end
 
-  create_table "bookmark_stats", id: :serial, force: :cascade do |t|
+  create_table "bookmark_stats", force: :cascade do |t|
     t.datetime "start_date"
     t.datetime "end_date"
     t.datetime "started_at"
     t.datetime "completed_at"
     t.text "note"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "bookmarks", id: :serial, force: :cascade do |t|
+  create_table "bookmarks", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "manifestation_id"
     t.text "title"
     t.string "url"
     t.text "note"
     t.boolean "shared"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["manifestation_id"], name: "index_bookmarks_on_manifestation_id"
     t.index ["url"], name: "index_bookmarks_on_url"
     t.index ["user_id"], name: "index_bookmarks_on_user_id"
