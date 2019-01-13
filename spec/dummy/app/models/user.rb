@@ -7,5 +7,6 @@ class User < ActiveRecord::Base
   include EnjuBookmark::EnjuUser
 end
 
+Manifestation.include(EnjuCirculation::EnjuManifestation)
 Item.include(EnjuLibrary::EnjuItem)
 Item.include(EnjuCirculation::EnjuItem)
