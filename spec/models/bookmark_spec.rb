@@ -45,12 +45,12 @@ end
 # Table name: bookmarks
 #
 #  id               :bigint(8)        not null, primary key
-#  user_id          :integer          not null
-#  manifestation_id :integer
+#  user_id          :bigint(8)        not null
+#  manifestation_id :bigint(8)        not null
 #  title            :text
 #  url              :string
 #  note             :text
-#  shared           :boolean
+#  shared           :boolean          default(FALSE), not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #
