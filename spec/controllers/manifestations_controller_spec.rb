@@ -9,6 +9,7 @@ describe ManifestationsController do
 
   describe 'GET index', solr: true do
     before do
+      @manifestation = FactoryBot.create(:manifestation)
       Manifestation.reindex
     end
 
@@ -22,13 +23,13 @@ describe ManifestationsController do
 
     describe 'When not logged in' do
       it 'should show manifestation with tag_edit' do
-        get :show, params: { id: 1, mode: 'tag_edit' }
+        get :show, params: { id: @manifestation.id, mode: 'tag_edit' }
         expect(response).to render_template('manifestations/_tag_edit')
         expect(response).to be_successful
       end
 
       it 'should show manifestation with tag_list' do
-        get :show, params: { id: 1, mode: 'tag_list' }
+        get :show, params: { id: @manifestation.id, mode: 'tag_list' }
         expect(response).to render_template('manifestations/_tag_list')
         expect(response).to be_successful
       end
@@ -36,11 +37,15 @@ describe ManifestationsController do
   end
 
   describe 'GET edit' do
+    before(:each) do
+      @manifestation = FactoryBot.create(:manifestation)
+    end
+
     describe 'When logged in as User' do
       login_fixture_user
 
       it 'should edit manifestation with tag_edit' do
-        get :edit, params: { id: 1, mode: 'tag_edit' }
+        get :edit, params: { id: @manifestation.id, mode: 'tag_edit' }
         expect(response).to be_successful
       end
     end

@@ -23,7 +23,7 @@ describe Bookmark do
     old_manifestation_count = Manifestation.count
     old_item_count = Item.count
     lambda{
-      bookmark = FactoryBot.create(:user).bookmarks.create(url: "#{LibraryGroup.site_config.url}manifestations/1", title: 'test')
+      bookmark = FactoryBot.create(:user).bookmarks.create(url: "#{LibraryGroup.site_config.url}manifestations/#{manifestations(:manifestation_00001).id}", title: 'test')
     }.should change(Bookmark, :count)
     assert_equal old_manifestation_count, Manifestation.count
     assert_equal old_item_count, Item.count
@@ -46,7 +46,7 @@ end
 #
 #  id               :bigint(8)        not null, primary key
 #  user_id          :bigint(8)        not null
-#  manifestation_id :bigint(8)        not null
+#  manifestation_id :uuid             not null
 #  title            :text
 #  url              :string
 #  note             :text

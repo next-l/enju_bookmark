@@ -169,7 +169,7 @@ describe BookmarksController do
       end
 
       it "should get my new template with internal url" do
-        get :new, params: { bookmark: {url: "#{LibraryGroup.site_config.url}/manifestations/1"} }
+        get :new, params: { bookmark: {url: "#{LibraryGroup.site_config.url}/manifestations/#{FactoryBot.create(:manifestation).id}"} }
         expect(response).to be_successful
       end
     end
@@ -240,7 +240,7 @@ describe BookmarksController do
       end
 
       it "should create bookmark with local url" do
-        post :create, params: { bookmark: {title: 'example', url: "#{LibraryGroup.site_config.url}manifestations/10"} }
+        post :create, params: { bookmark: {title: 'example', url: manifestation_url(10)} }
         expect(assigns(:bookmark)).to be_valid
         expect(response).to redirect_to bookmark_url(assigns(:bookmark))
       end
