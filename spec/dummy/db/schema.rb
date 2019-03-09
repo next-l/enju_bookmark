@@ -193,7 +193,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
 
   create_table "bookmark_stat_has_manifestations", force: :cascade do |t|
     t.bigint "bookmark_stat_id", null: false
-    t.bigint "manifestation_id"
+    t.uuid "manifestation_id"
     t.integer "bookmarks_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
