@@ -84,7 +84,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.index ["agent_import_file_id"], name: "index_agent_import_results_on_agent_import_file_id"
   end
 
-  create_table "agent_merge_lists", force: :cascade do |t|
+  create_table "agent_merge_lists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -92,7 +92,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
 
   create_table "agent_merges", force: :cascade do |t|
     t.uuid "agent_id", null: false
-    t.bigint "agent_merge_list_id", null: false
+    t.uuid "agent_merge_list_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["agent_id"], name: "index_agent_merges_on_agent_id"
@@ -192,7 +192,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
   end
 
   create_table "bookmark_stat_has_manifestations", force: :cascade do |t|
-    t.bigint "bookmark_stat_id", null: false
+    t.uuid "bookmark_stat_id", null: false
     t.uuid "manifestation_id"
     t.integer "bookmarks_count"
     t.datetime "created_at", null: false
@@ -214,7 +214,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.index ["sort_key", "bookmark_stat_id"], name: "index_bookmark_stat_transitions_on_sort_key_and_stat_id", unique: true
   end
 
-  create_table "bookmark_stats", force: :cascade do |t|
+  create_table "bookmark_stats", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "start_date"
     t.datetime "end_date"
     t.datetime "started_at"
@@ -224,7 +224,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "bookmarks", force: :cascade do |t|
+  create_table "bookmarks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "user_id", null: false
     t.uuid "manifestation_id", null: false
     t.text "title"
@@ -433,7 +433,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.index ["user_id"], name: "index_demands_on_user_id"
   end
 
-  create_table "doi_records", force: :cascade do |t|
+  create_table "doi_records", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "body", null: false
     t.string "display_body", null: false
     t.string "source"
@@ -499,7 +499,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.string "to_state"
     t.jsonb "metadata", default: {}
     t.integer "sort_key"
-    t.bigint "import_request_id"
+    t.uuid "import_request_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
@@ -508,7 +508,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.index ["sort_key", "import_request_id"], name: "index_import_request_transitions_on_sort_key_and_request_id", unique: true
   end
 
-  create_table "import_requests", force: :cascade do |t|
+  create_table "import_requests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "isbn", null: false
     t.uuid "manifestation_id"
     t.bigint "user_id"
@@ -1146,7 +1146,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "series_statement_merge_lists", force: :cascade do |t|
+  create_table "series_statement_merge_lists", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -1154,7 +1154,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
 
   create_table "series_statement_merges", force: :cascade do |t|
     t.bigint "series_statement_id", null: false
-    t.bigint "series_statement_merge_list_id", null: false
+    t.uuid "series_statement_merge_list_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["series_statement_id"], name: "index_series_statement_merges_on_series_statement_id"

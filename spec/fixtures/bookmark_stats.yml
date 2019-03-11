@@ -1,13 +1,13 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 bookmark_stat_00001:
-  id: 1
+  id: 3a76a764-4bf9-455f-8168-cdfe5a87f8f0
   start_date: 2008-12-13 00:16:14
   end_date: 2008-12-14 00:16:14
   note: MyText
 
 bookmark_stat_00002:
-  id: 2
+  id: 26260ba7-59c0-4dc0-92cc-c35c0e8641c7
   start_date: 2008-12-13 00:16:14
   end_date: 2008-12-14 00:16:14
   note: MyText
@@ -16,7 +16,7 @@ bookmark_stat_00002:
 #
 # Table name: bookmark_stats
 #
-#  id           :bigint(8)        not null, primary key
+#  id           :uuid             not null, primary key
 #  start_date   :datetime
 #  end_date     :datetime
 #  started_at   :datetime
