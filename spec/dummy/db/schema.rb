@@ -309,7 +309,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
   end
 
   create_table "checkout_stat_has_manifestations", force: :cascade do |t|
-    t.bigint "manifestation_checkout_stat_id", null: false
+    t.uuid "manifestation_checkout_stat_id", null: false
     t.uuid "manifestation_id", null: false
     t.integer "checkouts_count"
     t.datetime "created_at", null: false
@@ -319,7 +319,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
   end
 
   create_table "checkout_stat_has_users", force: :cascade do |t|
-    t.bigint "user_checkout_stat_id", null: false
+    t.uuid "user_checkout_stat_id", null: false
     t.bigint "user_id", null: false
     t.integer "checkouts_count", default: 0, null: false
     t.datetime "created_at", null: false
@@ -696,7 +696,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.string "to_state"
     t.jsonb "metadata", default: {}
     t.integer "sort_key"
-    t.bigint "manifestation_checkout_stat_id"
+    t.uuid "manifestation_checkout_stat_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
@@ -705,7 +705,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.index ["sort_key", "manifestation_checkout_stat_id"], name: "index_manifestation_checkout_stat_transitions_on_transition", unique: true
   end
 
-  create_table "manifestation_checkout_stats", force: :cascade do |t|
+  create_table "manifestation_checkout_stats", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "start_date"
     t.datetime "end_date"
     t.text "note"
@@ -741,7 +741,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.string "to_state"
     t.jsonb "metadata", default: {}
     t.integer "sort_key"
-    t.bigint "manifestation_reserve_stat_id"
+    t.uuid "manifestation_reserve_stat_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
@@ -750,7 +750,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.index ["sort_key", "manifestation_reserve_stat_id"], name: "index_manifestation_reserve_stat_transitions_on_transition", unique: true
   end
 
-  create_table "manifestation_reserve_stats", force: :cascade do |t|
+  create_table "manifestation_reserve_stats", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "start_date"
     t.datetime "end_date"
     t.text "note"
@@ -834,7 +834,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.string "to_state"
     t.jsonb "metadata", default: {}
     t.integer "sort_key"
-    t.bigint "message_request_id"
+    t.uuid "message_request_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
@@ -843,7 +843,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.index ["sort_key", "message_request_id"], name: "index_message_request_transitions_on_sort_key_and_request_id", unique: true
   end
 
-  create_table "message_requests", force: :cascade do |t|
+  create_table "message_requests", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "sender_id"
     t.bigint "receiver_id"
     t.bigint "message_template_id"
@@ -1015,7 +1015,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
   end
 
   create_table "reserve_stat_has_users", force: :cascade do |t|
-    t.bigint "user_reserve_stat_id", null: false
+    t.uuid "user_reserve_stat_id", null: false
     t.bigint "user_id", null: false
     t.integer "reserves_count"
     t.datetime "created_at", null: false
@@ -1262,7 +1262,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.string "to_state"
     t.jsonb "metadata", default: {}
     t.integer "sort_key"
-    t.bigint "user_checkout_stat_id"
+    t.uuid "user_checkout_stat_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
@@ -1271,7 +1271,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.index ["user_checkout_stat_id"], name: "index_user_checkout_stat_transitions_on_user_checkout_stat_id"
   end
 
-  create_table "user_checkout_stats", force: :cascade do |t|
+  create_table "user_checkout_stats", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "start_date"
     t.datetime "end_date"
     t.text "note"
@@ -1391,7 +1391,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.string "to_state"
     t.jsonb "metadata", default: {}
     t.integer "sort_key"
-    t.bigint "user_reserve_stat_id"
+    t.uuid "user_reserve_stat_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "most_recent", null: false
@@ -1400,7 +1400,7 @@ ActiveRecord::Schema.define(version: 2019_02_08_135957) do
     t.index ["user_reserve_stat_id"], name: "index_user_reserve_stat_transitions_on_user_reserve_stat_id"
   end
 
-  create_table "user_reserve_stats", force: :cascade do |t|
+  create_table "user_reserve_stats", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "start_date"
     t.datetime "end_date"
     t.text "note"
