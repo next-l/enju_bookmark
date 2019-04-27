@@ -1,22 +1,22 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  bookmark_stat_id: 3a76a764-4bf9-455f-8168-cdfe5a87f8f0
-  manifestation_id: 0f4ef509-cf56-41d9-bfa7-78b1e14fbc21
+  bookmark_stat_id: 1
+  manifestation_id: 1
   bookmarks_count: 1
 
 two:
-  bookmark_stat_id: 26260ba7-59c0-4dc0-92cc-c35c0e8641c7
-  manifestation_id: b70ba31e-5220-446f-8648-b0324d1918c7
+  bookmark_stat_id: 2
+  manifestation_id: 1
   bookmarks_count: 1
 
 # == Schema Information
 #
 # Table name: bookmark_stat_has_manifestations
 #
-#  id               :bigint(8)        not null, primary key
-#  bookmark_stat_id :uuid             not null
-#  manifestation_id :uuid
+#  id               :bigint           not null, primary key
+#  bookmark_stat_id :bigint           not null
+#  manifestation_id :bigint
 #  bookmarks_count  :integer
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null

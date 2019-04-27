@@ -187,9 +187,9 @@ end
 #
 # Table name: bookmarks
 #
-#  id               :uuid             not null, primary key
-#  user_id          :bigint(8)        not null
-#  manifestation_id :uuid             not null
+#  id               :bigint           not null, primary key
+#  user_id          :bigint           not null
+#  manifestation_id :bigint           not null
 #  title            :text
 #  url              :string
 #  note             :text
