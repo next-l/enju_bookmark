@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/db/*.sqlite3"] - Dir["spec/dummy/log/*"] - Dir["spec/dummy/solr/**/*"] - Dir["spec/dummy/tmp/*"]
 
   s.add_dependency "enju_biblio", "~> 0.3.0"
-  s.add_dependency "acts-as-taggable-on", "~> 5.0"
+  s.add_dependency "acts-as-taggable-on", "~> 6.0"
 
   s.add_development_dependency "enju_leaf", "~> 1.3.0"
   s.add_development_dependency "sqlite3"
@@ -28,4 +28,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "sunspot_solr", "~> 2.3"
   s.add_development_dependency "simplecov"
   s.add_development_dependency "coveralls"
+  s.add_development_dependency "annotate"
 end
