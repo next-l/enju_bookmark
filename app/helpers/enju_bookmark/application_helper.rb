@@ -1,5 +1,5 @@
 module EnjuBookmark
-  module BookmarkHelper
+  module ApplicationHelper
     def link_to_tag(tag)
       link_to tag, manifestations_path(tag: tag.name)
     end

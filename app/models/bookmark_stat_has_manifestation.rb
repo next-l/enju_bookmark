@@ -12,10 +12,10 @@ end
 #
 # Table name: bookmark_stat_has_manifestations
 #
-#  id               :bigint           not null, primary key
-#  bookmark_stat_id :bigint           not null
-#  manifestation_id :bigint
+#  id               :integer          not null, primary key
+#  bookmark_stat_id :integer          not null
+#  manifestation_id :integer          not null
 #  bookmarks_count  :integer
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  created_at       :datetime
+#  updated_at       :datetime
 #

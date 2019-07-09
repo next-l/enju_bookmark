@@ -66,11 +66,10 @@ class Bookmark < ActiveRecord::Base
   end
 
   def self.get_title_from_url(url)
-    manifestation = nil
     return if url.blank?
     return unless Addressable::URI.parse(url).host
     if manifestation_id = url.bookmarkable_id
-      manifestation = Manifestation.find(manifestation_id)
+      self.manifestation = Manifestation.find(manifestation_id)
       return manifestation.original_title
     end
     unless manifestation
@@ -187,13 +186,13 @@ end
 #
 # Table name: bookmarks
 #
-#  id               :bigint           not null, primary key
-#  user_id          :bigint           not null
-#  manifestation_id :bigint           not null
+#  id               :integer          not null, primary key
+#  user_id          :integer          not null
+#  manifestation_id :integer
 #  title            :text
 #  url              :string
 #  note             :text
-#  shared           :boolean          default(FALSE), not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  shared           :boolean
+#  created_at       :datetime
+#  updated_at       :datetime
 #

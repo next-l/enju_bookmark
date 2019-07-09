@@ -14,15 +14,15 @@ module EnjuBookmark
           bookmarks.map{|bookmark| bookmark.tag_list}.flatten
         end
       end
-    end
 
-    def bookmarked?(user)
-      return true if user.bookmarks.where(url: url).first
-      false
-    end
+      def bookmarked?(user)
+        return true if user.bookmarks.where(url: url).first
+        false
+      end
 
-    def tags
-      bookmarks.map{|bookmark| bookmark.tags}.flatten
+      def tags
+        bookmarks.map{|bookmark| bookmark.tags}.flatten
+      end
     end
   end
 end
