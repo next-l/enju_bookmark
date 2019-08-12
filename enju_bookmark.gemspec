@@ -16,10 +16,10 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/db/*.sqlite3"] - Dir["spec/dummy/log/*"] - Dir["spec/dummy/solr/**/*"] - Dir["spec/dummy/tmp/*"]
 
-  s.add_dependency "enju_biblio", "~> 0.3.2"
+  s.add_dependency "enju_biblio", "~> 0.3.5"
   s.add_dependency "acts-as-taggable-on", "~> 6.0"
 
-  s.add_development_dependency "enju_leaf", "~> 1.3.2"
+  s.add_development_dependency "enju_leaf", "~> 1.3.3"
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "mysql2"
   s.add_development_dependency "pg"
@@ -29,4 +29,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "simplecov"
   s.add_development_dependency "coveralls"
   s.add_development_dependency "annotate"
+  s.add_development_dependency "rails", "~> 5.2"
 end
