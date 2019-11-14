@@ -20,8 +20,8 @@ gem "enju_message", github: "next-l/enju_message"
 gem "enju_manifestation_viewer", github: "next-l/enju_manifestation_viewer"
 gem "jquery-rails"
 gem 'json_translate'
-gem 'paper_trail'
 gem 'jbuilder'
+gem 'rails', '~> 5.2'
 group :test do
   gem 'rspec_junit_formatter'
   gem 'rails-controller-testing'
