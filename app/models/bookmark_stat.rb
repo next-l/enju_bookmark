@@ -1,5 +1,8 @@
 class BookmarkStat < ActiveRecord::Base
-  include Statesman::Adapters::ActiveRecordQueries
+  include Statesman::Adapters::ActiveRecordQueries[
+    transition_class: BookmarkStatTransition,
+    initial_state: :pending
+  ]
   include CalculateStat
   default_scope { order('bookmark_stats.id DESC') }
   scope :not_calculated, -> {in_state(:pending)}
@@ -32,15 +35,6 @@ class BookmarkStat < ActiveRecord::Base
     end
     self.completed_at = Time.zone.now
     transition_to!(:completed)
-  end
-
-  private
-  def self.transition_class
-    BookmarkStatTransition
-  end
-
-  def self.initial_state
-    :pending
   end
 end
 

@@ -15,7 +15,7 @@ describe BookmarkStatsController do
 
       it "assigns all bookmark_stats as @bookmark_stats" do
         get :index
-        expect(assigns(:bookmark_stats)).to eq(BookmarkStat.page(1))
+        expect(assigns(:bookmark_stats)).to eq(BookmarkStat.order(created_at: :desc).page(1))
       end
     end
 
@@ -24,7 +24,7 @@ describe BookmarkStatsController do
 
       it "assigns all bookmark_stats as @bookmark_stats" do
         get :index
-        expect(assigns(:bookmark_stats)).to eq(BookmarkStat.page(1))
+        expect(assigns(:bookmark_stats)).to eq(BookmarkStat.order(created_at: :desc).page(1))
       end
     end
 
@@ -33,14 +33,14 @@ describe BookmarkStatsController do
 
       it "assigns all bookmark_stats as @bookmark_stats" do
         get :index
-        expect(assigns(:bookmark_stats)).to eq(BookmarkStat.page(1))
+        expect(assigns(:bookmark_stats)).to eq(BookmarkStat.order(created_at: :desc).page(1))
       end
     end
 
     describe "When not logged in" do
       it "should not assign bookmark_stats as @bookmark_stats" do
         get :index
-        expect(assigns(:bookmark_stats)).to eq(BookmarkStat.page(1))
+        expect(assigns(:bookmark_stats)).to eq(BookmarkStat.order(created_at: :desc).page(1))
       end
     end
   end

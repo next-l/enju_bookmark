@@ -6,7 +6,7 @@ class BookmarkStatsController < ApplicationController
   # GET /bookmark_stats
   # GET /bookmark_stats.json
   def index
-    @bookmark_stats = BookmarkStat.page(params[:page])
+    @bookmark_stats = BookmarkStat.order(created_at: :desc).page(params[:page])
 
     respond_to do |format|
       format.html # index.html.erb
