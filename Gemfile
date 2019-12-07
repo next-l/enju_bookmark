@@ -19,7 +19,7 @@ gem "enju_event", github: "next-l/enju_event"
 gem "enju_message", github: "next-l/enju_message"
 gem "enju_manifestation_viewer", github: "next-l/enju_manifestation_viewer"
 gem "jquery-rails"
-gem 'json_translate'
+gem 'webpacker'
 gem 'jbuilder'
 gem 'rails', '~> 5.2'
 group :test do
