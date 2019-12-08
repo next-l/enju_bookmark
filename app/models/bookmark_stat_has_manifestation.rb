@@ -1,4 +1,4 @@
-class BookmarkStatHasManifestation < ActiveRecord::Base
+class BookmarkStatHasManifestation < ApplicationRecord
   belongs_to :bookmark_stat
   belongs_to :manifestation
 

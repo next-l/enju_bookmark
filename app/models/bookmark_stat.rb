@@ -1,4 +1,4 @@
-class BookmarkStat < ActiveRecord::Base
+class BookmarkStat < ApplicationRecord
   include Statesman::Adapters::ActiveRecordQueries[
     transition_class: BookmarkStatTransition,
     initial_state: :pending
