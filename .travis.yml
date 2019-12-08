@@ -31,6 +31,4 @@ addons:
     - postgresql-client-10
 jdk:
   - openjdk8
-node_js:
-  - 11
 dist: xenial
