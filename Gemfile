@@ -11,6 +11,7 @@ gemspec
 # Git. Remember to move these dependencies to your gemspec before releasing
 # your gem to rubygems.org.
 gem 'jquery-rails'
+gem 'sprockets', '~> 3.7'
 
 # To use debugger
 # gem 'debugger'
@@ -19,6 +20,3 @@ group :test do
   gem 'rspec_junit_formatter'
 end
 gem 'enju_leaf', github: 'next-l/enju_leaf', branch: '2.x'
-gem 'enju_library', github: 'next-l/enju_library', branch: '2.x'
-gem 'enju_biblio', github: 'next-l/enju_biblio', branch: '2.x'
-gem 'sprockets', '~> 3.7'
