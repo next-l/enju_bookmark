@@ -1,4 +1,4 @@
-class Bookmark < ActiveRecord::Base
+class Bookmark < ApplicationRecord
   scope :bookmarked, lambda {|start_date, end_date| where('created_at >= ? AND created_at < ?', start_date, end_date)}
   scope :user_bookmarks, lambda {|user| where(user_id: user.id)}
   scope :shared, -> {where(shared: true)}
@@ -186,13 +186,13 @@ end
 #
 # Table name: bookmarks
 #
-#  id               :integer          not null, primary key
+#  id               :bigint           not null, primary key
 #  user_id          :integer          not null
 #  manifestation_id :integer
 #  title            :text
 #  url              :string
 #  note             :text
 #  shared           :boolean
-#  created_at       :datetime
-#  updated_at       :datetime
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
