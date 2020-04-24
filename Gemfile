@@ -13,15 +13,12 @@ gemspec
 gem "enju_seed", github: "next-l/enju_seed"
 gem "enju_leaf", github: "next-l/enju_leaf"
 gem "enju_biblio", github: "next-l/enju_biblio"
-gem "enju_library", github: "next-l/enju_library"
+gem "enju_library", path: '../enju_library' #github: "next-l/enju_library"
 gem "enju_circulation", github: "next-l/enju_circulation"
 gem "enju_event", github: "next-l/enju_event"
 gem "enju_message", github: "next-l/enju_message"
 gem "enju_manifestation_viewer", github: "next-l/enju_manifestation_viewer"
-gem "jquery-rails"
 gem 'webpacker'
-gem 'jbuilder'
-gem 'rails', '~> 5.2'
 group :test do
   gem 'rspec_junit_formatter'
   gem 'rails-controller-testing'

@@ -106,7 +106,7 @@ class BookmarksController < ApplicationController
     @bookmark.taggings.where(tagger_id: @bookmark.user.id).map{|t| t.destroy}
 
     respond_to do |format|
-      if @bookmark.update_attributes(bookmark_params)
+      if @bookmark.update(bookmark_params)
         @bookmark.tag_index!
         case params[:mode]
         when 'tag_edit'
