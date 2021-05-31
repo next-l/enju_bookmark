@@ -17,11 +17,11 @@ Gem::Specification.new do |s|
   s.test_files = Dir["spec/**/*"] - Dir["spec/dummy/db/*.sqlite3"] - Dir["spec/dummy/log/*"] - Dir["spec/dummy/solr/**/*"] - Dir["spec/dummy/tmp/*"]
 
   s.add_dependency "enju_biblio", "~> 0.4.0.rc.1"
-  s.add_dependency "acts-as-taggable-on", "~> 6.0"
+  s.add_dependency "acts-as-taggable-on", "~> 7.0"
 
   s.add_development_dependency "enju_leaf", "~> 2.0.0.rc.1"
   s.add_development_dependency "pg"
-  s.add_development_dependency "rspec-rails", "~> 3.9"
+  s.add_development_dependency "rspec-rails", "~> 5.0"
   s.add_development_dependency "factory_bot_rails"
   s.add_development_dependency "sunspot_solr", "~> 2.5"
   s.add_development_dependency "simplecov"
