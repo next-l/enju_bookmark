@@ -1,4 +1,4 @@
-class BookmarkStatTransition < ActiveRecord::Base
+class BookmarkStatTransition < ApplicationRecord
   include Statesman::Adapters::ActiveRecordTransition
 
 

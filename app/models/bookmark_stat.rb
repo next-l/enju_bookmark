@@ -1,4 +1,4 @@
-class BookmarkStat < ActiveRecord::Base
+class BookmarkStat < ApplicationRecord
   include Statesman::Adapters::ActiveRecordQueries
   include CalculateStat
   default_scope { order('bookmark_stats.id DESC') }
